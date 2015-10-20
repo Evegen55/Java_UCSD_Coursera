@@ -3,8 +3,6 @@ package module5;
 import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
-import de.fhpotsdam.unfolding.marker.SimplePointMarker;
-import processing.core.PConstants;
 import processing.core.PGraphics;
 
 /** Implements a visual marker for cities on an earthquake map
@@ -35,7 +33,7 @@ public class CityMarker extends CommonMarker {
 	/**
 	 * Implementation of method to draw marker on the map.
 	 */
-	public void draw(PGraphics pg, float x, float y) {
+	public void drawMarker(PGraphics pg, float x, float y) {
 		// Save previous drawing style
 		pg.pushStyle();
 		
@@ -48,10 +46,20 @@ public class CityMarker extends CommonMarker {
 	}
 	
 	/** Show the title of the city if this marker is selected */
+	@Override
 	public void showTitle(PGraphics pg, float x, float y)
 	{
 		
 		// TODO: Implement this method
+		pg.pushStyle();
+		
+		pg.fill(0,0,0);
+		pg.text("City: " + getCity() + " Coutry: " + getCountry() + "Population: " + getPopulation(), x, y);
+		
+		System.out.println("something");
+		
+		pg.popStyle();
+		
 	}
 	
 	
@@ -73,10 +81,20 @@ public class CityMarker extends CommonMarker {
 		return Float.parseFloat(getStringProperty("population"));
 	}
 
-
+	
+	//DELETE нахуй потому что ошибочно был имплементирован метод draw. Мы переименовали метод draw  в drawMarker и удалили вот это нахуй.
+/*
 	@Override
 	public void drawMarker(PGraphics pg, float x, float y) {
 		// TODO Auto-generated method stub
 		
-	}
+		// save previous styling
+		pg.pushStyle();
+		
+		draw(pg, x, y);
+		
+		// reset to previous styling
+		pg.popStyle();
+		
+	} */
 }

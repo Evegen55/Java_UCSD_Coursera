@@ -144,6 +144,7 @@ public class EarthquakeCityMap extends PApplet {
 	// set the lastSelected to be the first marker found under the cursor
 	// Make sure you do not select two markers.
 	// 
+	//
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
@@ -154,29 +155,16 @@ public class EarthquakeCityMap extends PApplet {
 			float chekY = mouseY;
 			
 			
-			if( marker.isInside(map, checkX,  chekY) && 
-					lastSelected == null) {
-					
+			if( marker.isInside(map, checkX,  chekY) && lastSelected == null) {
 				
 				lastSelected = (CommonMarker) marker;
 				lastSelected.setSelected(true);
+				//lastSelected.showTitle(pg, x, y);
 				System.out.println("Marker under kursor" + " X = " + marker.getLocation().x + "\n" + "Y = " +  marker.getLocation().y);
-				
 			}
-
 		}	
-		
-		
-		
-		
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	/** The event handler for mouse clicks
 	 * It will display an earthquake and its threat circle of cities
 	 * Or if a city is clicked, it will display all the earthquakes 
