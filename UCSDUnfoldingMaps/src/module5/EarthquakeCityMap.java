@@ -176,6 +176,71 @@ public class EarthquakeCityMap extends PApplet {
 		// TODO: Implement this method
 		// Hint: You probably want a helper method or two to keep this code
 		// from getting too long/disorganized
+		
+		// clear the last clicked
+		if (lastClicked != null) {
+			
+			lastClicked.setClicked(false);
+			lastClicked = null;
+			
+			//check if the marker is clicked
+		} else  {
+			
+			selectMarkerIfHoverForClick(quakeMarkers);
+			selectMarkerIfHoverForClick(cityMarkers);
+			
+			if (lastClicked.getClicked()) {
+				
+			System.out.println("Marker under kursor for click");
+				
+			}
+			
+			
+			
+		}
+	}
+	
+	
+	//helper method for tests  marker under mouse for click method 
+	private void selectMarkerIfHoverForClick(List<Marker> markers)
+	{
+		// TODO: Implement this method
+		
+		for(Marker marker : markers) {
+			
+			//float checkX = mouseX;
+			//float chekY = mouseY;
+			
+			
+			if( marker.isInside(map, mouseX,  mouseY) && lastClicked  == null) {
+				
+				lastClicked = (CommonMarker) marker;
+				lastClicked.setClicked(true);
+				//System.out.println("Marker under kursor for click");
+			}
+		}	
+	}
+	
+	
+	
+	public void hideAllExceptionIsClicked() {
+		
+		for(Marker marker : quakeMarkers) {
+			
+			if (lastClicked.getClicked() == false) {
+				marker.setHidden(true);
+			}
+			
+		}
+			
+		for(Marker marker : cityMarkers) {
+			
+			if (!lastClicked.getClicked()) {
+				marker.setHidden(true);
+			}
+		}
+		
+		
 	}
 	
 	
