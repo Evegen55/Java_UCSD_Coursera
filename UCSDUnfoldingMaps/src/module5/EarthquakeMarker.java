@@ -97,8 +97,6 @@ public abstract class EarthquakeMarker extends CommonMarker
 		pg.fill(0,0,0);
 		pg.text(getTitle(), x, y);
 		
-		//System.out.println(getTitle());
-		
 	}
 
 	

@@ -51,14 +51,9 @@ public class CityMarker extends CommonMarker {
 	{
 		
 		// TODO: Implement this method
-		pg.pushStyle();
-		
 		pg.fill(0,0,0);
-		pg.text("City: " + getCity() + " Coutry: " + getCountry() + "Population: " + getPopulation(), x, y);
-		
-		System.out.println("something");
-		
-		pg.popStyle();
+		pg.text("City: " + getCity() + "\n" + " Coutry: " + getCountry() + "\n" + "Population: " + getPopulation(), x, y);
+
 		
 	}
 	
