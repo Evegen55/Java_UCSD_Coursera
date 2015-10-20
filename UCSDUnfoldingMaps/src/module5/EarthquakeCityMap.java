@@ -16,6 +16,7 @@ import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
@@ -146,7 +147,35 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
+		
+		for(Marker marker : markers) {
+			
+			float checkX = mouseX;
+			float chekY = mouseY;
+			
+			
+			if( marker.isInside(map, checkX,  chekY) && 
+					lastSelected == null) {
+					
+				
+				lastSelected = (CommonMarker) marker;
+				lastSelected.setSelected(true);
+				System.out.println("Marker under kursor" + " X = " + marker.getLocation().x + "\n" + "Y = " +  marker.getLocation().y);
+				
+			}
+
+		}	
+		
+		
+		
+		
 	}
+	
+	
+	
+	
+	
+	
 	
 	/** The event handler for mouse clicks
 	 * It will display an earthquake and its threat circle of cities
