@@ -240,77 +240,41 @@ public class EarthquakeCityMap extends PApplet {
 	// Recall that the country markers have a "name" property, 
 	// And LandQuakeMarkers have a "country" property set.
 	private void printQuakes() {
-	
-		// TODO: Implement this method
-		//счётчик землятрясений в океане для одной страны
-		int countOceanQuakesPerCountry = 0;
-		
+
 		//счётчик землятр. в океане общий
 		int countOceanQuakesGeneral = 0;
-		
-		//счётчик землятрясений в стране (одельно взятой)
-		int countLandQuakesPerCountry = 0;
-		
-		//счётчик землятрясений общий
-		int countQuaqesGeneral = 0;
-		
-		//имя страны, где было хотя бы одно землятрясение
-		String countryNameQuakes = null;
-		
-		//
-		String typeOfOceanQuakes = "class module4.OceanQuakeMarker";
-		
-		String typeOfLandQuakes = "class module4.LandQuakeMarker";
-		
 		
 		for (int index = 0; index < countryMarkers.size(); index ++) {
 			
 			Marker singleCountry = countryMarkers.get(index);
+			String countryNameQuakes = singleCountry.getStringProperty("name");
 			
-			countryNameQuakes = singleCountry.getStringProperty("name");
+			//счётчик землятрясений в океане для одной страны
+			int countOceanQuakesPerCountry = 0;
+			//счётчик землятрясений в стране (одельно взятой)
+			int countLandQuakesPerCountry = 0;
 			
 			for (int indexQuakes = 0; indexQuakes < quakeMarkers.size(); indexQuakes ++) {
 				
 				Marker singleQuake = quakeMarkers.get(indexQuakes);
-				
-				String typeOfSingleMrker = singleQuake.getClass().toString();                                        //System.out.println(typeOfSingleMrker);
-				
-				int comparationOfTypesForOcean = typeOfSingleMrker.compareToIgnoreCase(typeOfOceanQuakes);           //System.out.println(comparationOfTypesForOcean);
-				
-				int comparationOfTypesForLand = typeOfSingleMrker.compareToIgnoreCase(typeOfLandQuakes);
+				int comparationOfTypesForOcean = singleQuake.getClass().toString().compareToIgnoreCase("class module4.OceanQuakeMarker");
 				
 				if(comparationOfTypesForOcean == 0) {
-					
-					//увеличили счётчик 1
-					countOceanQuakesPerCountry ++;                                                                    //System.out.println(countOceanQuakesPerCountry);
-					
+					countOceanQuakesPerCountry ++;
 				} else {
-					
-					String nameOfCountryWithSingleQuake = singleQuake.getStringProperty("country");                   //System.out.println(nameOfCountryWithSingleQuake);
-					
+					String nameOfCountryWithSingleQuake = singleQuake.getStringProperty("country");
 					int compareCountries = nameOfCountryWithSingleQuake.compareToIgnoreCase(countryNameQuakes);
 					
 					if(compareCountries == 0) {
-						
-						//увеличили счётчик 2
 						countLandQuakesPerCountry ++;
-						
 					}
-					
-					
-					
 				}
-				
-				//
-				
-				
 			}
 			
 			//проверяем, для данной страны, что накопилось в счётчиках
 			//печатаем имя страны
 			//счётчик океанских
 			//счётчик земляных
-			
 			//но надо добавить условие, которое говорит: печатать только те страны, где было хотя бы одно землятрясение
 			
 			if(countLandQuakesPerCountry > 0 ) {
@@ -318,146 +282,19 @@ public class EarthquakeCityMap extends PApplet {
 				System.out.println("***************************************");
 				System.out.println("Country:" + "\t" + countryNameQuakes);
 				System.out.println("Land Quakes in " + countryNameQuakes + " :" +"\t" + countLandQuakesPerCountry);
-				//System.out.println("***************");
 				
 			}
-			
-			
 			//перенёс выполненные данные по итогу выполнения двух циклов нуружу первого цикла
 			countOceanQuakesGeneral = countOceanQuakesPerCountry;
 			//обнулил счётчики
 			countOceanQuakesPerCountry = 0;
 			countLandQuakesPerCountry = 0;
-			
-			
 		}
 		
 		System.out.println("***************");
-		//System.out.println("Country:" + "\t" + countryNameQuakes);
 		System.out.println("Ocean Quakes Total:" + "\t" + countOceanQuakesGeneral);
-		//System.out.println("Value of Land    QuakesPerCountry:" + "\t" + countLandQuakesPerCountry);
 		System.out.println("***************");		
-
-		
-		
-	}
-	//САМ ЗАХОТЕЛ ПОИГРАТЬСЯ
-	public String textInTotal () {
-		
-		
-		// TODO: Implement this method
-		//счётчик землятрясений в океане для одной страны
-		int countOceanQuakesPerCountry = 0;
-		
-		//счётчик землятр. в океане общий
-		int countOceanQuakesGeneral = 0;
-		
-		//счётчик землятрясений в стране (одельно взятой)
-		int countLandQuakesPerCountry = 0;
-		
-		//счётчик землятрясений общий
-		int countQuaqesGeneral = 0;
-		
-		//имя страны, где было хотя бы одно землятрясение
-		String countryNameQuakes = null;
-		
-		//
-		String typeOfOceanQuakes = "class module4.OceanQuakeMarker";
-		
-		String typeOfLandQuakes = "class module4.LandQuakeMarker";
-		
-		String forOut = null;
-		
-		//String FromInside = null;
-		
-		String fromInsideHelp = null;
-		
-		
-		for (int index = 0; index < countryMarkers.size(); index ++) {
-			
-			Marker singleCountry = countryMarkers.get(index);
-			
-			countryNameQuakes = singleCountry.getStringProperty("name");                                            String FromInside = null;
-			
-			for (int indexQuakes = 0; indexQuakes < quakeMarkers.size(); indexQuakes ++) {
-				
-				Marker singleQuake = quakeMarkers.get(indexQuakes);                                                  
-				
-				String typeOfSingleMrker = singleQuake.getClass().toString();                                        //System.out.println(typeOfSingleMrker);
-				
-				int comparationOfTypesForOcean = typeOfSingleMrker.compareToIgnoreCase(typeOfOceanQuakes);           //System.out.println(comparationOfTypesForOcean);
-				
-				int comparationOfTypesForLand = typeOfSingleMrker.compareToIgnoreCase(typeOfLandQuakes);
-				
-				if(comparationOfTypesForOcean == 0) {
-					
-					//увеличили счётчик 1
-					countOceanQuakesPerCountry ++;                                                                    //System.out.println(countOceanQuakesPerCountry);
-					
-				} else {
-					
-					String nameOfCountryWithSingleQuake = singleQuake.getStringProperty("country");                   //System.out.println(nameOfCountryWithSingleQuake);
-					
-					int compareCountries = nameOfCountryWithSingleQuake.compareToIgnoreCase(countryNameQuakes);
-					
-					if(compareCountries == 0) {
-						
-						//увеличили счётчик 2
-						countLandQuakesPerCountry ++;
-						
-					}
-				}
-			}                                                                                                        
-			
-			//проверяем, для данной страны, что накопилось в счётчиках
-			//печатаем имя страны
-			//счётчик океанских
-			//счётчик земляных
-			
-			//но надо добавить условие, которое говорит: печатать только те страны, где было хотя бы одно землятрясение
-			
-			if(countLandQuakesPerCountry > 0 ) {
-				
-				//System.out.println("***************************************");
-				//System.out.println("Country:" + "\t" + countryNameQuakes);
-				//System.out.println("Land Quakes in " + countryNameQuakes + " :" +"\t" + countLandQuakesPerCountry);
-				//System.out.println("***************");
-				
-				FromInside = "Country :" + "\t" + countryNameQuakes + "\n" + "Land Quakes :" +"\t" + countLandQuakesPerCountry;
-				fromInsideHelp = FromInside+ "\n";
-				
-			}
-			
-			
-			//перенёс выполненные данные по итогу выполнения двух циклов нуружу первого цикла
-			countOceanQuakesGeneral = countOceanQuakesPerCountry;
-			//обнулил счётчики
-			countOceanQuakesPerCountry = 0;
-			countLandQuakesPerCountry = 0;
-			
-			 FromInside = null;
-		}
-		
-		//System.out.println("***************");
-		//System.out.println("Country:" + "\t" + countryNameQuakes);
-		//System.out.println("Ocean Quakes Total:" + "\t" + countOceanQuakesGeneral);
-		//System.out.println("Value of Land    QuakesPerCountry:" + "\t" + countLandQuakesPerCountry);
-		//System.out.println("***************");
-		
-		
-
-		forOut = fromInsideHelp + "\n" + "Ocean Quakes Total:" + "\t" + countOceanQuakesGeneral;
-		
-		
-		return forOut;
-		
-	}
-		
+    }
+	
 }
-			
 
-			
-	
-	
-	
-	
