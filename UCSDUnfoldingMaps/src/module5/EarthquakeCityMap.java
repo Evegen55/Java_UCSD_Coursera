@@ -16,12 +16,11 @@ import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import parsing.ParseFeed;
 import processing.core.PApplet;
-import processing.core.PVector;
 
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author Evegenn
  * Date: July 17, 2015
  * */
 public class EarthquakeCityMap extends PApplet {
@@ -140,27 +139,17 @@ public class EarthquakeCityMap extends PApplet {
 		selectMarkerIfHover(cityMarkers);
 	}
 	
-	// If there is a marker under the cursor, and lastSelected is null 
-	// set the lastSelected to be the first marker found under the cursor
-	// Make sure you do not select two markers.
-	// 
-	//
+	/** If there is a marker under the cursor, and lastSelected is null
+	 * set the lastSelected to be the first marker found under the cursor
+	 * Make sure you do not select two markers.
+	 */
 	private void selectMarkerIfHover(List<Marker> markers)
 	{
 		// TODO: Implement this method
-		
 		for(Marker marker : markers) {
-			
-			float checkX = mouseX;
-			float chekY = mouseY;
-			
-			
-			if( marker.isInside(map, checkX,  chekY) && lastSelected == null) {
-				
+			if( marker.isInside(map, mouseX,  mouseY) && lastSelected == null) {
 				lastSelected = (CommonMarker) marker;
-				lastSelected.setSelected(true);
-				//lastSelected.showTitle(pg, x, y);
-				System.out.println("Marker under kursor" + " X = " + marker.getLocation().x + "\n" + "Y = " +  marker.getLocation().y);
+				lastSelected.setSelected(true);                                  //System.out.println("Marker under kursor" + " X = " + marker.getLocation().x + "\n" + "Y = " +  marker.getLocation().y);
 			}
 		}	
 	}
@@ -181,22 +170,17 @@ public class EarthquakeCityMap extends PApplet {
 		if (lastClicked != null) {
 			
 			lastClicked.setClicked(false);
-			lastClicked = null;
-			
-			//check if the marker is clicked
-		} else  {
-			
-			selectMarkerIfHoverForClick(quakeMarkers);
-			selectMarkerIfHoverForClick(cityMarkers);
-			
-			if (lastClicked.getClicked()) {
-				
-			System.out.println("Marker under kursor for click");
-				
-			}
+			unhideMarkers();                                              //System.out.println("all are unhide");
 			
 			
+		//check if the marker is clicked	
+		} 
+		
+		selectMarkerIfHoverForClick(quakeMarkers);
+		selectMarkerIfHoverForClick(cityMarkers);
 			
+		if (lastClicked.getClicked() && lastSelected != null) {
+			hideAllMarkers_Exept_Selected();                                             //System.out.println("Marker under kursor for click");
 		}
 	}
 	
@@ -205,46 +189,41 @@ public class EarthquakeCityMap extends PApplet {
 	private void selectMarkerIfHoverForClick(List<Marker> markers)
 	{
 		// TODO: Implement this method
-		
 		for(Marker marker : markers) {
-			
-			//float checkX = mouseX;
-			//float chekY = mouseY;
-			
-			
-			if( marker.isInside(map, mouseX,  mouseY) && lastClicked  == null) {
-				
+			if( marker.isInside(map, mouseX,  mouseY)) {
 				lastClicked = (CommonMarker) marker;
-				lastClicked.setClicked(true);
-				//System.out.println("Marker under kursor for click");
+				lastClicked.setClicked(true);                             //System.out.println("---------");
 			}
 		}	
 	}
 	
+	//helper method for hide all of markers
 	
-	
-	public void hideAllExceptionIsClicked() {
+	// TODO - complete method !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public void hideAllMarkers_Exept_Selected() {
 		
 		for(Marker marker : quakeMarkers) {
-			
-			if (lastClicked.getClicked() == false) {
-				marker.setHidden(true);
+			if (lastClicked.getClicked()) {
+				EarthquakeMarker mht = (EarthquakeMarker) marker;
+				lastClicked.setHidden(false);
+				
+				if (mht.getDistanceTo(lastClicked.getLocation()) > mht.threatCircle()) {
+					marker.setHidden(true); 
+				}
 			}
-			
 		}
-			
+		
 		for(Marker marker : cityMarkers) {
-			
-			if (!lastClicked.getClicked()) {
-				marker.setHidden(true);
+			if (lastClicked.getClicked()) {
+				
+				marker.setHidden(true); 
+				lastClicked.setHidden(false);                           
 			}
 		}
-		
-		
 	}
 	
 	
-	// loop over and unhide all markers
+	// helper method loop over and unhide all markers
 	private void unhideMarkers() {
 		for(Marker marker : quakeMarkers) {
 			marker.setHidden(false);
@@ -320,10 +299,11 @@ public class EarthquakeCityMap extends PApplet {
 
 	
 	
-	// Checks whether this quake occurred on land.  If it did, it sets the 
-	// "country" property of its PointFeature to the country where it occurred
-	// and returns true.  Notice that the helper method isInCountry will
-	// set this "country" property already.  Otherwise it returns false.	
+	/** Checks whether this quake occurred on land.  If it did, it sets the
+	 *  "country" property of its PointFeature to the country where it occurred
+	 *  and returns true.  Notice that the helper method isInCountry will
+	 *  set this "country" property already.  Otherwise it returns false.
+	*/
 	private boolean isLand(PointFeature earthquake) {
 		
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
@@ -363,10 +343,14 @@ public class EarthquakeCityMap extends PApplet {
 	
 	
 	
-	// helper method to test whether a given earthquake is in a given country
-	// This will also add the country property to the properties of the earthquake feature if 
-	// it's in one of the countries.
-	// You should not have to modify this code
+	/** helper method to test whether a given earthquake is in a given country
+	 *  This will also add the country property to the properties of the earthquake feature if 
+	 *  it's in one of the countries.
+	 *  You should not have to modify this code
+	 * @param earthquake
+	 * @param country
+	 * @return
+	 */
 	private boolean isInCountry(PointFeature earthquake, Marker country) {
 		// getting location of feature
 		Location checkLoc = earthquake.getLocation();
