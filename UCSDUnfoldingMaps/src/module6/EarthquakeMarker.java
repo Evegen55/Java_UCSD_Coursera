@@ -10,7 +10,7 @@ import processing.core.PGraphics;
  *
  */
 // TODO: Implement the comparable interface
-public abstract class EarthquakeMarker extends CommonMarker
+public abstract class EarthquakeMarker extends CommonMarker implements Comparable<EarthquakeMarker>
 {
 	
 	// Did the earthquake occur on land?  This will be set by the subclasses.
@@ -179,7 +179,27 @@ public abstract class EarthquakeMarker extends CommonMarker
 		return isOnLand;
 	}
 	
-
-	
+/*implement the compareTo(EarthquakeMarker marker) method in the EarthquakeMarker class so that
+ *  it 	sorts earthquakes in reverse order of magnitude.(non-Javadoc)
+ * @see java.lang.Comparable#compareTo(java.lang.Object)
+ * 
+ * make a note of what error(s) occur in your code, where they occurred and why:
+ * in classes LandQuakeMarker and OceanQuaqeMarker we must implement method compareTO?, but it's a better idea for implementing this method in this place
+ */
+	@Override
+	public int compareTo(EarthquakeMarker marker) {
+		// TODO Auto-generated method stub
+		int i=0;
+		if(this.getMagnitude()>marker.getMagnitude()) {
+			i=-1;
+			return i;
+		} else if (this.getMagnitude()<marker.getMagnitude()) {
+			i=1;
+			return i;
+		}
+		
+		
+		return i;
+	}
 	
 }

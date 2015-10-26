@@ -28,7 +28,14 @@ public class OceanQuakeMarker extends EarthquakeMarker {
 		// and how it is set in the EarthquakeMarker constructor
 		pg.rect(x-radius, y-radius, 2*radius, 2*radius);
 	}
-	
+
+/*
+	@Override
+	public int compareTo(EarthquakeMarker o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+*/	
 
 	
 

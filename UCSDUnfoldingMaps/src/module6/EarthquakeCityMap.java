@@ -2,6 +2,7 @@ package module6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -82,7 +83,7 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+		earthquakesURL = "test2.atom";
 		
 		// Uncomment this line to take the quiz
 		//earthquakesURL = "quiz2.atom";
@@ -123,6 +124,12 @@ public class EarthquakeCityMap extends PApplet {
 	    //           for their geometric properties
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
+	    
+	    
+	    
+	    //add a method sortAndPrint(int numToPrint)
+	    sortAndPrint(30);
+	    
 	    
 	    
 	}  // End setup
@@ -409,5 +416,46 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		return false;
 	}
+	/*TODO: 
+	 * 4. Add and Implement the private method void sortAndPrint(int numToPrint) in
+	 * EarthquakeCityMap. This method will create a new array from the list of earthquake markers (hint: there is
+	 * a method in the List interface named toArray() which returns the elements in the List as an array of Objects).
+	 * Then it will sort the array of earthquake markers in reverse order of their magnitude (highest to lowest) and
+	 * then print out the top numToPrint earthquakes. If numToPrint is larger than the number of markers in
+	 * quakeMarkers, it should print out all of the earthquakes and stop, but it should not crash.Call this method
+	 * from setUp() to test it. An example input and output files are provided in the data folder: use test2.atom as
+	 * the input file, and sortandPrint.test2.out.txt is the expected output for a couple different calls to
+	 * sortAndPrint.
+	 */
+	private  void sortAndPrint(int numToPrint) {
+		
+		EarthquakeMarker[] arrayOfmarker = new EarthquakeMarker[quakeMarkers.size()];
+		quakeMarkers.toArray(arrayOfmarker);
+		
+		Arrays.sort(arrayOfmarker);
+		
+		
+		//Collections.sort(quakeMarkers);
+		
+		if(numToPrint<arrayOfmarker.length) {
+			
+			for (int i = 0; i <numToPrint; i++) {
+				
+				System.out.println(i + "'s" + "earthquake:" +  "\t"+  arrayOfmarker[i].getTitle());
+			}
+		} else {
+			
+			for (int i = 0; i <arrayOfmarker.length; i++) {
+				
+				System.out.println(i + "'s" + "earthquake:" +  "\t"+  arrayOfmarker[i].getTitle());
+			}
+		}
+		
+	}
+	
+	/*TODO
+	 * 5. Add your own extension! 
+	 * @see https://d396qusza40orc.cloudfront.net/phoenixassets/object-oriented-java/Module%206%20PA%20Instructions.pdf
+	 */
 
 }
