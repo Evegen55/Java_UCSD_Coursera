@@ -2,7 +2,6 @@ package module6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
@@ -83,10 +82,10 @@ public class EarthquakeCityMap extends PApplet {
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
 		//earthquakesURL = "test1.atom";
-		earthquakesURL = "test2.atom";
+		//earthquakesURL = "test2.atom";
 		
 		// Uncomment this line to take the quiz
-		//earthquakesURL = "quiz2.atom";
+		// earthquakesURL = "quiz2.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -125,24 +124,21 @@ public class EarthquakeCityMap extends PApplet {
 	    map.addMarkers(quakeMarkers);
 	    map.addMarkers(cityMarkers);
 	    
-	    
-	    
 	    //add a method sortAndPrint(int numToPrint)
 	    sortAndPrint(30);
-	    
-	    
-	    
+	       
 	}  // End setup
 	
 	
 	public void draw() {
+		
 		background(0);
 		map.draw();
 		addKey();
 		
 	}
 	
-	
+
 	// TODO: Add the method:
 	//   private void sortAndPrint(int numToPrint)
 	// and then call that method from setUp
@@ -161,6 +157,7 @@ public class EarthquakeCityMap extends PApplet {
 		}
 		selectMarkerIfHover(quakeMarkers);
 		selectMarkerIfHover(cityMarkers);
+		
 		//loop();
 	}
 	
@@ -191,15 +188,20 @@ public class EarthquakeCityMap extends PApplet {
 	@Override
 	public void mouseClicked()
 	{
+			
 		if (lastClicked != null) {
 			unhideMarkers();
 			lastClicked = null;
+			
 		}
 		else if (lastClicked == null) 
 		{
 			checkEarthquakesForClick();
+			
 			if (lastClicked == null) {
 				checkCitiesForClick();
+				
+				
 			}
 		}
 	}
@@ -330,6 +332,10 @@ public class EarthquakeCityMap extends PApplet {
 		line(centerx-8, centery-8, centerx+8, centery+8);
 		line(centerx-8, centery+8, centerx+8, centery-8);
 		
+		fill(0, 0, 0);
+		textAlign(LEFT, CENTER);
+		text("Max magnitude: " + printMaxMagnitude(), xbase+20, ybase+220);
+				
 		
 	}
 
@@ -451,8 +457,24 @@ public class EarthquakeCityMap extends PApplet {
 			}
 		}
 		
+		System.out.println(printMaxMagnitude());
+		
 	}
 	
+	
+	/*
+	 * Helper method for evaluate a max magnitude
+	 */
+    public float printMaxMagnitude() {
+		
+		EarthquakeMarker[] arrayOfmarker = new EarthquakeMarker[quakeMarkers.size()];
+		quakeMarkers.toArray(arrayOfmarker);
+		Arrays.sort(arrayOfmarker);
+		
+		return arrayOfmarker[1].getMagnitude();
+		
+	}
+
 	/*TODO
 	 * 5. Add your own extension! 
 	 * @see https://d396qusza40orc.cloudfront.net/phoenixassets/object-oriented-java/Module%206%20PA%20Instructions.pdf
