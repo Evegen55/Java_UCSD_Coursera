@@ -53,7 +53,12 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-	    return 0;
+		
+		
+		this.text = word;
+		List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyz]*[aeiou]+[bcdfghjklmnpqrstvwxyz]*");
+		
+		return myVar.size();
 	}
 	
 	/** A method for testing
