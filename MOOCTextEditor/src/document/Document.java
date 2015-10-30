@@ -58,17 +58,60 @@ public abstract class Document {
 		this.text = word;
 		//aeiouyAEIOUY
 		//List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyz]*[aeiou]+[bcdfghjklmnpqrstvwxyz]*");
-		List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*[aeiouAEIOUY]+[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*");
-		
+		List<String> myVar= getTokens(
+				
+				"[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*[aeiouAEIOUY]+[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*"
+				
+				);
+		//работаем с отдельным токеном
+		//1 - преобразовываем список в массив
 		Object [] arr1 = myVar.toArray();
+		//2 нам нужен новый список
+		ArrayList<String> mySortedTokens = new ArrayList<String>();
 		
+		//теперь обходим массив
 		for (int i = 0; i<arr1.length;i++) {
+			
+			//берЄм первый объект, превращаем его в масси типа char
+			char [] strar = arr1[i].toString().toCharArray();
+			
+			//после этого смотрим, €вл€етс€ ли наш массив массивом с одной €чейкой и с буквой 'e'
+			//если €вл€етс€, то прибавл€ем его к предыдущему объекту - объекту типа String, но дл€ этого придЄтс€ 
+			//создавать новый объект типа String
+			
+			if(strar.length == 1 && strar[0] == 'e') {
+				
+				String otherstring = arr1[i-1].toString() + strar[0];
+				
+				mySortedTokens.add(otherstring);
+				
+				System.out.println("otherstring" + "\n" + otherstring);
+				
+			} else if(strar.length > 1 && 
+					(strar[0] < 'e' || strar[0] > 'e')
+					
+					) {
+				
+				mySortedTokens.add(arr1[i].toString());
+			}
 			
 			System.out.println(arr1[i].toString());
 		}
 		
+		System.out.println("//-----------------");
 		
-		return myVar.size();
+		Object [] arr2 = mySortedTokens.toArray();
+		
+        for (int i = 0; i<arr2.length;i++) {
+			
+			System.out.println(arr2[i].toString());
+		}
+		
+		
+		
+		
+		
+		return mySortedTokens.size();
 	}
 	
 	/** A method for testing
