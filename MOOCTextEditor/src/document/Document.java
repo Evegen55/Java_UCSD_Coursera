@@ -56,7 +56,17 @@ public abstract class Document {
 		
 		
 		this.text = word;
-		List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyz]*[aeiou]+[bcdfghjklmnpqrstvwxyz]*");
+		//aeiouyAEIOUY
+		//List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyz]*[aeiou]+[bcdfghjklmnpqrstvwxyz]*");
+		List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*[aeiouAEIOUY]+[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*");
+		
+		Object [] arr1 = myVar.toArray();
+		
+		for (int i = 0; i<arr1.length;i++) {
+			
+			System.out.println(arr1[i].toString());
+		}
+		
 		
 		return myVar.size();
 	}
