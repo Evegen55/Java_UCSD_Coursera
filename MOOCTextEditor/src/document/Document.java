@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.*;
 
 public abstract class Document {
 
@@ -56,62 +57,18 @@ public abstract class Document {
 		
 		
 		this.text = word;
-		//aeiouyAEIOUY
-		//List<String> myVar= getTokens("[bcdfghjklmnpqrstvwxyz]*[aeiou]+[bcdfghjklmnpqrstvwxyz]*");
-		List<String> myVar= getTokens(
+		//вариант решени€ -  который можно задействоать в кач. базового 
+		//вычесть все e и прибавить be
 				
-				"[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*[aeiouAEIOUY]+[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]*"
-				
-				);
-		//работаем с отдельным токеном
-		//1 - преобразовываем список в массив
-		Object [] arr1 = myVar.toArray();
-		//2 нам нужен новый список
-		ArrayList<String> mySortedTokens = new ArrayList<String>();
+		//нехватает одиночной a, y, be - найдено 13, все - правильно за искл недостающих
+		List<String> myVar= getTokens("[aeiouyAEIOUY]+\\w");
+		//все которые кончаютс€ на 'e'
+		List<String> myVarEinEnd= getTokens("\\we\\b");
+		//все односложные которые кончаютс€ на 'e'
+		List<String> myVarSing= getTokens("\\b[bcdfghjklmnpqrstvwxyz][e]\\b");
 		
-		//теперь обходим массив
-		for (int i = 0; i<arr1.length;i++) {
-			
-			//берЄм первый объект, превращаем его в масси типа char
-			char [] strar = arr1[i].toString().toCharArray();
-			
-			//после этого смотрим, €вл€етс€ ли наш массив массивом с одной €чейкой и с буквой 'e'
-			//если €вл€етс€, то прибавл€ем его к предыдущему объекту - объекту типа String, но дл€ этого придЄтс€ 
-			//создавать новый объект типа String
-			
-			if(strar.length == 1 && strar[0] == 'e') {
-				
-				String otherstring = arr1[i-1].toString() + strar[0];
-				
-				mySortedTokens.add(otherstring);
-				
-				System.out.println("otherstring" + "\n" + otherstring);
-				
-			} else if(strar.length > 1 && 
-					(strar[0] < 'e' || strar[0] > 'e')
-					
-					) {
-				
-				mySortedTokens.add(arr1[i].toString());
-			}
-			
-			System.out.println(arr1[i].toString());
-		}
+		return	myVar.size()+myVarEinEnd.size()-myVarSing.size();
 		
-		System.out.println("//-----------------");
-		
-		Object [] arr2 = mySortedTokens.toArray();
-		
-        for (int i = 0; i<arr2.length;i++) {
-			
-			System.out.println(arr2[i].toString());
-		}
-		
-		
-		
-		
-		
-		return mySortedTokens.size();
 	}
 	
 	/** A method for testing
