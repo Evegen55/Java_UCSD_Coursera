@@ -1,5 +1,7 @@
 package document;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 /** 
  * A class that represents a text document
  * @author UC San Diego Intermediate Programming MOOC team
@@ -55,6 +57,7 @@ public abstract class Document {
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
 		
+		//НЕДОДЕЛАНО
 		
 		this.text = word;
 		//вариант решения -  который можно задействоать в кач. базового 
@@ -65,7 +68,19 @@ public abstract class Document {
 		//все которые кончаются на 'e'
 		List<String> myVarEinEnd= getTokens("\\we\\b");
 		//все односложные которые кончаются на 'e'
-		List<String> myVarSing= getTokens("\\b[bcdfghjklmnpqrstvwxyz][e]\\b");
+		List<String> myVarSing= getTokens("\\b[bcdfghjklmnpqrstvwxyz]+[e]\\b");
+		
+		for (int i = 0; i<myVar.size(); i++) {
+			
+			System.out.println(myVar.toArray()[i].toString());
+		}
+		
+		
+		
+		
+		
+		
+		
 		
 		return	myVar.size()+myVarEinEnd.size()-myVarSing.size();
 		
@@ -132,7 +147,15 @@ public abstract class Document {
 	public double getFleschScore()
 	{
 	    // TODO: Implement this method
-	    return 0.0;
+		
+		double numWords = getNumWords();
+		double numSentences = getNumSentences();
+		double numSyll = getNumSyllables();
+		
+		double score = 206.835 - 1.015*(numWords/numSentences) - 84.6*(numSyll/numWords);
+		double newDouble = new BigDecimal(score).setScale(1, RoundingMode.UP).doubleValue();
+		
+	    return newDouble;
 	}
 	
 	
