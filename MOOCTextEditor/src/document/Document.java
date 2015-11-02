@@ -56,33 +56,12 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 1) and 
 	    // EfficientDocument (module 2).
-		
-		//НЕДОДЕЛАНО
-		
-		this.text = word;
-		//вариант решения -  который можно задействоать в кач. базового 
-		//вычесть все e и прибавить be
 				
-		//нехватает одиночной a, y, be - найдено 13, все - правильно за искл недостающих
-		List<String> myVar= getTokens("[aeiouyAEIOUY]+\\w");
-		//все которые кончаются на 'e'
-		List<String> myVarEinEnd= getTokens("\\we\\b");
-		//все односложные которые кончаются на 'e'
-		List<String> myVarSing= getTokens("\\b[bcdfghjklmnpqrstvwxyz]+[e]\\b");
+		this.text = word;
 		
-		for (int i = 0; i<myVar.size(); i++) {
-			
-			System.out.println(myVar.toArray()[i].toString());
-		}
+		List<String> myVar= getTokens("([aeiouyAEIOUY]+\\w)|([aiouyAIOUY])|(\\b[bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ]+e\\b)");
 		
-		
-		
-		
-		
-		
-		
-		
-		return	myVar.size()+myVarEinEnd.size()-myVarSing.size();
+		return	myVar.size();
 		
 	}
 	
