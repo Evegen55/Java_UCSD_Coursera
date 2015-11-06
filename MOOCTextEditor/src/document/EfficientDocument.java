@@ -45,6 +45,12 @@ public class EfficientDocument extends Document {
 		
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.
+		
+		numWords = getNumWords();
+		numSentences = getNumSentences();
+		numSyllables = getNumSyllables();
+		
+		
 	}
 	
 	
@@ -58,7 +64,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-	    return 0;
+		return getTokens("[a-zA-Z]+").size();
 	}
 
 	/**
@@ -72,7 +78,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return getTokens("[^!?.]+").size();
 	}
 
 	/**
@@ -86,7 +92,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return 0;
+        return countSyllables(getText());
 	}
 	
 	// Can be used for testing
