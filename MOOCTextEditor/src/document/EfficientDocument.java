@@ -43,12 +43,45 @@ public class EfficientDocument extends Document {
 		// Words are only strings of letters.  No numbers.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
 		
+		//numWords = 0;
+		//numSentences = 0;
+		
+		int helpCountWords = 0;
+		int HelpCountSentences = 0;
+		
+		for (int i = 0; i<tokens.size(); i++) {
+			
+			System.out.println(tokens.toArray()[i].toString());
+			
+			if (isWord(tokens.toArray()[i].toString())) {
+				
+				helpCountWords += helpCountWords;
+				
+			} else {
+				
+				HelpCountSentences += HelpCountSentences;
+				
+			}
+			
+			numWords = helpCountWords;
+			numSentences = HelpCountSentences;
+		}
+		
+		
+		
+		
+		
+		//numWords = getTokens("[a-zA-Z]+").size();
+		//numSentences = getTokens("[^!?.]+").size();
+		
+		
+		numSyllables = countSyllables(getText());
 		// TODO: Finish this method.  Remember the countSyllables method from 
 		// Document.  That will come in handy here.
 		
-		numWords = getNumWords();
-		numSentences = getNumSentences();
-		numSyllables = getNumSyllables();
+		//numWords = getNumWords();    //return getTokens("[a-zA-Z]+").size();
+		//numSentences = getNumSentences(); //getTokens("[^!?.]+").size();
+		//numSyllables = getNumSyllables(); //countSyllables(getText());
 		
 		
 	}
@@ -64,7 +97,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumWords() {
 		//TODO: write this method.  Hint: It's simple
-		return getTokens("[a-zA-Z]+").size();
+		return numWords;
 	}
 
 	/**
@@ -78,7 +111,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSentences() {
         //TODO: write this method.  Hint: It's simple
-        return getTokens("[^!?.]+").size();
+        return numSentences;
 	}
 
 	/**
@@ -92,7 +125,7 @@ public class EfficientDocument extends Document {
 	@Override
 	public int getNumSyllables() {
         //TODO: write this method.  Hint: It's simple
-        return countSyllables(getText());
+        return numSyllables;
 	}
 	
 	// Can be used for testing
