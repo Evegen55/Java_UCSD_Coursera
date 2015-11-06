@@ -41,65 +41,31 @@ public class EfficientDocument extends Document {
 	{
 		// Provide this first line in the starter code.  
 		// Words are only strings of letters.  No numbers.
+		// TODO: Finish this method.  Remember the countSyllables method from 
+		// Document.  That will come in handy here.
 		List<String> tokens = getTokens("[!?.]+|[a-zA-Z]+");
-		
-		//numWords = 0;
-		//numSentences = 0;
-		/*
-		int helpCountWords = 0;
-		int HelpCountSentences = 0;
-		
-		for (int i = 0; i<tokens.size(); i++) {
-			
-			System.out.println(tokens.toArray()[i].toString());
-			
-			if (isWord(tokens.toArray()[i].toString())) {
-				
-				helpCountWords += helpCountWords;
-				
-			} else {
-				
-				HelpCountSentences += HelpCountSentences;
-				
-			}
-			
-			numWords = helpCountWords;
-			numSentences = HelpCountSentences;
-		}
-		*/ 
 		// This solution from user https://gist.github.com/Luckygirlllll
         String lastStr="";
 		
-		for (String str: tokens)
-		{
-			if(isWord(str))
-		{
-		numWords++;
-		//numSyllables+=countSyllables(str);
+		for (String str: tokens) {
 			
-		} else {
+			if(isWord(str))	{
+				
+				numWords++;
+				
+		    } else {
 			numSentences++;
 			lastStr=str;
+		    }
 		}
+		
+		if((tokens.lastIndexOf(lastStr)+1)!=tokens.size()) {
+			numSentences++;
 		}
-	if((tokens.lastIndexOf(lastStr)+1)!=tokens.size()){
-		numSentences++;
-	}
-		
-		
-		
-		
-		//numWords = getTokens("[a-zA-Z]+").size();
-		//numSentences = getTokens("[^!?.]+").size();
-		
 		
 		numSyllables = countSyllables(getText());
-		// TODO: Finish this method.  Remember the countSyllables method from 
-		// Document.  That will come in handy here.
-		
-		//numWords = getNumWords();    //return getTokens("[a-zA-Z]+").size();
-		//numSentences = getNumSentences(); //getTokens("[^!?.]+").size();
-		//numSyllables = getNumSyllables(); //countSyllables(getText());
+
+
 		
 		
 	}

@@ -17,7 +17,7 @@ public class DocumentBenchmarking {
 
 	    // Run each test more than once to get bigger numbers and less noise.
 	    // You can try playing around with this number.
-	    int trials = 100;
+	    int trials = 500;
 
 	    // The text to test on
 	    String textfile = "data/warAndPeace.txt";
@@ -76,7 +76,8 @@ public class DocumentBenchmarking {
 			
 			long estTime = (endTime-startTime)/(10^9);
 			
-			System.out.print("Basic: " + estTime + "\t");
+			//System.out.print("Basic: " + estTime + "\t");
+			System.out.print(estTime + "\t");
 			
 			//4
 			long startTimeSec = System.nanoTime();
@@ -89,7 +90,8 @@ public class DocumentBenchmarking {
 			
 			long estTimeSec = (endTimeSec-startTimeSec)/(10^9);
 			
-			System.out.print("Efficient:" + estTimeSec + "\t" + "\n");
+			//System.out.print("Efficient:" + estTimeSec + "\t" + "\n");
+			System.out.print(estTimeSec + "\t" + "\n");
 			
 		}
 	
