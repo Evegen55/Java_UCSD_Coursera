@@ -45,7 +45,7 @@ public class EfficientDocument extends Document {
 		
 		//numWords = 0;
 		//numSentences = 0;
-		
+		/*
 		int helpCountWords = 0;
 		int HelpCountSentences = 0;
 		
@@ -66,7 +66,25 @@ public class EfficientDocument extends Document {
 			numWords = helpCountWords;
 			numSentences = HelpCountSentences;
 		}
+		*/ 
+		// This solution from user https://gist.github.com/Luckygirlllll
+        String lastStr="";
 		
+		for (String str: tokens)
+		{
+			if(isWord(str))
+		{
+		numWords++;
+		//numSyllables+=countSyllables(str);
+			
+		} else {
+			numSentences++;
+			lastStr=str;
+		}
+		}
+	if((tokens.lastIndexOf(lastStr)+1)!=tokens.size()){
+		numSentences++;
+	}
 		
 		
 		
