@@ -131,10 +131,13 @@ public abstract class Document {
 		double numSentences = getNumSentences();
 		double numSyll = getNumSyllables();
 		
-		double score = 206.835 - 1.015*(numWords/numSentences) - 84.6*(numSyll/numWords);
-		double newDouble = new BigDecimal(score).setScale(1, RoundingMode.UP).doubleValue();
+		//double score = 206.835 - 1.015*(numWords/numSentences) - 84.6*(numSyll/numWords);
+		//double newDouble = new BigDecimal(score).setScale(1, RoundingMode.UP).doubleValue();
 		
-	    return newDouble;
+	    //return newDouble;
+		return 206.835 - 1.015*(numWords/numSentences) - 84.6*(numSyll/numWords);
+		
+		//return new BigDecimal(206.835 - 1.015*(getNumWords()/getNumSentences()) - 84.6*(getNumSyllables()/getNumWords())).setScale(1, RoundingMode.UP).doubleValue();
 	}
 	
 	

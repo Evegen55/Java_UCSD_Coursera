@@ -17,7 +17,7 @@ public class DocumentBenchmarking {
 
 	    // Run each test more than once to get bigger numbers and less noise.
 	    // You can try playing around with this number.
-	    int trials = 5000;
+	    int trials = 100;
 
 	    // The text to test on
 	    String textfile = "data/warAndPeace.txt";
@@ -74,10 +74,10 @@ public class DocumentBenchmarking {
 			}
 			long endTime = System.nanoTime();
 			
-			long estTime = (endTime-startTime)/(10^9);
+			double estTime = ((endTime-startTime)/(Math.pow(10, 8)));
 			
-			//System.out.print("Basic: " + estTime + "\t");
-			System.out.print(estTime + "\t");
+			System.out.print("Basic: " + estTime + "\t");
+			//System.out.print(estTime + "\t");
 			
 			//4
 			long startTimeSec = System.nanoTime();
@@ -88,10 +88,24 @@ public class DocumentBenchmarking {
 			}
 			long endTimeSec = System.nanoTime();
 			
-			long estTimeSec = (endTimeSec-startTimeSec)/(10^9);
+			double estTimeSec = ((endTimeSec-startTimeSec)/(Math.pow(10, 8)));
 			
-			//System.out.print("Efficient:" + estTimeSec + "\t" + "\n");
-			System.out.print(estTimeSec + "\t" + "\n");
+			System.out.print("Efficient: " + estTimeSec + "\t");
+			//System.out.print(estTimeSec + "\t" + "\n");
+			
+			//5
+			long startTimeMOOC = System.nanoTime();
+			
+			for(int i = 0; i<trials; i++) {
+				BasicDocumentMOOC exDocMOOC = new document.BasicDocumentMOOC(textForUsing);
+				exDocMOOC.getFleschScore();
+			}
+			long endTimeMOOC = System.nanoTime();
+			
+			double estTimeMOOC = ((endTimeMOOC-startTimeMOOC)/(Math.pow(10, 8)));
+			
+			System.out.print("by MOOC team: " + estTimeMOOC + "\t" + "\n");
+			
 			
 		}
 	
