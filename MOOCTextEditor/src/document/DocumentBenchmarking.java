@@ -17,7 +17,7 @@ public class DocumentBenchmarking {
 
 	    // Run each test more than once to get bigger numbers and less noise.
 	    // You can try playing around with this number.
-	    int trials = 100;
+	    int trials = 500;
 
 	    // The text to test on
 	    String textfile = "data/warAndPeace.txt";
@@ -64,47 +64,86 @@ public class DocumentBenchmarking {
 			System.out.print(numToCheck + "\t"); 
 			//2
 			String textForUsing = getStringFromFile(textfile, start);
-			//3
+			//Performance for BasicDocument
 			
 			long startTime = System.nanoTime();
 			
 			for(int i = 0; i<trials; i++) {
 				BasicDocument exDoc = new document.BasicDocument(textForUsing);
 				exDoc.getFleschScore();
+				//We can use methods for compare results as seen below:
+				//exDoc.countSyllables(textForUsing);
+				//exDoc.getNumWords();
+				//exDoc.getNumSentences();
+				//exDoc.getNumSyllables();
 			}
 			long endTime = System.nanoTime();
 			
 			double estTime = ((endTime-startTime)/(Math.pow(10, 8)));
 			
-			System.out.print("Basic: " + estTime + "\t");
-			//System.out.print(estTime + "\t");
+			//System.out.print("BasicDocument: " + estTime + "\t");
+			System.out.print(estTime + "\t");
 			
-			//4
+			//Performance for EfficientDocument
 			long startTimeSec = System.nanoTime();
 			
 			for(int i = 0; i<trials; i++) {
 				EfficientDocument exDocSec = new document.EfficientDocument(textForUsing);
 				exDocSec.getFleschScore();
+				//We can use methods for compare results as seen below:
+				//exDocSec.countSyllables(textForUsing);
+				//exDocSec.getNumWords();
+				//exDocSec.getNumSentences();
+				//exDocSec.getNumSyllables();
 			}
 			long endTimeSec = System.nanoTime();
 			
 			double estTimeSec = ((endTimeSec-startTimeSec)/(Math.pow(10, 8)));
 			
-			System.out.print("Efficient: " + estTimeSec + "\t");
+			//System.out.print("EfficientDocument: " + estTimeSec + "\t");
 			//System.out.print(estTimeSec + "\t" + "\n");
+			System.out.print(estTimeSec + "\t");
 			
-			//5
+			//Performance for BasicDocument by MOOC Team
 			long startTimeMOOC = System.nanoTime();
 			
 			for(int i = 0; i<trials; i++) {
 				BasicDocumentMOOC exDocMOOC = new document.BasicDocumentMOOC(textForUsing);
 				exDocMOOC.getFleschScore();
+				//We can use methods for compare results as seen below:
+				//exDocMOOC.(textForUsing);
+				//exDocMOOC.getNumWords();
+				//exDocMOOC.getNumSentences();
+				//exDocMOOC.getNumSyllables();
 			}
 			long endTimeMOOC = System.nanoTime();
 			
 			double estTimeMOOC = ((endTimeMOOC-startTimeMOOC)/(Math.pow(10, 8)));
 			
-			System.out.print("by MOOC team: " + estTimeMOOC + "\t" + "\n");
+			//System.out.print("BasicDocument by MOOC team: " + estTimeMOOC + "\t" + "\n");
+			//System.out.print("BasicDocument by MOOC team: " + estTimeMOOC + "\t");
+			System.out.print(estTimeMOOC + "\t");
+			
+			
+			//Performance for EfficientDocument by MOOC Team
+			long startTimeMOOCEff = System.nanoTime();
+			
+			for(int i = 0; i<trials; i++) {
+				EfficientDocumentMOOC exDocMOOCEff = new document.EfficientDocumentMOOC(textForUsing);
+				exDocMOOCEff.getFleschScore();
+				//We can use methods for compare results as seen below:
+				//exDocMOOCEff.(textForUsing);
+				//exDocMOOCEff.getNumWords();
+				//exDocMOOCEff.getNumSentences();
+				//exDocMOOCEff.getNumSyllables();
+			}
+			long endTimeMOOCEff = System.nanoTime();
+			
+			double estTimeMOOCEff = ((endTimeMOOCEff-startTimeMOOCEff)/(Math.pow(10, 8)));
+			
+			//System.out.print("EfficientDocument by MOOC team: " + estTimeMOOCEff + "\t" + "\n");
+			System.out.print(estTimeMOOCEff + "\t" + "\n");
+			
 			
 			
 		}

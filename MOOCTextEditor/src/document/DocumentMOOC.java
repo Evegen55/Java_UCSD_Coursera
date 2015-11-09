@@ -77,7 +77,7 @@ public abstract class DocumentMOOC {
 	 * @param sentences The expected number of sentences
 	 * @return true if the test case passed.  False otherwise.
 	 */
-	public static boolean testCaseMOOC(BasicDocumentMOOC basicDocumentMOOC, int syllables, int words, int sentences)
+	public static boolean testCaseMOOC(DocumentMOOC basicDocumentMOOC, int syllables, int words, int sentences)
 	{
 		System.out.println("Testing text: ");
 		System.out.print(basicDocumentMOOC.getText() + "\n....");
