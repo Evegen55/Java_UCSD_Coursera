@@ -96,5 +96,23 @@ class LLNode<E>
 		this.prev = null;
 		this.next = null;
 	}
+	//I don't know exactly why but...
+	public LLNode(E e, LLNode<E> nextNode) {
+		this.data = e;
+		this.next = nextNode;
+	} 
+	//I don't know exactly why but...
+	public LLNode(E e, LLNode<E> nextNode, LLNode<E> prevNode) {
+		this.data = e;
+		this.next = nextNode;
+		this.prev = prevNode;
+	} 
+    // display ourself
+	public void displayNode()
+    {
+    System.out.print("{" + "\t");
+    System.out.print(data.toString());
+    System.out.print("\t" + "}");
+    }
 
 }
