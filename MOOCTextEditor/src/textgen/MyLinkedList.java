@@ -55,6 +55,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		// TODO: Implement this method.
 
 		LLNode<E> searchNode = recFindIndex(index, head, tail);
+		
 		if (size == 0) {
 			
 			throw new IndexOutOfBoundsException ("Warning! You've just tried to get null object");
@@ -110,7 +111,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	}
 
 	
-	//helper method for searching by index
+	//helper method for searching by index - оепедекюрэ!!!!! рпх назейрю хлечр мскебни хмдейя - HEAD, HEAD.NEXTNODE х янаярбеммн мскебни сгек
+	//хяйюрэ я йнмжю!!!
+	//опнбепйс мю бшунд гю опедекш хмдейянб - оепемеярх б лернд ADD
 	public LLNode<E> recFindIndex(int searchIndex, LLNode<E> headSearch, LLNode<E> tailSearch) {
 		
 		if (searchIndex < headSearch.indexNode || searchIndex > tailSearch.indexNode
@@ -127,7 +130,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			
 		} else if (searchIndex == headSearch.indexNode) {
 			
-			return headSearch;
+			return headSearch.nextNode;
 			
 		} else {
 			
@@ -167,7 +170,7 @@ class LLNode<E>
 	public LLNode(E e, LLNode<E> prevNode) {
 		
 		
-		this.data = e;
+		this(e);
 		//for SingleLinkedList
 		this.nextNode = prevNode.nextNode;
 		prevNode.nextNode = this;
