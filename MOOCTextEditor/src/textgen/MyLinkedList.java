@@ -17,6 +17,13 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	/** Create a new empty LinkedList */
 	public MyLinkedList() {
 		// TODO: Implement this method
+		head = new LLNode<E>(null);
+		tail = new LLNode<E>(null);
+		head.nextNode = tail;
+		tail.prevNode = head;
+		//this.head = new LLNode<E>(null);
+		//this.tail = new LLNode<E>(null);
+		size = 0;
 	}
 
 	/**
@@ -26,7 +33,16 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public boolean add(E element ) 
 	{
 		// TODO: Implement this method
-		return false;
+		if(element == null) {
+			throw new NullPointerException ("Warning! You've just tried to add null object");
+		}
+		
+		//this.tail = head;
+		
+		this.tail = new LLNode<E>(element, tail);
+		this.tail.indexNode++;
+		size++;
+		return true;
 	}
 
 	/** Get the element at position index 
@@ -34,6 +50,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E get(int index) 
 	{
 		// TODO: Implement this method.
+		
+		
+		
 		return null;
 	}
 
@@ -52,7 +71,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public int size() 
 	{
 		// TODO: Implement this method
-		return -1;
+		//return -1;
+		return size;
 	}
 
 	/** Remove a node at the specified index and return its data element.
@@ -81,37 +101,54 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	}   
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 class LLNode<E> 
 {
-	LLNode<E> prev;
-	LLNode<E> next;
+	LLNode<E> prevNode;
+	LLNode<E> nextNode;
 	E data;
+	int indexNode;
 
 	// TODO: Add any other methods you think are useful here
 	// E.g. you might want to add another constructor
-
+	public LLNode() 
+	{
+		this.prevNode = null;
+		this.nextNode = null;
+		//indexNode++;
+	}
 	public LLNode(E e) 
 	{
 		this.data = e;
-		this.prev = null;
-		this.next = null;
+		this.prevNode = null;
+		this.nextNode = null;
+		//this.indexNode++;
 	}
 	//I don't know exactly why but...
-	public LLNode(E e, LLNode<E> nextNode) {
+	public LLNode(E e, LLNode<E> prevNode) {
 		this.data = e;
-		this.next = nextNode;
+		//for SingleLinkedList
+		this.nextNode = prevNode.nextNode;
+		prevNode.nextNode = this;
+		//for DoublyLinkedList
+		this.prevNode = prevNode;
+		//this.indexNode++;
+		
 	} 
+	/*
 	//I don't know exactly why but...
 	public LLNode(E e, LLNode<E> nextNode, LLNode<E> prevNode) {
 		this.data = e;
-		this.next = nextNode;
-		this.prev = prevNode;
+		this.nextNode = nextNode;
+		this.prevNode = prevNode;
 	} 
+	*/
     // display ourself
 	public void displayNode()
     {
     System.out.print("{" + "\t");
-    System.out.print(data.toString());
+    System.out.print(data.toString() + "at index" + indexNode);
     System.out.print("\t" + "}");
     }
 
