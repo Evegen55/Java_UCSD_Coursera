@@ -113,9 +113,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	//helper method for searching by index
 	public LLNode<E> recFindIndex(int searchIndex, LLNode<E> headSearch, LLNode<E> tailSearch) {
 		
-		if (searchIndex < headSearch.indexNode || searchIndex > tailSearch.indexNode || 
+		if (searchIndex < headSearch.indexNode || searchIndex > tailSearch.indexNode
 				
-				headSearch == null || tailSearch == null
+				|| headSearch == null || tailSearch == null
 				
 				) {
 			
