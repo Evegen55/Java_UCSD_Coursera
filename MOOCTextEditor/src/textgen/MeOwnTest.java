@@ -12,12 +12,12 @@ public class MeOwnTest {
 		myOwnList.add("String#4");
 		myOwnList.add("String#5");
 		
-		int indexOfTail = myOwnList.tail.indexNode;
-		int indexOfhead = myOwnList.head.indexNode;
+		//String indexOfTail = myOwnList.get(1);
+		//int indexOfhead = myOwnList.head.indexNode;
 		
 		System.out.println("size" + "\t" + myOwnList.size());
-		System.out.println("index of tail" + "\t" + indexOfTail);
-		System.out.println("index of head" + "\t" + indexOfhead);
+		//System.out.println("index of tail" + "\t" + indexOfTail);
+		//System.out.println("index of head" + "\t" + indexOfhead);
 		
 		System.out.print("content of tail" + "\t");
         myOwnList.tail.displayNode();

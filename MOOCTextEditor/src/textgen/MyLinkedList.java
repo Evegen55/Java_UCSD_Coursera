@@ -13,6 +13,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	LLNode<E> head;
 	LLNode<E> tail;
 	int size;
+	
+	int indexOfNode=  this.indexOf(this.tail);  
+	//this.indexOfNode =  this.indexOf(this.tail);
 
 	/** Create a new empty LinkedList */
 	public MyLinkedList() {
@@ -36,11 +39,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		if(element == null) {
 			throw new NullPointerException ("Warning! You've just tried to add null object");
 		}
-		
-		//this.tail = head;
-		
 		this.tail = new LLNode<E>(element, tail);
-		this.tail.indexNode++;
+		
+		indexOfNode++;               System.out.println("indexOfNode" + "\t" + this.indexOfNode);
+		
 		size++;
 		return true;
 	}
@@ -64,6 +66,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public void add(int index, E element ) 
 	{
 		// TODO: Implement this method
+		LLNode<E> addingNode = new LLNode<E>(element);
+		//add(index,addingNode);
+		
+		
 	}
 
 
@@ -108,7 +114,7 @@ class LLNode<E>
 	LLNode<E> prevNode;
 	LLNode<E> nextNode;
 	E data;
-	int indexNode;
+	//int indexNode;
 
 	// TODO: Add any other methods you think are useful here
 	// E.g. you might want to add another constructor
@@ -148,7 +154,7 @@ class LLNode<E>
 	public void displayNode()
     {
     System.out.print("{" + "\t");
-    System.out.print(data.toString() + "at index" + indexNode);
+    System.out.print(data.toString() + "\t" + "at index");
     System.out.print("\t" + "}");
     }
 
