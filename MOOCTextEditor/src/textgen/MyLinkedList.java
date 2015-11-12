@@ -102,12 +102,17 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E remove(int index)
 	{
 		// TODO: Implement this method
-		LLNode<E> searched= recFindIndex(index,this.tail);
+		recDecrIndexes(index+1,tail);
+		LLNode<E> deletedNode= recFindIndex(index,this.tail).prevNode;
+        E deletedData = deletedNode.data;
 		
+		LLNode<E> deletedNodeNext= deletedNode.nextNode;
+		LLNode<E> deletedNodePrev= deletedNode.prevNode;
+		deletedNodeNext.prevNode = deletedNodePrev;
+		deletedNodePrev.nextNode = deletedNodeNext;
+		size--;
 		
-		
-		
-		return searched.data;
+		return deletedData;
 	}
 
 	/**
@@ -120,7 +125,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E set(int index, E element)
 	{
 		// TODO: Implement this method
-		return null;
+		LLNode<E> settedNode= recFindIndex(index,this.tail);
+		E deletedData = settedNode.data;
+		settedNode.data = element;
+		
+		
+		return deletedData;
 	}
 
 	
@@ -157,10 +167,10 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		}
 	}
 	//helper method for addition indexes after addition an element at index
-	public void recIncrIndexes(int edgeLeftIndex, LLNode<E> tailSearch) {
+	public void recDecrIndexes(int edgeLeftIndex, LLNode<E> tailSearch) {
 		
-		for (int i = tailSearch.indexNode; i >= tailSearch.indexNode-edgeLeftIndex; i--) {
-			recFindIndex(i, tailSearch).indexNode--;
+		for (int i = 0; i <= tailSearch.indexNode-edgeLeftIndex; i++) {
+			recFindIndex(edgeLeftIndex+i, tailSearch).indexNode--;
 		}
 	}
 

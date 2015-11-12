@@ -162,6 +162,28 @@ public class MeOwnTest {
 		System.out.println("getting an Element at index 7" + "\t" + myOwnListSingle.get(7));
 		System.out.println("getting an Element at index 8" + "\t" + myOwnListSingle.get(8));
 		System.out.println("getting an Element at index 9" + "\t" + myOwnListSingle.get(9));
+		
+		
+		System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        System.out.println();
+		myOwnListSingle.remove(6);
+		System.out.println("size" + "\t" + myOwnListSingle.size());
+		System.out.println("index of tail" + "\t" + myOwnListSingle.tail.indexNode);
+		System.out.println("index of head" + "\t" + myOwnListSingle.head.indexNode);
+		System.out.println("getting an Element at index 0" + "\t" + myOwnListSingle.get(0));
+		System.out.println("getting an Element at index 1" + "\t" + myOwnListSingle.get(1));
+		System.out.println("getting an Element at index 2" + "\t" + myOwnListSingle.get(2));
+		System.out.println("getting an Element at index 3" + "\t" + myOwnListSingle.get(3));
+		System.out.println("getting an Element at index 4" + "\t" + myOwnListSingle.get(4));
+		System.out.println("getting an Element at index 5" + "\t" + myOwnListSingle.get(5));
+		System.out.println("getting an Element at index 6" + "\t" + myOwnListSingle.get(6));
+		System.out.println("getting an Element at index 7" + "\t" + myOwnListSingle.get(7));
+	    System.out.println("getting an Element at index 8" + "\t" + myOwnListSingle.get(8));
+		
 	}
 
 }
