@@ -41,7 +41,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		}
 		this.tail = new LLNode<E>(element, tail);
 		
-		indexOfNode++;                                                                         System.out.println("indexOfNodeInside" + "\t" + this.indexOfNode);
+		indexOfNode++;                                                                                //System.out.println("indexOfNodeInside" + "\t" + this.indexOfNode);
 		this.tail.indexNode = indexOfNode;
 		this.tail.data = element;
 		size++;
@@ -53,18 +53,20 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E get(int index)
 	{
 		// TODO: Implement this method.
-
 		LLNode<E> searchNode = recFindIndex(index,tail);
-		
 		if (size == 0) {
-			
 			throw new IndexOutOfBoundsException ("Warning! You've just tried to get null object");
-			
 		}
-
 		return searchNode.data;
 	}
-
+	/** Return the size of the list */
+	public int size()
+	{
+		// TODO: Implement this method
+		return size;
+	}
+	
+	
 	/**
 	 * Add an element to the list at the specified index
 	 * @param The index where the element should be added
@@ -74,17 +76,23 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODO: Implement this method
 		
+		if (index < this.tail.indexNode) {
+			LLNode<E> searched= recFindIndex(index,this.tail);
+			LLNode<E> beforeSearched= recFindIndex(index,this.tail).prevNode;
+			LLNode<E> pastedNode = new LLNode<E> (element, beforeSearched);
+			pastedNode.indexNode = index;
+			pastedNode.prevNode = beforeSearched;
+			pastedNode.nextNode = searched;
+			beforeSearched.nextNode = pastedNode;
+			searched.prevNode = pastedNode;
+			size++;
+			recAddIndexes(index,tail);
+		} else {
+			add (element);
+		}
+		
+		
 	}
-
-
-	/** Return the size of the list */
-	public int size()
-	{
-		// TODO: Implement this method
-		//return -1;
-		return size;
-	}
-
 	/** Remove a node at the specified index and return its data element.
 	 * @param index The index of the element to remove
 	 * @return The data element removed
@@ -94,7 +102,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E remove(int index)
 	{
 		// TODO: Implement this method
-		return null;
+		LLNode<E> searched= recFindIndex(index,this.tail);
+		
+		
+		
+		
+		return searched.data;
 	}
 
 	/**
@@ -111,12 +124,13 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	}
 
 	
-	//helper method for searching by index - оепедекюрэ!!!!! рпх назейрю хлечр мскебни хмдейя - HEAD, HEAD.NEXTNODE х янаярбеммн мскебни сгек
-	//хяйюрэ я йнмжю!!!
-	//опнбепйс мю бшунд гю опедекш хмдейянб - оепемеярх б лернд ADD
+	//helper method for searching by index - search
 	public LLNode<E> recFindIndex(int searchIndex,LLNode<E> tailSearch) {
 		
-		if (searchIndex < 0 || searchIndex > tailSearch.indexNode
+		if (
+				searchIndex < 0 
+				
+				|| searchIndex > tailSearch.indexNode
 				
 				|| tailSearch == null
 				
@@ -128,19 +142,27 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			
 			return tailSearch;
 			
-		} //else if (searchIndex == headSearch.indexNode) {
-			
-			//return headSearch.nextNode;
-			
-		//}
-	        else {
+		}  else {
 			
 			return recFindIndex (searchIndex, tailSearch.prevNode);
 			
 		}
 
 	}
-
+	//helper method for addition indexes after addition an element at index
+	public void recAddIndexes(int edgeLeftIndex, LLNode<E> tailSearch) {
+		
+		for (int i = tailSearch.indexNode; i >= edgeLeftIndex; i--) {
+			recFindIndex(i, tailSearch).indexNode++;
+		}
+	}
+	//helper method for addition indexes after addition an element at index
+	public void recIncrIndexes(int edgeLeftIndex, LLNode<E> tailSearch) {
+		
+		for (int i = tailSearch.indexNode; i >= tailSearch.indexNode-edgeLeftIndex; i--) {
+			recFindIndex(i, tailSearch).indexNode--;
+		}
+	}
 
 }
 
