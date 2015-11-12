@@ -124,6 +124,9 @@ public class MyLinkedListTester {
 	public void testAddEnd()
 	{
         // TODO: implement this test
+		int s = shortList.size();
+		shortList.add(s-1, "YYY");
+		assertEquals("Remove: check a is correct ", "YYY", shortList.get(2));
 		
 	}
 
@@ -133,6 +136,10 @@ public class MyLinkedListTester {
 	public void testSize()
 	{
 		// TODO: implement this test
+	    int s = shortList.size();
+	    int l = list1.size();
+		assertEquals("Size: check a is correct ", 2, s);
+		assertEquals("Size: check a is correct ", 3, l);
 	}
 
 	
@@ -146,6 +153,20 @@ public class MyLinkedListTester {
 	{
         // TODO: implement this test
 		
+		list1.add(2, 5559);
+		list1.add(3, 6669);
+		int l = list1.size();
+		
+		assertEquals("Size: check a is correct ", 5, l);
+		assertEquals("AddAtIndex: check element 4 is correct ", (Integer)6669, list1.get(4));
+		
+		//System.out.println("getting an Element at index 0" + "\t" + list1.get(0));
+		//System.out.println("getting an Element at index 1" + "\t" + list1.get(1));
+		//System.out.println("getting an Element at index 2" + "\t" + list1.get(2));
+		//System.out.println("getting an Element at index 3" + "\t" + list1.get(3));
+		//System.out.println("getting an Element at index 4" + "\t" + list1.get(4));
+		
+		
 	}
 	
 	/** Test setting an element in the list */
@@ -153,7 +174,10 @@ public class MyLinkedListTester {
 	public void testSet()
 	{
 	    // TODO: implement this test
-	    
+	    list1.set(1, 123459);
+	    assertEquals("Set: check a is correct ", (Integer)123459, list1.get(1));
+	    shortList.set(1, "XXX");
+	    assertEquals("Set: check a is correct ", "XXX", shortList.get(1));
 	}
 	
 	

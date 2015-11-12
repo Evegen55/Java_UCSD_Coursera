@@ -13,14 +13,14 @@ public class MyLinkedListGrader {
 		LLNode<Integer> curr;
                 String ret = "";
 		if (lst.head.data == null)
-			curr = lst.head.nextNode;
+			curr = lst.head.next;
 		else
 			curr = lst.head;
 		
 		while (curr != null && curr.data != null)
 		{
 			ret += curr.data;
-			curr = curr.nextNode;
+			curr = curr.next;
 		}
                 return ret;
 	}
@@ -29,13 +29,13 @@ public class MyLinkedListGrader {
 		LLNode<Integer> curr;
                 String ret = "";
 		if (lst.tail.data == null)
-			curr = lst.tail.prevNode;
+			curr = lst.tail.prev;
 		else
 			curr = lst.tail;
 		while (curr != null && curr.data != null)
 		{
 		        ret += curr.data;
-			curr = curr.prevNode;
+			curr = curr.prev;
 		}
                 return ret;
 	}

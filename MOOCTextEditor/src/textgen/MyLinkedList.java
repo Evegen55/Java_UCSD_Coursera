@@ -22,8 +22,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		// TODO: Implement this method
 		head = new LLNode<E>(null);
 		tail = new LLNode<E>(null);
-		head.nextNode = tail;
-		tail.prevNode = head;
+		head.next = tail;
+		tail.prev = head;
 		//this.head = new LLNode<E>(null);
 		//this.tail = new LLNode<E>(null);
 		size = 0;
@@ -40,11 +40,12 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			throw new NullPointerException ("Warning! You've just tried to add null object");
 		}
 		this.tail = new LLNode<E>(element, tail);
-		
 		indexOfNode++;                                                                                //System.out.println("indexOfNodeInside" + "\t" + this.indexOfNode);
 		this.tail.indexNode = indexOfNode;
 		this.tail.data = element;
 		size++;
+		
+		
 		return true;
 	}
 
@@ -78,16 +79,23 @@ public class MyLinkedList<E> extends AbstractList<E> {
 		
 		if (index < this.tail.indexNode) {
 			LLNode<E> searched= recFindIndex(index,this.tail);
-			LLNode<E> beforeSearched= recFindIndex(index,this.tail).prevNode;
+			LLNode<E> beforeSearched= recFindIndex(index,this.tail).prev;
 			LLNode<E> pastedNode = new LLNode<E> (element, beforeSearched);
 			pastedNode.indexNode = index;
-			pastedNode.prevNode = beforeSearched;
-			pastedNode.nextNode = searched;
-			beforeSearched.nextNode = pastedNode;
-			searched.prevNode = pastedNode;
+			pastedNode.prev = beforeSearched;
+			pastedNode.next = searched;
+			beforeSearched.next = pastedNode;
+			searched.prev = pastedNode;
 			size++;
 			recAddIndexes(index,tail);
-		} else {
+		} else if (index > size) {
+			
+			throw new IndexOutOfBoundsException ("IndexOutOfBoundsException");
+		}
+		
+		
+		
+		else {
 			add (element);
 		}
 		
@@ -103,13 +111,13 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODO: Implement this method
 		recDecrIndexes(index+1,tail);
-		LLNode<E> deletedNode= recFindIndex(index,this.tail).prevNode;
+		LLNode<E> deletedNode= recFindIndex(index,this.tail).prev;
         E deletedData = deletedNode.data;
 		
-		LLNode<E> deletedNodeNext= deletedNode.nextNode;
-		LLNode<E> deletedNodePrev= deletedNode.prevNode;
-		deletedNodeNext.prevNode = deletedNodePrev;
-		deletedNodePrev.nextNode = deletedNodeNext;
+		LLNode<E> deletedNodeNext= deletedNode.next;
+		LLNode<E> deletedNodePrev= deletedNode.prev;
+		deletedNodeNext.prev = deletedNodePrev;
+		deletedNodePrev.next = deletedNodeNext;
 		size--;
 		
 		return deletedData;
@@ -125,6 +133,9 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	public E set(int index, E element)
 	{
 		// TODO: Implement this method
+		if (element == null) {
+			throw new NullPointerException();
+		}
 		LLNode<E> settedNode= recFindIndex(index,this.tail);
 		E deletedData = settedNode.data;
 		settedNode.data = element;
@@ -154,7 +165,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			
 		}  else {
 			
-			return recFindIndex (searchIndex, tailSearch.prevNode);
+			return recFindIndex (searchIndex, tailSearch.prev);
 			
 		}
 
@@ -180,8 +191,8 @@ public class MyLinkedList<E> extends AbstractList<E> {
 
 class LLNode<E>
 {
-	LLNode<E> prevNode;
-	LLNode<E> nextNode;
+	LLNode<E> prev;
+	LLNode<E> next;
 	E data;
 	int indexNode;
 
@@ -189,15 +200,15 @@ class LLNode<E>
 	// E.g. you might want to add another constructor
 	public LLNode()
 	{
-		this.prevNode = null;
-		this.nextNode = null;
+		this.prev = null;
+		this.next = null;
 		
 	}
 	public LLNode(E e)
 	{
 		this.data = e;
-		this.prevNode = null;
-		this.nextNode = null;
+		this.prev = null;
+		this.next = null;
 	}
 	//I don't know exactly why but...
 	public LLNode(E e, LLNode<E> prevNode) {
@@ -205,10 +216,10 @@ class LLNode<E>
 		
 		this(e);
 		//for SingleLinkedList
-		this.nextNode = prevNode.nextNode;
-		prevNode.nextNode = this;
+		this.next = prevNode.next;
+		prevNode.next = this;
 		//for DoublyLinkedList
-		this.prevNode = prevNode;
+		this.prev = prevNode;
 		
 	}
 	/*
