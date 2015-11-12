@@ -26,9 +26,9 @@ public class MeOwnTest {
         //System.out.print("content of head" + "\t");
         //myOwnList.head.displayNode();
         
-        LLNode<String> searchNode_0 = myOwnList.recFindIndex(0, myOwnList.head, myOwnList.tail);
-        LLNode<String> searchNode_1 = myOwnList.recFindIndex(1, myOwnList.head, myOwnList.tail);
-        LLNode<String> searchNode_2 = myOwnList.recFindIndex(2, myOwnList.head, myOwnList.tail);
+        LLNode<String> searchNode_0 = myOwnList.recFindIndex(0, myOwnList.tail);
+        LLNode<String> searchNode_1 = myOwnList.recFindIndex(1, myOwnList.tail);
+        LLNode<String> searchNode_2 = myOwnList.recFindIndex(2, myOwnList.tail);
         //LLNode<String> searchNode_5 = myOwnList.recFindIndex(5, myOwnList.head, myOwnList.tail);
         
         System.out.println();

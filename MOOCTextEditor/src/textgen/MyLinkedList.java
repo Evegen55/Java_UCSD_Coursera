@@ -54,7 +54,7 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	{
 		// TODO: Implement this method.
 
-		LLNode<E> searchNode = recFindIndex(index, head, tail);
+		LLNode<E> searchNode = recFindIndex(index,tail);
 		
 		if (size == 0) {
 			
@@ -114,11 +114,11 @@ public class MyLinkedList<E> extends AbstractList<E> {
 	//helper method for searching by index - оепедекюрэ!!!!! рпх назейрю хлечр мскебни хмдейя - HEAD, HEAD.NEXTNODE х янаярбеммн мскебни сгек
 	//хяйюрэ я йнмжю!!!
 	//опнбепйс мю бшунд гю опедекш хмдейянб - оепемеярх б лернд ADD
-	public LLNode<E> recFindIndex(int searchIndex, LLNode<E> headSearch, LLNode<E> tailSearch) {
+	public LLNode<E> recFindIndex(int searchIndex,LLNode<E> tailSearch) {
 		
-		if (searchIndex < headSearch.indexNode || searchIndex > tailSearch.indexNode
+		if (searchIndex < 0 || searchIndex > tailSearch.indexNode
 				
-				|| headSearch == null || tailSearch == null
+				|| tailSearch == null
 				
 				) {
 			
@@ -128,13 +128,14 @@ public class MyLinkedList<E> extends AbstractList<E> {
 			
 			return tailSearch;
 			
-		} else if (searchIndex == headSearch.indexNode) {
+		} //else if (searchIndex == headSearch.indexNode) {
 			
-			return headSearch.nextNode;
+			//return headSearch.nextNode;
 			
-		} else {
+		//}
+	        else {
 			
-			return recFindIndex (searchIndex, headSearch.nextNode, tailSearch.prevNode);
+			return recFindIndex (searchIndex, tailSearch.prevNode);
 			
 		}
 
