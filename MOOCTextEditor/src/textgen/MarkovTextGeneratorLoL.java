@@ -1,9 +1,12 @@
 package textgen;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** 
  * An implementation of the MTG interface that uses a list of lists.
@@ -20,6 +23,8 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	// The random number generator
 	private Random rnGenerator;
 	
+	private String text;
+	
 	public MarkovTextGeneratorLoL(Random generator)
 	{
 		wordList = new LinkedList<ListNode>();
@@ -33,6 +38,43 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	public void train(String sourceText)
 	{
 		// TODO: Implement this method
+		//#set starter to be an empty String ""
+		starter = "";
+		
+		//#for each word w in the source text
+		
+		text = sourceText;
+		
+		List<String> tokens = getTokens("[a-zA-Z]+");
+		
+		for (String w:tokens) {
+			
+			/*
+			 * check to see if "starter" is already a node in the list 
+			 * if "starter" is a node in the list 
+			 * add w as a nextWord to the "starter" node 
+			 * else
+			 *  add a node to the list with "starter" as the node's word 
+			 *  add w as a nextWord to the "starter" node 
+			 *  set starter = w 
+			 *  add "" to be a next word for the last word in the source text.
+			 *  
+			 *  
+			 *  First, check to see if you understand how this algorithm works. 
+			 *  You'll be going through the text keeping track of the previous word you saw ("starter")
+			 *  and the current word. You'll then want to add this current word to the list of words 
+			 *  which follow the previous word. It's okay to add a word multiple times 
+			 *  to the list of words which follow - we'll use this to help with our text 
+			 *  generation (words appearing more than once should be more likely to occur).
+			 */
+			
+		}
+		
+		
+		
+		
+		
+		
 	}
 	
 	/** 
@@ -66,6 +108,20 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	
 	// TODO: Add any private helper methods you need here.
 	
+	//hepler method#1 for getting words
+	
+	private List<String> getTokens(String pattern)
+	{
+		ArrayList<String> tokens = new ArrayList<String>();
+		Pattern tokSplitter = Pattern.compile(pattern);
+		Matcher m = tokSplitter.matcher(text);
+		
+		while (m.find()) {
+			tokens.add(m.group());
+		}
+		
+		return tokens;
+	}
 	
 	/**
 	 * This is a minimal set of tests.  Note that it can be difficult
@@ -112,7 +168,7 @@ public class MarkovTextGeneratorLoL implements MarkovTextGenerator {
 	}
 
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 /** Links a word to the next words in the list 
  * You should use this class in your implementation. */
 class ListNode
@@ -144,6 +200,9 @@ class ListNode
 		// TODO: Implement this method
 	    // The random number generator should be passed from 
 	    // the MarkovTextGeneratorLoL class
+		
+		
+		
 	    return null;
 	}
 
