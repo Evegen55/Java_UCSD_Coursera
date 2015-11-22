@@ -41,7 +41,7 @@ public class DictionaryLL implements Dictionary
     public int size()
     {
         // TODO: Implement this method
-    	System.out.println(dict.size());
+    	//System.out.println(dict.size());
         return dict.size();
     }
 
