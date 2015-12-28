@@ -122,11 +122,13 @@ public abstract class Graph {
 	 */
 	public List<Integer> degreeSequence() {
 		// XXX: Implement in part 1 of week 1
-		ArrayList<Integer> seq = new ArrayList<Integer>();
+		List<Integer> seq = new ArrayList<Integer>();
+		
 		for (int i=0; i < getNumVertices(); i++ ) {
-			seq.add(getNeighbors(i).size());
+			seq.add(getNeighbors(i).size()+getInNeighbors(i).size());
 		}
 		Collections.sort(seq);
+		Collections.reverse(seq);
 		return seq;
 	}
 	
@@ -266,8 +268,16 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
-
 		
+		
+		GraphAdjList graphFromFileMy = new GraphAdjList();
+		GraphLoader.loadRoutes("data/airports/routesUA.dat", graphFromFileMy);
+		System.out.println("/////");
+		List<Integer> lst = graphFromFileMy.getDistance2(2);
+		System.out.println("/---------");
+		System.out.println(graphFromFileMy);
+		System.out.println("/---------");
+		System.out.println(lst);
+
 	}
 }

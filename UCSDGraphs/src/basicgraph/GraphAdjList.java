@@ -4,15 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
-/** A class that implements a directed graph. 
- * The graph may have self-loops, parallel edges. 
+/** A class that implements a directed graph.
+ * The graph may have self-loops, parallel edges.
  * Vertices are labeled by integers 0 .. n-1
  * and may also have String labels.
  * The edges of the graph are not labeled.
  * Representation of edges via adjacency lists.
- * 
+ *
  * @author UCSD MOOC development team and YOU
  *
  */
@@ -20,16 +21,17 @@ public class GraphAdjList extends Graph {
 
 
 	private Map<Integer,ArrayList<Integer>> adjListsMap;
-	
-	/** 
+
+	/**
 	 * Create a new empty Graph
 	 */
 	public GraphAdjList () {
 		adjListsMap = new HashMap<Integer,ArrayList<Integer>>();
+
 	}
 
-	/** 
-	 * Implement the abstract method for adding a vertex. 
+	/**
+	 * Implement the abstract method for adding a vertex.
 	 */
 	public void implementAddVertex() {
 		int v = getNumVertices();
@@ -37,45 +39,45 @@ public class GraphAdjList extends Graph {
 		ArrayList<Integer> neighbors = new ArrayList<Integer>();
 		adjListsMap.put(v,  neighbors);
 	}
-	
-	/** 
+
+	/**
 	 * Implement the abstract method for adding an edge.
 	 * @param v the index of the start point for the edge.
-	 * @param w the index of the end point for the edge.  
+	 * @param w the index of the end point for the edge.
 	 */
 	public void implementAddEdge(int v, int w) {
 		(adjListsMap.get(v)).add(w);
 
 	}
-	
-	/** 
-	 * Implement the abstract method for finding all 
+
+	/**
+	 * Implement the abstract method for finding all
 	 * out-neighbors of a vertex.
 	 * If there are multiple edges between the vertex
 	 * and one of its out-neighbors, this neighbor
 	 * appears once in the list for each of these edges.
-	 * 
+	 *
 	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */	
+	 * @return List<Integer> a list of indices of vertices.
+	 */
 	public List<Integer> getNeighbors(int v) {
 		return new ArrayList<Integer>(adjListsMap.get(v));
 	}
 
-	/** 
-	 * Implement the abstract method for finding all 
+	/**
+	 * Implement the abstract method for finding all
 	 * in-neighbors of a vertex.
 	 * If there are multiple edges from another vertex
 	 * to this one, the neighbor
 	 * appears once in the list for each of these edges.
-	 * 
+	 *
 	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */	
+	 * @return List<Integer> a list of indices of vertices.
+	 */
 	public List<Integer> getInNeighbors(int v) {
 		List<Integer> inNeighbors = new ArrayList<Integer>();
 		for (int u : adjListsMap.keySet()) {
-			//iterate through all edges in u's adjacency list and 
+			//iterate through all edges in u's adjacency list and
 			//add u to the inNeighbor list of v whenever an edge
 			//with startpoint u has endpoint v.
 			for (int w : adjListsMap.get(u)) {
@@ -86,20 +88,65 @@ public class GraphAdjList extends Graph {
 		}
 		return inNeighbors;
 	}
-	 
 
-	/** 
-	 * Implement the abstract method for finding all 
+
+	/**
+	 * Implement the abstract method for finding all
 	 * vertices reachable by two hops from v.
-	 * 
+	 *
 	 * @param v the index of vertex.
-	 * @return List<Integer> a list of indices of vertices.  
-	 */		
+	 * @return List<Integer> a list of indices of vertices.
+	 */
 	 public List<Integer> getDistance2(int v) {
+		 
+		 
+		 //---------------------------------------------------
+		 //this is my point of view
 		 // XXX: Implement this method in week 1
-		 return null;
-	}
+		 List<Integer> twoHop = new ArrayList<Integer>();
+		 //take list of neighbors for vertex v
+		 if (v<=adjListsMap.size()) {
+		 ArrayList<Integer> firstList = adjListsMap.get(v);
+		 //and iterate it
+		 for (int i = 0; i < firstList.size(); i++) {
+			 //take neighbours vertexes
+			 int neigVert = firstList.get(i);
+			 //and find their neighbors
+			 ArrayList<Integer> secondList = adjListsMap.get(neigVert);
+			 //loop over it and add to list
+             for (int a = 0; a < secondList.size(); a++) {
+            	 int neigVertSec = secondList.get(a);
+            	 if(!twoHop.contains(neigVertSec)) {
+					 twoHop.add(neigVertSec);
+				 }
+              }
+}
+
+		 } //return twoHop;
+		 
+		 //----------------------------------------------------
+		 //Point of view by iryna.kanivets
+		 
+		 //I guess it the same results
+		 
+		 List <Integer> twoHopIra =new ArrayList <Integer> ();
+		 List <Integer> oneHop =adjListsMap.get(v);
+		 //Loop through oneHop and get the neighbors of each
+		 
+		 for (int i=0; i<oneHop.size();i++ ){
+				 twoHopIra.addAll(getNeighbors(oneHop.get(i)));
+			 if (twoHopIra.contains(adjListsMap.get(v))){
+				twoHopIra.remove(adjListsMap.get(v));
+			 }
+				 //twoHop.add(oneHop.get(i))
+				 } 
+		 
 	
+		 // XXX: Implement this method in week 1
+		 
+		 return twoHop; // or return twoHopIra
+	}
+
 	/**
 	 * Generate string representation of adjacency list
 	 * @return the String

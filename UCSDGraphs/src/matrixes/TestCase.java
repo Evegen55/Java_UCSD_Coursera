@@ -36,7 +36,12 @@ public class TestCase {
                                                    {16,17,18},
                                                    {7,8,125},{}
                                                 };
-                                                
+        int MatrixArrayUCSD [][] = new int [][] {
+                                                    {0,1,1,0},
+                                                    {0,0,0,1},
+                                                    {0,1,0,1},
+                                                    {0,0,0,0}
+                                                 };                                        
         /*System.out.println ("Test Case - Checking Dimensions" + " " + eXample.checkArraysDimension(MatrixArrayFirst,MatrixArraySecond));
         System.out.println ("Test Case - Checking RectangularFirst" + " " + eXample.checkArray (MatrixArrayFirst));
         System.out.println ("Test Case - Checking RectangularSecond" + " " + eXample.checkArray (MatrixArraySecond));
@@ -55,6 +60,8 @@ public class TestCase {
         ModuleForMultiplyMatrix eXampleMult = new ModuleForMultiplyMatrix();
         System.out.println ("Test Case 3 - Multiple Matrix");
         eXampleMult.printMatrixArray(eXampleMult.MultiplyMatrix(MatrixArrayFirst,MatrixArraySecond));
+        System.out.println ("Test Case 4 - USCD Coursera");
+        eXampleMult.printMatrixArray(eXampleMult.MultiplyMatrix(MatrixArrayUCSD,MatrixArrayUCSD));
         //
         
         
