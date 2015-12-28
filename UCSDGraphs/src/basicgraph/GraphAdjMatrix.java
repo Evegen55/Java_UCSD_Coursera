@@ -108,7 +108,17 @@ public class GraphAdjMatrix extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */	
 	public List<Integer> getDistance2(int v) {
-		return null;
+		int [][] SquareAdjMatrix = MultiplyMatrix(adjMatrix, adjMatrix);
+		
+		List<Integer> twoHop = new ArrayList<Integer>();
+		for (int i = 0; i < getNumVertices(); i ++) {
+			for (int j=0; j< SquareAdjMatrix[v][i]; j++) {
+				
+				twoHop.add(i);
+				
+			}
+		}
+		return twoHop;
 	}
 	
 	/**
@@ -127,6 +137,132 @@ public class GraphAdjMatrix extends Graph {
 		}
 		return s;
 	}
+	
+	//---------------------------------------------------------------------------------------------------------
+	/**
+    *
+    * @param FirstArr
+    * @param SecondArr
+    * @return
+    */
+   public int[][] MultiplyMatrix(int FirstArr[][],int SecondArr[][]) {
+       int lengthArr = getArrayCountRow(FirstArr);
+       int HeightArr = getArrayCountColumn(SecondArr);
+       int MultArr[][]= new int [lengthArr][HeightArr];
+       int countF = 0;
+       int countS = 0;
+       if(
+    		   getArrayCountColumn(FirstArr) == getArrayCountRow(SecondArr) &&
+    		   checkArray(FirstArr) &&
+    		   checkArray(SecondArr)
+    		) {
+    	   for (int k=0; k<getArrayCountRow(FirstArr);k++) {
+               for (int n=0; n<getArrayCountColumn(FirstArr);n++) {
+                   for (int r=0; r<getArrayCountColumn(FirstArr);r++) {
+                       for (int i=0;i<getArrayCountColumn(FirstArr);i++) {
+                           countF = FirstArr[k][r]*SecondArr[r][n];
+                           countS += countF;
+                           break;
+                       }
+                   MultArr[k][n] = countS;
+               }
+               countS = 0;
+               }
+          }
+          }
+        return MultArr;
+    }
+   
+   /**
+    * @param firstArr is an array which has to be check for rectangularity.
+    * @return boolean
+    */
+   public boolean checkArray(int[][] firstArr) {
+      boolean checking = false;
+      for (int i=1;i<firstArr.length;i++) {
+          checking = firstArr[i].length == firstArr[i-1].length;
+       
+       }
+      return checking;    
+   }
+   /**
+    * @param FirstA is a first array which dimension has to be check and compare 
+    * with other array. 
+    * @param SecondA is a second array which has to be check and compare 
+    * with other array.
+    * @return boolean
+    */
+   public boolean checkArraysDimension(int FirstA[][], int SecondA[][])
+   {
+      boolean checking = false;
+      if (
+      checkArray(FirstA) &&
+      checkArray(SecondA) &&
+      FirstA.length == SecondA.length &&
+      FirstA[0].length == SecondA[0].length &&
+      getArrayCountColumn(FirstA)!=-1 &&
+      getArrayCountRow(FirstA)!=-1
+      ) {
+      checking = true;
+      }
+      return checking;
+   }
+   /**
+    * @param is is an  array which has to be printed. 
+    * 
+    */   
+   public void printMatrixArray(int[][] is) {
+   if (checkArray(is)) {
+           for (int [] PrintedArr1 : is) {
+               for (int k = 0; k<is[0].length; k++) {
+                   System.out.print(PrintedArr1[k] + "\t");
+               }
+               System.out.println();
+           }
+        }else {System.out.println("Matrix is not rectangular");} 
+   }
+   /**
+    *
+    * @param firstArr is an array which rows has to be counted
+    * @return amount of rows
+    */
+   public int getArrayCountRow(int[][] firstArr) {
+        int i = 0;
+        if (firstArr.length<=0) {
+           i = -1;
+       }else{i=firstArr.length;}
+       return i;
+   }
+   /**
+    *
+    * @param secondArr is an array which columns has to be counted 
+    * @return amount of columns
+    */
+    public int getArrayCountColumn(int[][] secondArr) {
+        int i = 0;
+        if (secondArr.length<=0 ||
+                secondArr[0].length<=0 ||
+                checkArray(secondArr)==false) {
+           i = -1;}else{
+            i=secondArr[0].length;
+        }
+       return i;
+   }
+   /**
+    *
+    * @param MatrixArrayNoNameFirst
+    * @param MatrixArrayNoNameSecond
+    * @return
+    */
+    public boolean checkArraysWidth(int MatrixArrayNoNameFirst [][],
+            int MatrixArrayNoNameSecond [][]) {
+        boolean checking = false;
+        if (getArrayCountColumn(MatrixArrayNoNameFirst)==getArrayCountColumn(MatrixArrayNoNameSecond)){
+            checking = true;
+       }
+        return checking;        
+       }
+
 
 
 }
