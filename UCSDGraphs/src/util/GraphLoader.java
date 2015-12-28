@@ -604,6 +604,13 @@ public class GraphLoader
 		GraphLoader.createIntersectionsFile("data/maps/new_york.map", "data/intersections/new_york.intersections");
 		GraphLoader.createIntersectionsFile("data/maps/san_diego.map", "data/intersections/san_diego.intersections");
 		GraphLoader.createIntersectionsFile("data/maps/ucsd.map", "data/intersections/ucsd.intersections");
+		
+		// To use this method to convert your custom map files to custom intersections files
+		// just change YOURFILE in the strings below to be the name of the file you saved.
+		// You can comment out the other method calls above to save time.
+		GraphLoader.createIntersectionsFile("data/maps/YOURFILE.map", 
+					                         "data/intersections/YOURFILE.intersections");
+
 	}
 	
 }	
@@ -703,14 +710,6 @@ class RoadLineInfo
 		
 	}
 	
-	/** You can use this main method to generate intersections files from raw map data files.
-	 * */
-	public static void main(String[] args) {
-		// To use this method to convert your custom map files to custom intersections files
-		// just change YOURFILE in the strings below to be the name of the file you saved.
-		GraphLoader.createIntersectionsFile("data/maps/YOURFILE.map", 
-				                            "data/intersections/YOURFILE.intersections");
-	}
 	
 	
 	

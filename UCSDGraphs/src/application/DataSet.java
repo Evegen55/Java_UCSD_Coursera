@@ -8,10 +8,10 @@ import geography.GeographicPoint;
 import util.GraphLoader;
 
 /**
- * Class to wrap the graph, .map file map, and other information about
- * the map data sets used
+ * Class to wrap the graph, current .map file map, and 
+ * other pertinent information about the map data sets
  *
- * @author Adam
+ * @author UCSD MOOC development team
  *
  */
 public class DataSet {

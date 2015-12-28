@@ -1,5 +1,9 @@
-/* JavaFX application used to display routes with Google Maps API
- * @author Adam Setters
+/** JavaFX application which interacts with the Google
+ * Maps API to provide a mapping interface with which
+ * to test and develop graph algorithms and data structures
+ * 
+ * @author UCSD MOOC development team
+ *
  */
 package application;
 

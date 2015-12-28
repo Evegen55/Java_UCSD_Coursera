@@ -10,12 +10,11 @@ import javafx.scene.paint.Paint;
 /**
  * Label which has an object property associated with it
  *
- * @author Adam
+ * @author UCSD MOOC development team
  *
  * @param <T> Type of object associated with label
  */
 
-//TODO -- should this be generic?
 public class CLabel<T> extends Label {
 	private ObjectProperty<T> item = new SimpleObjectProperty<T>(this, "item");
     private static final Paint RED = Color.web("#9E092F");
@@ -52,15 +51,15 @@ public class CLabel<T> extends Label {
 	 * @param empty
 	 */
 	protected void updateView(T item, boolean empty) {
-    if(item != null) {
-		setText(item.toString());
-    	setTextFill(GREEN);
-    }
-    else {
-    	// TODO -- change here to make more generic
-    	setText("Choose Point");
-    	setTextFill(RED);
-    }
+		if(item != null) {
+			setText(item.toString());
+			setTextFill(GREEN);
+		}
+		else {
+			// TODO -- could change this to be more generic
+			setText("Choose Point");
+			setTextFill(RED);
+		}
 	}
 
     public final ObjectProperty<T> itemProperty(){ return item; }

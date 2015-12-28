@@ -310,7 +310,7 @@ public class Maze {
 
 */
 	public static void main(String[] args) {
-		String mazeFile = "data/maze1.maze";
+		String mazeFile = "data/mazes/maze1.maze";
 		Maze maze = new Maze();
 		MazeLoader.loadMaze(mazeFile, maze);
 		maze.printMaze();

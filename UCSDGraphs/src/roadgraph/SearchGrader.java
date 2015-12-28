@@ -110,7 +110,9 @@ public class SearchGrader implements Runnable {
             } else {
                 feedback += "FAILED. Your implementation returned null; expected \n" + printBFSList(corr.path) + ".";
             }
-        } else if (bfs.size() != corr.path.size() || !corr.path.containsAll(bfs)) {
+        } else if (corr.path == null) {
+            feedback += "FAILED. Your implementation returned \n" + printBFSList(bfs) + "; expected null.";
+        } else if (!printBFSList(corr.path).equals(printBFSList(bfs))) {
             feedback += "FAILED. Expected: \n" + printBFSList(corr.path) + "Got: \n" + printBFSList(bfs);
             if (bfs.size() != corr.path.size()) {
                 feedback += "Your result has size " + bfs.size() + "; expected " + corr.path.size() + ".";
@@ -142,7 +144,7 @@ public class SearchGrader implements Runnable {
         try {
             runTest(1, "map1.txt", "Straight line (0->1->2->3->...)", new GeographicPoint(0, 0), new GeographicPoint(6, 6));
 
-            runTest(2, "map2.txt", "Undirected straight line (0<->1<->2<->3<->...)", new GeographicPoint(6, 6), new GeographicPoint(0, 0));
+            runTest(2, "map2.txt", "Same as above (searching from 6 to 0)", new GeographicPoint(6, 6), new GeographicPoint(0, 0));
 
             runTest(3, "map3.txt", "Square graph - Each edge has 2 nodes", new GeographicPoint(0, 0), new GeographicPoint(1, 2));
 

@@ -1,3 +1,9 @@
+/** Class to manage Markers on the Map
+ * 
+ * @author UCSD MOOC development team
+ *
+ */
+
 package application;
 
 import java.util.ArrayList;

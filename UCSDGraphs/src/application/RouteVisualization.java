@@ -1,3 +1,9 @@
+/** Class to aid with route visualization for search
+ *  
+ * @author UCSD MOOC development team
+ *
+ */
+
 package application;
 
 import java.util.ArrayList;

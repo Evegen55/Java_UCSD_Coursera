@@ -157,11 +157,14 @@ public class GraphGrader {
             correctAns = new ArrayList<Integer>();
             correctAns.add(4);
             correctAns.add(6);
+            correctAns.add(6);
             correctAns.add(8);
             runTest(2, "Undirected straight line (0<->1<->2<->3<->...)", 6, correctAns);
 
             correctAns = new ArrayList<Integer>();
-            correctAns.add(0);
+            for (int i = 0; i < 9; i++) {
+                correctAns.add(0);
+            }
             runTest(3, "Star graph - 0 is connected in both directions to all nodes except itself (starting at 0)", 0, correctAns);
 
             correctAns = new ArrayList<Integer>();

@@ -1,3 +1,9 @@
+/** Class to manage items selected in the GUI
+ * 
+ * @author UCSD MOOC development team
+ *
+ */
+
 package application;
 import application.services.GeneralService;
 import geography.GeographicPoint;

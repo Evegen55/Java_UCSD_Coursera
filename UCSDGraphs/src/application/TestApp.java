@@ -1,3 +1,8 @@
+/** Basic Class to test UI components
+ * 
+ * @author UCSD MOOC development team
+ *
+ */
 package application;
 
 import gmapsfx.GoogleMapView;
