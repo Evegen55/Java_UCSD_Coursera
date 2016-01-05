@@ -10,6 +10,7 @@ package roadgraph;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -26,7 +27,10 @@ import util.GraphLoader;
 public class MapGraph {
 	//TODO: Add your member variables here in WEEK 2
 	private int numVertices;
-	public HashMap<GeographicPoint,MapNode> listNodes;//DO IT LIKE PRIVATE !
+	
+	//DO IT LIKE PRIVATE !
+	//GeographicPoint = MapNode.getNodeLocation!!!
+	public HashMap<GeographicPoint,MapNode> listNodes;
 	
 	
 	
@@ -58,7 +62,8 @@ public class MapGraph {
 	public Set<GeographicPoint> getVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		return null;
+		Set<GeographicPoint> str= listNodes.keySet();
+		return str;
 	}
 	
 	/**
@@ -68,7 +73,12 @@ public class MapGraph {
 	public int getNumEdges()
 	{
 		//TODO: Implement this method in WEEK 2
-		return 0;
+		int numEdges = 0;
+		for(Entry<GeographicPoint, MapNode> entry : listNodes.entrySet()) {
+			numEdges += entry.getValue().getListEdges().size();
+		}
+		
+		return numEdges;
 	}
 
 	

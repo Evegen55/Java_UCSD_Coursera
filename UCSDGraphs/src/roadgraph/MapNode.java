@@ -8,13 +8,13 @@ import geography.GeographicPoint;
 public class MapNode {
 	private GeographicPoint nodeLocation;
 	private String nodeName;
-	public List<MapEdge> listEdges; //DO IT LIKE PRIVATE !
+	private List<MapEdge> listEdges;
 	
 
 	public MapNode() {
-		nodeLocation = new GeographicPoint(0, 0) ; 
-		nodeName = null;
-		listEdges = new ArrayList<>();
+		setNodeLocation(new GeographicPoint(0, 0)); 
+		setNodeName(null);
+		setListEdges(new ArrayList<>());
 	}
 
 
@@ -47,6 +47,22 @@ public class MapNode {
 	 */
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
+	}
+
+
+	/**
+	 * @return the listEdges
+	 */
+	public List<MapEdge> getListEdges() {
+		return listEdges;
+	}
+
+
+	/**
+	 * @param listEdges the listEdges to set
+	 */
+	public void setListEdges(List<MapEdge> listEdges) {
+		this.listEdges = listEdges;
 	}
 
 
