@@ -8,6 +8,7 @@
 package roadgraph;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -16,14 +17,17 @@ import geography.GeographicPoint;
 import util.GraphLoader;
 
 /**
- * @author UCSD MOOC development team and YOU
- * 
+ * @author UCSD MOOC development team and 
+ * @author Johnn
  * A class which represents a graph of geographic locations
  * Nodes in the graph are intersections between 
  *
  */
 public class MapGraph {
 	//TODO: Add your member variables here in WEEK 2
+	private int numVertices;
+	public HashMap<GeographicPoint,MapNode> listNodes;//DO IT LIKE PRIVATE !
+	
 	
 	
 	/** 
@@ -32,6 +36,9 @@ public class MapGraph {
 	public MapGraph()
 	{
 		// TODO: Implement in this constructor in WEEK 2
+		listNodes = new HashMap<>();
+		numVertices = listNodes.size();
+		
 	}
 	
 	/**
@@ -41,7 +48,7 @@ public class MapGraph {
 	public int getNumVertices()
 	{
 		//TODO: Implement this method in WEEK 2
-		return 0;
+		return numVertices;
 	}
 	
 	/**
