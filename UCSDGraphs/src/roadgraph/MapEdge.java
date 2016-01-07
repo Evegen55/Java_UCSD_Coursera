@@ -6,12 +6,14 @@ public class MapEdge {
 	private MapNode finishNode;
 	
 	private String streetName;
+	private String streetType;
 	private double streetLength;
 
 	public MapEdge() {
 		setStartNode(null);
 		setFinishNode(null);
 		setStreetName("");
+		setStreetType("");
 		setStreetLength(0.0);
 	}
 
@@ -69,6 +71,20 @@ public class MapEdge {
 	 */
 	public void setStreetLength(double streetLength) {
 		this.streetLength = streetLength;
+	}
+
+	/**
+	 * @return the streetType
+	 */
+	public String getStreetType() {
+		return streetType;
+	}
+
+	/**
+	 * @param streetType the streetType to set
+	 */
+	public void setStreetType(String streetType) {
+		this.streetType = streetType;
 	}
 
 }

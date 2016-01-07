@@ -93,6 +93,13 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location)
 	{
 		// TODO: Implement this method in WEEK 2
+		MapNode addedMaNode = new MapNode();
+		addedMaNode.setNodeLocation(location);
+		
+		if (!listNodes.containsKey(location)) {
+			listNodes.put(location, addedMaNode);
+			return true;
+		}
 		return false;
 	}
 	
@@ -110,8 +117,28 @@ public class MapGraph {
 	 */
 	public void addEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) throws IllegalArgumentException {
-
 		//TODO: Implement this method in WEEK 2
+		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
+			MapEdge addedMapEdge = new MapEdge();
+			
+			MapNode startNode = listNodes.get(from);
+			MapNode finishNode = listNodes.get(to);
+			
+			addedMapEdge.setStartNode(startNode);
+			addedMapEdge.setFinishNode(finishNode);
+			
+			addedMapEdge.setStreetName(roadName);
+			addedMapEdge.setStreetType(roadType);
+			addedMapEdge.setStreetLength(length);
+			
+			//listNodes.get(from).getListEdges().add(addedMapEdge);
+			listNodes.get(to).getListEdges().add(addedMapEdge);
+		}
+		
+		
+		
+
+		
 		
 	}
 	

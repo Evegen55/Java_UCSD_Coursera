@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 /** A class that implements a directed graph.
  * The graph may have self-loops, parallel edges.
@@ -98,53 +96,30 @@ public class GraphAdjList extends Graph {
 	 * @return List<Integer> a list of indices of vertices.
 	 */
 	 public List<Integer> getDistance2(int v) {
-		 
-		 
-		 //---------------------------------------------------
-		 //this is my point of view
 		 // XXX: Implement this method in week 1
-		 List<Integer> twoHop = new ArrayList<Integer>();
+	     List<Integer> twoHop = new ArrayList<Integer>();
 		 //take list of neighbors for vertex v
-		 if (v<=adjListsMap.size()) {
-		 ArrayList<Integer> firstList = adjListsMap.get(v);
+	     if (v<=adjListsMap.size()) {
+	     ArrayList<Integer> firstList = adjListsMap.get(v);
 		 //and iterate it
-		 for (int i = 0; i < firstList.size(); i++) {
+	     for (int i = 0; i < firstList.size(); i++) {
 			 //take neighbours vertexes
-			 int neigVert = firstList.get(i);
+	         int neigVert = firstList.get(i);
 			 //and find their neighbors
-			 ArrayList<Integer> secondList = adjListsMap.get(neigVert);
+	         ArrayList<Integer> secondList = adjListsMap.get(neigVert);
 			 //loop over it and add to list
              for (int a = 0; a < secondList.size(); a++) {
-            	 int neigVertSec = secondList.get(a);
-            	 if(!twoHop.contains(neigVertSec)) {
+                 int neigVertSec = secondList.get(a);
+        //    	 if(!twoHop.contains(neigVertSec)) {
 					 twoHop.add(neigVertSec);
-				 }
+		//		 }
               }
-}
+     }
 
-		 } //return twoHop;
+		 } 
 		 
-		 //----------------------------------------------------
-		 //Point of view by iryna.kanivets
-		 
-		 //I guess it the same results
-		 
-		 List <Integer> twoHopIra =new ArrayList <Integer> ();
-		 List <Integer> oneHop =adjListsMap.get(v);
-		 //Loop through oneHop and get the neighbors of each
-		 
-		 for (int i=0; i<oneHop.size();i++ ){
-				 twoHopIra.addAll(getNeighbors(oneHop.get(i)));
-			 if (twoHopIra.contains(adjListsMap.get(v))){
-				twoHopIra.remove(adjListsMap.get(v));
-			 }
-				 //twoHop.add(oneHop.get(i))
-				 } 
-		 
-	
-		 // XXX: Implement this method in week 1
-		 
-		 return twoHop; // or return twoHopIra
+		 return twoHop;
+		
 	}
 
 	/**
