@@ -45,7 +45,6 @@ public class GraphAdjList extends Graph {
 	 */
 	public void implementAddEdge(int v, int w) {
 		(adjListsMap.get(v)).add(w);
-
 	}
 
 	/**
@@ -100,27 +99,25 @@ public class GraphAdjList extends Graph {
 	     List<Integer> twoHop = new ArrayList<Integer>();
 		 //take list of neighbors for vertex v
 	     if (v<=adjListsMap.size()) {
-	     ArrayList<Integer> firstList = adjListsMap.get(v);
-		 //and iterate it
-	     for (int i = 0; i < firstList.size(); i++) {
-			 //take neighbours vertexes
-	         int neigVert = firstList.get(i);
-			 //and find their neighbors
-	         ArrayList<Integer> secondList = adjListsMap.get(neigVert);
-			 //loop over it and add to list
-             for (int a = 0; a < secondList.size(); a++) {
-                 int neigVertSec = secondList.get(a);
-        //    	 if(!twoHop.contains(neigVertSec)) {
-					 twoHop.add(neigVertSec);
-		//			 System.out.println("______"+neigVertSec);
-		//		 }
+	    	 ArrayList<Integer> firstList = adjListsMap.get(v);
+	    	 //and iterate it
+	    	 for (int i = 0; i < firstList.size(); i++) {
+	    		 //take neighbours vertexes
+	    		 int neigVert = firstList.get(i);
+	    		 //and find their neighbors
+	    		 ArrayList<Integer> secondList = adjListsMap.get(neigVert);
+	    		 //loop over it and add to list
+	    		 for (int a = 0; a < secondList.size(); a++) {
+	    			 int neigVertSec = secondList.get(a);
+	    			//delete duplicate vertexes
+	    			// if(!twoHop.contains(neigVertSec)) {
+	    				 twoHop.add(neigVertSec);
+		               //System.out.println("______"+neigVertSec);
+		//		       }
+                  }
               }
-     }
-
-		 } 
-		 
+         } 
 		 return twoHop;
-		
 	}
 
 	/**
@@ -139,8 +136,4 @@ public class GraphAdjList extends Graph {
 		}
 		return s;
 	}
-
-
-
-
 }

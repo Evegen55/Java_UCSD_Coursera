@@ -110,73 +110,21 @@ public class GraphAdjMatrix extends Graph {
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.
 	 */
-	public List<Integer> getDistance2(int v) {                                       
+	public List<Integer> getDistance2(int v) {
+		// XXX: Implement this method in week 1
 		//System.out.println(adjacencyString());
-		//int [][] SquareAdjMatrix = MultiplyMatrix(adjMatrix, adjMatrix);
-		
-		
-		
+	//------------------------------------------------------------------		
 		int [][] SquareAdjMatrix = SqrMatrix();
-
 		List<Integer> twoHop = new ArrayList<Integer>();
-		
 		for (int i = 0; i < SquareAdjMatrix.length; i ++) {
 			for (int j=0; j< SquareAdjMatrix[v][i]; j++) {
-//  System.out.println("SquareAdjMatrix[v][i] "+SquareAdjMatrix[v][i]);
-				 if(SquareAdjMatrix[v][i] > 0 ){
+                 if(SquareAdjMatrix[v][i] > 0 ){
 					 twoHop.add(SquareAdjMatrix[v][i]+i-1);                //WHYYYYYYYYYYYYYYY?????????????
 				 }
-				
-
 			}
 		}
 		return twoHop;
 	
-		
-		
-		/*
-		Map<Integer,ArrayList<Integer>> adjListsMap = new HashMap<Integer,ArrayList<Integer>>();
-		for (int k = 0; k < getNumVertices(); k ++) {
-			ArrayList<Integer> listNegh = new ArrayList<Integer>();
-			for (int i = 0; i < getNumVertices(); i ++) {
-				if(adjMatrix[k][i]>0) {
-					listNegh.add(adjMatrix[k][i]);
-				}
-				
-			}
-			adjListsMap.put(k, listNegh);
-		}
-		
-		
-		 // XXX: Implement this method in week 1
-	     List<Integer> twoHop = new ArrayList<Integer>();
-		 //take list of neighbors for vertex v
-	     if (v<=adjListsMap.size()) {
-	     ArrayList<Integer> firstList = adjListsMap.get(v);
-		 //and iterate it
-	     for (int i = 0; i < firstList.size(); i++) {
-			 //take neighbours vertexes
-	         int neigVert = firstList.get(i);
-			 //and find their neighbors
-	         ArrayList<Integer> secondList = adjListsMap.get(neigVert);
-			 //loop over it and add to list
-            for (int a = 0; a < secondList.size(); a++) {
-                int neigVertSec = secondList.get(a);
-       //    	 if(!twoHop.contains(neigVertSec)) {
-					 twoHop.add(neigVertSec);
-		//			 System.out.println("______"+neigVertSec);
-		//		 }
-             }
-    }
-
-		 } 
-		 
-		 return twoHop;
-		
-		*/
-		
-		
-		
 	}
 
 	/**
@@ -220,17 +168,15 @@ public class GraphAdjMatrix extends Graph {
 		}
 		return SquareAdjMatrix;
 	}
-	
+	//---------------------------------------------------------------------------------------------------------	
 	public int[][] SqrMatrixIra() {
 		int[][] c = new int[getNumVertices()][getNumVertices()];
-
-		// Calculating the multiplication matrix
-
-		for (int i = 0; i < getNumVertices(); i++) {
-		  for (int j = 0; j < getNumVertices(); j++) {
-			for (int k = 0; k < getNumVertices(); k++) {
-				c[i][j] += adjMatrix[i][k]*adjMatrix[k][j];				}
-			}
+        for (int i = 0; i < getNumVertices(); i++) {
+			for (int j = 0; j < getNumVertices(); j++) {
+				for (int k = 0; k < getNumVertices(); k++) {
+					c[i][j] += adjMatrix[i][k]*adjMatrix[k][j];
+                }
+		    }
 		}
 		return c;
 	}
