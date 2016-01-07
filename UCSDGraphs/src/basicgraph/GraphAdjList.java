@@ -112,6 +112,7 @@ public class GraphAdjList extends Graph {
                  int neigVertSec = secondList.get(a);
         //    	 if(!twoHop.contains(neigVertSec)) {
 					 twoHop.add(neigVertSec);
+		//			 System.out.println("______"+neigVertSec);
 		//		 }
               }
      }
