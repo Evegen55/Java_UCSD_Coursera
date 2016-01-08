@@ -64,6 +64,21 @@ public class MapNode {
 	public void setListEdges(List<MapEdge> listEdges) {
 		this.listEdges = listEdges;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<MapNode> getNeighbours() {
+		List<MapNode> att = new ArrayList<>();
+		List<MapEdge> listForSearch = getListEdges();
+		for (MapEdge sch : listForSearch) {
+			MapNode mdn = sch.getStartNode();
+			att.add(mdn);
+		}
+		return att;
+		
+	}
 
 
 }

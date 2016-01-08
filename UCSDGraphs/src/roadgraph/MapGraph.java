@@ -8,7 +8,10 @@
 package roadgraph;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -41,7 +44,8 @@ public class MapGraph {
 	{
 		// TODO: Implement in this constructor in WEEK 2
 		listNodes = new HashMap<>();
-		numVertices = listNodes.size();
+		numVertices = 0;
+		
 		
 	}
 	
@@ -52,6 +56,7 @@ public class MapGraph {
 	public int getNumVertices()
 	{
 		//TODO: Implement this method in WEEK 2
+		numVertices = listNodes.size();
 		return numVertices;
 	}
 	
@@ -120,26 +125,16 @@ public class MapGraph {
 		//TODO: Implement this method in WEEK 2
 		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
 			MapEdge addedMapEdge = new MapEdge();
-			
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			
 			addedMapEdge.setStartNode(startNode);
 			addedMapEdge.setFinishNode(finishNode);
-			
 			addedMapEdge.setStreetName(roadName);
 			addedMapEdge.setStreetType(roadType);
 			addedMapEdge.setStreetLength(length);
-			
 			//listNodes.get(from).getListEdges().add(addedMapEdge);
 			listNodes.get(to).getListEdges().add(addedMapEdge);
 		}
-		
-		
-		
-
-		
-		
 	}
 	
 
@@ -171,10 +166,55 @@ public class MapGraph {
 		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
-
+		
+		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+			MapNode startNode = listNodes.get(start);
+			MapNode finishNode = listNodes.get(goal);
+			
+			LinkedList<MapNode> myQueue = new LinkedList<>();
+			HashSet<MapNode> visited = new HashSet<>();
+			//HashMap<Parent, Children>
+			HashMap<MapNode,MapNode> parent = new HashMap<>();  //Change generics????
+			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
+			
+			myQueue.add(startNode);
+			visited.add(startNode);
+			
+			
+			while (!myQueue.isEmpty()) {
+				MapNode curr = myQueue.removeLast();
+				if(curr.equals(finishNode)) {                                //be carefull for comparing!!!!!
+					//rebuild HashMap to a List
+					for(Entry<MapNode,MapNode> entry: parent.entrySet()) {
+						MapNode parentNode = entry.getKey();
+						itogo.add(parentNode.getNodeLocation());
+						MapNode childNode = entry.getValue();
+						itogo.add(childNode.getNodeLocation());
+					}
+					//add finish node to a list
+					GeographicPoint finished = curr.getNodeLocation();
+					itogo.add(finished);
+					return itogo;
+				} else {
+					for (MapNode ngh : curr.getNeighbours()) {
+						nodeSearched.accept(ngh.getNodeLocation());
+						visited.add(ngh);
+						//curr - parent, ngh - child
+						myQueue.addFirst(ngh);
+						parent.put(curr, ngh);
+					}
+				}
+			}
+			
+		}
+		
+		
 		return null;
 	}
-	
+
+	//===================================================================================================
+	//for week 3
+	//===================================================================================================
 
 	/** Find the path from start to goal using Dijkstra's algorithm
 	 * 
