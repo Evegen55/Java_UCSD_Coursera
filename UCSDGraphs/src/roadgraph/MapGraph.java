@@ -132,8 +132,11 @@ public class MapGraph {
 			addedMapEdge.setStreetName(roadName);
 			addedMapEdge.setStreetType(roadType);
 			addedMapEdge.setStreetLength(length);
-			//listNodes.get(from).getListEdges().add(addedMapEdge);
-			listNodes.get(to).getListEdges().add(addedMapEdge);
+			listNodes.get(from).getListEdges().add(addedMapEdge);
+			//listNodes.get(to).getListEdges().add(addedMapEdge);
+			
+			//System.out.println("\n"+ "node:" + "\t" + startNode.getNodeLocation().toString());
+			//System.out.println("neighbour:" + "\t" + finishNode.getNodeLocation().toString());
 		}
 	}
 	
@@ -172,44 +175,75 @@ public class MapGraph {
 			MapNode finishNode = listNodes.get(goal);
 			
 			LinkedList<MapNode> myQueue = new LinkedList<>();
-			HashSet<MapNode> visited = new HashSet<>();
+			
+			//HashSet<MapNode> visited = new HashSet<>();
+			LinkedList<MapNode> visited = new LinkedList<>();
+			
 			//HashMap<Parent, Children>
-			HashMap<MapNode,MapNode> parent = new HashMap<>();  //Change generics????
+			//HashMap<MapNode,MapNode> parent = new HashMap<>();  //Change generics????
+			
 			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
 			
-			myQueue.add(startNode);
+			myQueue.addFirst(startNode);
 			visited.add(startNode);
 			
 			
 			while (!myQueue.isEmpty()) {
-				MapNode curr = myQueue.removeLast();
-				if(curr.equals(finishNode)) {                                //be carefull for comparing!!!!!
-					//rebuild HashMap to a List
-					for(Entry<MapNode,MapNode> entry: parent.entrySet()) {
-						MapNode parentNode = entry.getKey();
-						itogo.add(parentNode.getNodeLocation());
-						MapNode childNode = entry.getValue();
-						itogo.add(childNode.getNodeLocation());
+				MapNode curr = myQueue.removeFirst();
+				
+				String currCoord = curr.getNodeLocation().toString();
+				String finishNodeCoord = finishNode.getNodeLocation().toString();
+				
+				if(currCoord.equalsIgnoreCase(finishNodeCoord)) {                                //be carefull for comparing!!!!!
+					
+					/*
+					for (MapNode v : visited) {
+						System.out.println("coord VISITED:" + "\t" + v.getNodeLocation().toString());
+						itogo.add(v.getNodeLocation());
 					}
+					*/
+					
 					//add finish node to a list
 					GeographicPoint finished = curr.getNodeLocation();
 					itogo.add(finished);
 					return itogo;
-				} else {
-					for (MapNode ngh : curr.getNeighbours()) {
-						nodeSearched.accept(ngh.getNodeLocation());
-						visited.add(ngh);
-						//curr - parent, ngh - child
+				} else  {
+					for (MapNode ngh : getNeighbours(curr)) {
+						
+						if (!visited.contains(ngh)){
 						myQueue.addFirst(ngh);
-						parent.put(curr, ngh);
+						visited.add(ngh);
+						
+						nodeSearched.accept(ngh.getNodeLocation());
+						//curr - parent, ngh - child
+						
+						System.out.println("coord curr:" + "\t" + curr.getNodeLocation().toString());
+						itogo.add(ngh.getNodeLocation());
+						}
 					}
 				}
 			}
 			
-		}
+		} 
+		//else { return null;}
 		
 		
 		return null;
+	}
+	
+	public List<MapNode> getNeighbours(MapNode forSearch) {
+		List<MapNode> att = new ArrayList<>();
+		List<MapEdge> listForSearch = forSearch.getListEdges();
+		for (MapEdge sch : listForSearch) {
+			//MapNode mdn = sch.getStartNode();
+			MapNode mdn = sch.getFinishNode();
+			
+			System.out.println("coord neighbours:" + "\t" + mdn.getNodeLocation().toString());
+			
+			att.add(mdn);
+		}
+		return att;
+		
 	}
 
 	//===================================================================================================

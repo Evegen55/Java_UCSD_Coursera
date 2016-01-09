@@ -69,16 +69,7 @@ public class MapNode {
 	 * 
 	 * @return
 	 */
-	public List<MapNode> getNeighbours() {
-		List<MapNode> att = new ArrayList<>();
-		List<MapEdge> listForSearch = getListEdges();
-		for (MapEdge sch : listForSearch) {
-			MapNode mdn = sch.getStartNode();
-			att.add(mdn);
-		}
-		return att;
-		
-	}
+
 
 
 }
