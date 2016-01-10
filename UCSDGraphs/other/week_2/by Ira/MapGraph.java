@@ -13,39 +13,34 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.ListIterator;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.Collections;
 
 import geography.GeographicPoint;
 import util.GraphLoader;
 
+
 /**
- * @author UCSD MOOC development team and 
- * @author Johnn
+ * @author UCSD MOOC development team and YOU
+ * 
  * A class which represents a graph of geographic locations
  * Nodes in the graph are intersections between 
  *
  */
 public class MapGraph {
-	//TODO: Add your member variables here in WEEK 2
-	private int numVertices;
-	
-	//DO IT LIKE PRIVATE !
-	//GeographicPoint = MapNode.getNodeLocation!!!
-	public HashMap<GeographicPoint,MapNode> listNodes;
-	
-	
-	
+	 //TODO: Add your member variables here in WEEK 2
+	static HashMap <GeographicPoint , MapNode> vertices;
+
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph()
 	{
 		// TODO: Implement in this constructor in WEEK 2
-		listNodes = new HashMap<>();
-		numVertices = 0;
-		
+		vertices = new HashMap <GeographicPoint , MapNode> ();
 		
 	}
 	
@@ -54,10 +49,9 @@ public class MapGraph {
 	 * @return The number of vertices in the graph.
 	 */
 	public int getNumVertices()
-	{
+	{ 
 		//TODO: Implement this method in WEEK 2
-		numVertices = listNodes.size();
-		return numVertices;
+	   return vertices.size();
 	}
 	
 	/**
@@ -66,9 +60,8 @@ public class MapGraph {
 	 */
 	public Set<GeographicPoint> getVertices()
 	{
-		//TODO: Implement this method in WEEK 2
-		Set<GeographicPoint> str= listNodes.keySet();
-		return str;
+	//TODO: Implement this method in WEEK 2
+	return vertices.keySet();	
 	}
 	
 	/**
@@ -77,13 +70,9 @@ public class MapGraph {
 	 */
 	public int getNumEdges()
 	{
-		//TODO: Implement this method in WEEK 2
-		int numEdges = 0;
-		for(Entry<GeographicPoint, MapNode> entry : listNodes.entrySet()) {
-			numEdges += entry.getValue().getListEdges().size();
-		}
-		
-		return numEdges;
+		List<MapEdge> b = MapNode.getEdges();
+		int NumEdges=b.size();
+		return NumEdges;
 	}
 
 	
@@ -97,17 +86,17 @@ public class MapGraph {
 	 */
 	public boolean addVertex(GeographicPoint location)
 	{
-		// TODO: Implement this method in WEEK 2
-		MapNode addedMaNode = new MapNode();
-		addedMaNode.setNodeLocation(location);
-		
-		if (!listNodes.containsKey(location)) {
-			listNodes.put(location, addedMaNode);
-			return true;
+		if(!vertices.containsKey(location)||(!(location==null))){
+		MapNode node=new MapNode();
+		node.start=location;
+		node.edges=new LinkedList <MapEdge>();
+		vertices.put(location, node);
+		return true;
 		}
 		return false;
 	}
 	
+
 	/**
 	 * Adds a directed edge to the graph from pt1 to pt2.  
 	 * Precondition: Both GeographicPoints have already been added to the graph
@@ -123,20 +112,17 @@ public class MapGraph {
 	public void addEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) throws IllegalArgumentException {
 		//TODO: Implement this method in WEEK 2
-		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
-			MapEdge addedMapEdge = new MapEdge();
-			MapNode startNode = listNodes.get(from);
-			MapNode finishNode = listNodes.get(to);
-			addedMapEdge.setStartNode(startNode);
-			addedMapEdge.setFinishNode(finishNode);
-			addedMapEdge.setStreetName(roadName);
-			addedMapEdge.setStreetType(roadType);
-			addedMapEdge.setStreetLength(length);
-			listNodes.get(from).getListEdges().add(addedMapEdge);
-			//listNodes.get(to).getListEdges().add(addedMapEdge);
-			
-			//System.out.println("\n"+ "node:" + "\t" + startNode.getNodeLocation().toString());
-			//System.out.println("neighbour:" + "\t" + finishNode.getNodeLocation().toString());
+		if (!(length<0)||(!(from==null)||(!(to==null))||(!(roadName==null))||(!(roadType==null)))) {
+				MapEdge edge =new MapEdge();
+				edge.start=from;
+				edge.end=to;
+				edge.streetName=roadName;
+				edge.streetType=roadType;
+				edge.distance=length;
+				MapNode.edges.add(edge);
+		}
+		else {
+			throw new IllegalArgumentException();
 		}
 	}
 	
@@ -162,99 +148,121 @@ public class MapGraph {
 	 * @return The list of intersections that form the shortest (unweighted)
 	 *   path from start to goal (including both start and goal).
 	 */
+	
+	//public Set<GeographicPoint> getNeighbors() {
+	//	return MapGraph.getVertices();
+	//}
+	//TODO: fix this method
+	public List<GeographicPoint> getNeighbors(GeographicPoint beginning) {
+		LinkedList <GeographicPoint> neighbors =new LinkedList();
+		//if (beginning==MapEdge.start)
+	//	vertices.containsKey(beginning)
+		if (beginning==MapEdge.start){
+		List<MapEdge>edges=MapNode.getEdges();
+		for(int i=0; i<edges.size(); i++){
+		GeographicPoint neighbor=MapEdge.getEnd();
+		neighbors.add(neighbor);
+		}
+	return neighbors;
+	}
+		return neighbors;
+	}
+	
 	public List<GeographicPoint> bfs(GeographicPoint start, 
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 2
 		
+		//queue - where to go next
+		//visited - which Nodes have been viisted
+		//parentHashMap - track of the path from start to goal
+		
+		 //Initialize: queue, visited HashSet and parent HashMap
+		Queue <GeographicPoint> queue = new <GeographicPoint>LinkedList();
+		// Queue<Integer> queue  = new LinkedList<Integer>(); 
+		// Queue  queue = new LinkedList();
+		 Set<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		 HashMap<GeographicPoint, GeographicPoint > parent = new HashMap<GeographicPoint, GeographicPoint>();
+		 //Enqueue S onto the queue  and add to visited
+		 queue.add(start);
+		 visited.add(start);
+		 //while queue is not empty
+		 	while(!queue.isEmpty()) { 
+		 	//dequeue node curr from front of queue 
+		 		GeographicPoint curr = queue.remove();
+		 	// if curr == G return parent map
+		 		if(curr ==goal) {
+			 		return (List<GeographicPoint>) parent;
+		 	}
+		 	 	 // for each of curr's neighbors, n, not in visited set:
+		 		List<GeographicPoint> neighbors=getNeighbors(curr);
+		 		ListIterator<GeographicPoint> it = neighbors.listIterator(neighbors.size());
+				while (it.hasPrevious()) {
+		 		GeographicPoint n=it.previous();
+		 		if(!visited.contains(n)){
+		 			//add n to visited set	
+		 			visited.add(n);
+		 			//add curr as n's parent in parent map 
+		 			parent.put(n, curr);
+		 			 //enqueue n onto the queue 
+		 			queue.add(n);
+		 			return (List<GeographicPoint>) parent;
+		 		}
+		 		}
+		 	}
+			return null;
+	}
+		 		/*List<MazeNode> neighbors = curr.getNeighbors();
+				ListIterator<MazeNode> it = neighbors.listIterator(neighbors.size());
+				while (it.hasPrevious()) {
+					MazeNode next = it.previous();
+					if (!visited.contains(next)) {
+						visited.add(next);
+						parentMap.put(next, curr);
+						toExplore.add(next);
+		 		
+		 	 // for each of curr's neighbors, n, not in visited set:
+		 	 Array neighbors = new Array();
+		 	 neighbors = curr.getNeighbors();
+		 		for (int i = 0; i<neighbors.size(); i++){
+		 			if(!(visited.contains(curr)){
+		 			 //add n to visited set	
+		 			 visited.add(n);
+		 			 //add curr as n's parent in parent map 
+		 			 parent.add(curr, n);
+		 			 //enqueue n onto the queue 
+		 			 queue.enqueue(n);
+		 			  // If we get there than there is no path 
+		 			}
+		 		}
+		 			// the algorithm doesn't output the path, but think about what it returns
+		 		return  List<GeographicPoint> // ?
+		 	}
+	}
+	/*public List<GeographicPoint> bfs(GeographicPoint start, 
+		GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+		{
+			if (start == null || goal == null) {
+				System.out.println("Start or goal node is null!  No path exists.");
+				return null;
+			}
+			MapLocale startLocale = localesMap.get(start);
+			MapLocale goalLocale = localesMap.get(goal);
+			if(startLocale == null || goalLocale == null) {
+				System.out.println("Use addVertex(GeographicPoint location) to add all vertices the the MapGraph before attempting to find path between them!");
+				return null;
+			}
+			....
+		}
+		 
+		
+		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
-		
-		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
-			MapNode startNode = listNodes.get(start);
-			MapNode finishNode = listNodes.get(goal);
-			
-			LinkedList<MapNode> myQueue = new LinkedList<>();
-			
-			LinkedList<MapNode> visited = new LinkedList<>();
-			
-			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
-			//LinkedList<GeographicPoint> itogo = new LinkedList<>();
-			LinkedList<GeographicPoint> itogoParsedEven = new LinkedList<>();
-			LinkedList<GeographicPoint> itogoParsedOdd = new LinkedList<>();
-			
-			myQueue.addFirst(startNode);
-			visited.add(startNode);
-			itogo.add(start);
-			
-			while (!myQueue.isEmpty()) {
-				MapNode curr = myQueue.removeFirst();
-				
-				String currCoord = curr.getNodeLocation().toString();
-				String finishNodeCoord = finishNode.getNodeLocation().toString();
-				
-				if(currCoord.equalsIgnoreCase(finishNodeCoord)) {
-					
-					
-	//--------------------------------------------------------------------------
-					//Parsing itogo for case with two neighbours (because we use stack)
-					if(getNeighbours(startNode).size() == 2) {
-						itogoParsedEven.add(start);
-						itogoParsedOdd.add(start);
-						for (GeographicPoint pars : itogo) {
-							int idx = itogo.indexOf(pars);
-							if(idx % 2 == 0) {
-								itogoParsedEven.add(pars);
-							} else {
-								itogoParsedOdd.add(pars);
-							}
-						}
-						if (itogoParsedEven.getLast().toString().equalsIgnoreCase(finishNodeCoord)) {
-							return itogoParsedEven;
-						} else {
-							return itogoParsedOdd;
-						}
-						
-					} else 
-						
-	//--------------------------------------------------------------------------					
-					
-					
-					
-					return itogo;
-				} else  {
-					for (MapNode ngh : getNeighbours(curr)) {
-						if (!visited.contains(ngh)){
-						myQueue.addLast(ngh);
-						visited.add(ngh);
-						nodeSearched.accept(ngh.getNodeLocation());
-						//curr - parent, ngh - child
-						itogo.add(ngh.getNodeLocation());
-						}
-					}
-				}
-				
-				
-			}
-			
-		} 
+
 		return null;
 	}
 	
-	public List<MapNode> getNeighbours(MapNode forSearch) {
-		List<MapNode> att = new ArrayList<>();
-		List<MapEdge> listForSearch = forSearch.getListEdges();
-		for (MapEdge sch : listForSearch) {
-			MapNode mdn = sch.getFinishNode();
-			att.add(mdn);
-		}
-		return att;
-		
-	}
-
-	//===================================================================================================
-	//for week 3
-	//===================================================================================================
 
 	/** Find the path from start to goal using Dijkstra's algorithm
 	 * 
@@ -331,6 +339,45 @@ public class MapGraph {
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
 		
+		MapEdge test1=new MapEdge();
+		test1.start=new GeographicPoint(1,0);
+		test1.end=new GeographicPoint(2,0);
+		test1.streetName="A";
+		test1.streetType="main";
+		
+		MapEdge test2=new MapEdge();
+		test2.start=new GeographicPoint(3,0);
+		test2.end=new GeographicPoint(4,0);
+		test2.streetName="b";
+		test2.streetType="other";
+		
+		MapNode vertice1=new MapNode();
+		vertice1.start=new GeographicPoint(1,0);
+		vertice1.edges = new LinkedList <MapEdge> ();
+		
+		MapNode vertice2=new MapNode();
+		vertice2.start=new GeographicPoint(2,0);
+		vertice2.edges = new LinkedList <MapEdge> ();
+		
+		MapNode vertice3=new MapNode();
+		vertice3.start=new GeographicPoint(3,0);
+		vertice3.edges = new LinkedList <MapEdge> ();
+		
+		
+		MapGraph first =new MapGraph();
+		GeographicPoint location1 = new GeographicPoint(1,0);
+		GeographicPoint location2 = new GeographicPoint(2,0);
+		GeographicPoint location3 = new GeographicPoint(3,0);
+		first.vertices= new HashMap <GeographicPoint , MapNode>();
+		vertices.put(location1, vertice1);
+		vertices.put(location2, vertice2);
+		vertices.put(location3, vertice3);
+		
+		int numVertices=first.getNumVertices();
+		System.out.println(numVertices);
+		System.out.println(first.getVertices());
+		System.out.println(first.getNeighbors(location1));
+		
 		// You can use this method for testing.  
 		
 		/* Use this code in Week 3 End of Week Quiz
@@ -348,6 +395,10 @@ public class MapGraph {
 
 		*/
 		
+	}
+
+	public void setVertices(HashMap<GeographicPoint, MapNode> vertices) {
+		this.vertices = vertices;
 	}
 	
 }
