@@ -173,116 +173,72 @@ public class MapGraph {
 		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
 			MapNode startNode = listNodes.get(start);
 			MapNode finishNode = listNodes.get(goal);
-			//see d:\11_work_spaces\git\Java_UCSD_Coursera\UCSDGraphs\other\week_2\BFS_Algorithm.png
+			
 			LinkedList<MapNode> myQueue = new LinkedList<>();
 			
-			HashSet<MapNode> visited = new HashSet<>();
+			LinkedList<MapNode> visited = new LinkedList<>();
 			
 			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
-			
-			
-			//-----------------------------------------------------------------------			
-			HashMap<MapNode,List<MapNode>> parentMap= new HashMap<>();
-			
-			/*
-			for (MapNode wrg : getNeighbours(startNode)) {
-				List<MapNode> parentNeighbours = new ArrayList<>();
-				parentMap.put(wrg, parentNeighbours);
-			}
-			*/
-			List<MapNode> parentNeighbours = new ArrayList<>();
-			parentMap.put(startNode, parentNeighbours);
-			//-----------------------------------------------------------------------			
+			//LinkedList<GeographicPoint> itogo = new LinkedList<>();
+			LinkedList<GeographicPoint> itogoParsedEven = new LinkedList<>();
+			LinkedList<GeographicPoint> itogoParsedOdd = new LinkedList<>();
 			
 			myQueue.addFirst(startNode);
-			
 			visited.add(startNode);
-			
 			itogo.add(start);
 			
 			while (!myQueue.isEmpty()) {
-				MapNode curr = myQueue.removeLast();
-				//System.out.println("curr" + "\t" + curr.getNodeLocation().toString());
-				//for right comparing
+				MapNode curr = myQueue.removeFirst();
+				
 				String currCoord = curr.getNodeLocation().toString();
-				String finishNodeCoord = goal.toString();
+				String finishNodeCoord = finishNode.getNodeLocation().toString();
 				
 				if(currCoord.equalsIgnoreCase(finishNodeCoord)) {
-					//-----------------------------------------------------------------------					
 					
 					
-					for(Entry<MapNode,List<MapNode>> entry : parentMap.entrySet()) {
-						for (MapNode ngh : getNeighbours(finishNode)) {
-							if(entry.getValue().contains(ngh)) {
-								entry.getValue().add(finishNode);
+	//--------------------------------------------------------------------------
+					//Parsing itogo for case with two neighbours (because we use stack)
+					if(getNeighbours(startNode).size() == 2) {
+						itogoParsedEven.add(start);
+						itogoParsedOdd.add(start);
+						for (GeographicPoint pars : itogo) {
+							int idx = itogo.indexOf(pars);
+							if(idx % 2 == 0) {
+								itogoParsedEven.add(pars);
+							} else {
+								itogoParsedOdd.add(pars);
 							}
 						}
-						
-						System.out.println("\n" + "entry" + "\t" + entry.getKey().getNodeLocation().toString());
-						
-						for (MapNode m : entry.getValue()) {
-							System.out.println("neighbours entry" + "\t" + m.getNodeLocation().toString());
+						if (itogoParsedEven.getLast().toString().equalsIgnoreCase(finishNodeCoord)) {
+							return itogoParsedEven;
+						} else {
+							return itogoParsedOdd;
 						}
-					}
+						
+					} else 
+						
+	//--------------------------------------------------------------------------					
 					
 					
-					//-----------------------------------------------------------------------					
+					
 					return itogo;
 				} else  {
 					for (MapNode ngh : getNeighbours(curr)) {
 						if (!visited.contains(ngh)){
-						myQueue.addFirst(ngh);
+						myQueue.addLast(ngh);
 						visited.add(ngh);
-						
-						
-						
-						itogo.add(ngh.getNodeLocation());
-						
-						//for visualisation
 						nodeSearched.accept(ngh.getNodeLocation());
-						
-						
-						
-						//-----------------------------------------------------------------------
-						/*
-						if(parentMap.containsKey(curr)) {
-							parentMap.get(curr).add(ngh);
-						} else {
-							List<MapNode> parentNeighboursNew = new ArrayList<>();
-							parentMap.put(curr, parentNeighboursNew);
-						}
-						*/
-						//-----------------------------------------------------------------------
-						System.out.println("curr" + "\t" + curr.getNodeLocation().toString());
-						System.out.println("neigh" + "\t" + ngh.getNodeLocation().toString());
-						if(parentMap.containsKey(curr)) {
-						if(!parentMap.get(curr).contains(ngh) ) {
-						//	List<MapNode> parentNeighboursNew = new ArrayList<>();
-						//	parentNeighboursNew.add(ngh);
-						//	MapNode wsp = new MapNode();
-						//	parentMap.put(wsp, parentNeighboursNew);
-							parentMap.get(curr).add(ngh);
-							System.out.println("add" + "\t" + ngh.getNodeLocation().toString() + "\n" );
-						} else {
-							
-						}
-						
-						}
-						
-						
-						
+						//curr - parent, ngh - child
+						itogo.add(ngh.getNodeLocation());
 						}
 					}
 				}
 			}
+			
 		} 
 		return null;
 	}
-	/**
-	 * 
-	 * @param forSearch
-	 * @return
-	 */
+	
 	public List<MapNode> getNeighbours(MapNode forSearch) {
 		List<MapNode> att = new ArrayList<>();
 		List<MapEdge> listForSearch = forSearch.getListEdges();
@@ -291,6 +247,7 @@ public class MapGraph {
 			att.add(mdn);
 		}
 		return att;
+		
 	}
 
 	//===================================================================================================
