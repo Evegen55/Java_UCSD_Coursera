@@ -65,11 +65,4 @@ public class MapNode {
 		this.listEdges = listEdges;
 	}
 	
-	/**
-	 * 
-	 * @return
-	 */
-
-
-
 }

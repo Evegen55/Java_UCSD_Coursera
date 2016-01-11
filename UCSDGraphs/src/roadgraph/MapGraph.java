@@ -132,14 +132,9 @@ public class MapGraph {
 			addedMapEdge.setStreetName(roadName);
 			addedMapEdge.setStreetType(roadType);
 			addedMapEdge.setStreetLength(length);
-			listNodes.get(from).getListEdges().add(addedMapEdge);
-			//listNodes.get(to).getListEdges().add(addedMapEdge);
-			
-			//System.out.println("\n"+ "node:" + "\t" + startNode.getNodeLocation().toString());
-			//System.out.println("neighbour:" + "\t" + finishNode.getNodeLocation().toString());
-		}
+			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
+			}
 	}
-	
 
 	/** Find the path from start to goal using breadth first search
 	 * 
@@ -179,8 +174,9 @@ public class MapGraph {
 			LinkedList<MapNode> visited = new LinkedList<>();
 			
 			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
-			//LinkedList<GeographicPoint> itogo = new LinkedList<>();
+			
 			LinkedList<GeographicPoint> itogoParsedEven = new LinkedList<>();
+			
 			LinkedList<GeographicPoint> itogoParsedOdd = new LinkedList<>();
 			
 			myQueue.addFirst(startNode);
@@ -195,9 +191,8 @@ public class MapGraph {
 				
 				if(currCoord.equalsIgnoreCase(finishNodeCoord)) {
 					
-					
 	//--------------------------------------------------------------------------
-					//Parsing itogo for case with two neighbours (because we use stack)
+					//Parsing itogo for case with two neighbors (because we use stack)
 					if(getNeighbours(startNode).size() == 2) {
 						itogoParsedEven.add(start);
 						itogoParsedOdd.add(start);
@@ -218,9 +213,6 @@ public class MapGraph {
 					} else 
 						
 	//--------------------------------------------------------------------------					
-					
-					
-					
 					return itogo;
 				} else  {
 					for (MapNode ngh : getNeighbours(curr)) {
@@ -228,15 +220,11 @@ public class MapGraph {
 						myQueue.addLast(ngh);
 						visited.add(ngh);
 						nodeSearched.accept(ngh.getNodeLocation());
-						//curr - parent, ngh - child
 						itogo.add(ngh.getNodeLocation());
 						}
 					}
 				}
-				
-				
 			}
-			
 		} 
 		return null;
 	}
@@ -249,7 +237,6 @@ public class MapGraph {
 			att.add(mdn);
 		}
 		return att;
-		
 	}
 
 	//===================================================================================================

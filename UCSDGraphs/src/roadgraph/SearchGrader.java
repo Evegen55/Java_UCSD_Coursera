@@ -149,6 +149,8 @@ public class SearchGrader implements Runnable {
             runTest(3, "map3.txt", "Square graph - Each edge has 2 nodes", new GeographicPoint(0, 0), new GeographicPoint(1, 2));
 
             runTest(4, "ucsd.map", "UCSD MAP: Intersections around UCSD", new GeographicPoint(32.8756538, -117.2435715), new GeographicPoint(32.8742087, -117.2381344));
+            
+            runTest(5, "map5.txt", "Straight line (0->1->2->3->...)", new GeographicPoint(3, 3), new GeographicPoint(6, 6));
 
             if (correct == TESTS)
                 feedback = "All tests passed. Great job!" + feedback;
