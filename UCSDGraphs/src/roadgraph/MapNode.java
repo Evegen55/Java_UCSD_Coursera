@@ -26,8 +26,8 @@ public class MapNode {
 	 * @param nodeName
 	 */
 	public MapNode(GeographicPoint nodeLocation, String nodeName) {
-		this.nodeLocation = nodeLocation;
-		this.nodeName = nodeName;
+		setNodeLocation(nodeLocation);
+		setNodeName(nodeName);
 		setListEdges(new ArrayList<>());
 		setDistance(0);
 	}
@@ -38,10 +38,35 @@ public class MapNode {
 	 * @param listEdges
 	 */
 	public MapNode(GeographicPoint nodeLocation, String nodeName, List<MapEdge> listEdges) {
-		this.nodeLocation = nodeLocation;
-		this.nodeName = nodeName;
-		this.listEdges = listEdges;
+		setNodeLocation(nodeLocation);
+		setNodeName(nodeName);
+		setListEdges(listEdges);
 		setDistance(0);
+	}
+	/**
+	 * 
+	 * @param nodeLocation
+	 * @param nodeName
+	 * @param dist
+	 */
+	public MapNode(GeographicPoint nodeLocation, String nodeName, double dist) {
+		setNodeLocation(nodeLocation);
+		setNodeName(nodeName);
+		setListEdges(new ArrayList<>());
+		setDistance(dist);
+	}
+	/**
+	 * 
+	 * @param nodeLocation
+	 * @param nodeName
+	 * @param listEdges
+	 * @param dist
+	 */
+	public MapNode(GeographicPoint nodeLocation, String nodeName, List<MapEdge> listEdges, double dist) {
+		setNodeLocation(nodeLocation);
+		setNodeName(nodeName);
+		setListEdges(listEdges);
+		setDistance(dist);
 	}
 
 
@@ -91,9 +116,19 @@ public class MapNode {
 	public void setListEdges(List<MapEdge> listEdges) {
 		this.listEdges = listEdges;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getDistance() {
 		return distance;
 	}
+	
+	/**
+	 * 
+	 * @param distance
+	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}

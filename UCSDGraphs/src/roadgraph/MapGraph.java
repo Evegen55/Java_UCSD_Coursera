@@ -37,6 +37,8 @@ public class MapGraph {
 	//GeographicPoint = MapNode.getNodeLocation!!!
 	public HashMap<GeographicPoint,MapNode> listNodes;
 	
+	public double distance = Double.POSITIVE_INFINITY;
+	
 	
 	
 	/** 
@@ -100,9 +102,8 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location)
 	{
 		// TODO: Implement this method in WEEK 2
-		MapNode addedMaNode = new MapNode();
-		addedMaNode.setNodeLocation(location);
-		
+		//add a distance for week 3 - set a distance to infinity
+		MapNode addedMaNode = new MapNode(location, "", distance);
 		if (!listNodes.containsKey(location)) {
 			listNodes.put(location, addedMaNode);
 			return true;
@@ -278,29 +279,34 @@ public class MapGraph {
 		//HashMap<GeographicPoint,MapNode> listNodes;
 		
 		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
-			MapNode startNode = listNodes.get(start);
-			MapNode goalNode = listNodes.get(goal);
 			
 			//initialize ADT
-			
+			//we should use a comparator!!!
 			PriorityQueue<MapNode> pq = new PriorityQueue<>();
 			
 			HashSet<MapNode> parentMap = new HashSet<>();
 			
 			LinkedList<MapNode> visited = new LinkedList<>();
 			
-			double distance = 0.0;
+			double distStart = 0.0;
 			
-			//start algorithm
+			MapNode startNode = listNodes.get(start);
+			startNode.setDistance(distStart);
+			
+			MapNode goalNode = listNodes.get(goal);
 			
 			
 			
-			//start loop
+			//start an algorithm
+			
+			
+			
+			//start a loop
 			
 			while(!pq.isEmpty()) {
-				HashMap<MapNode,Double> setOfMapDist_curr = pq.poll();
+				//HashMap<MapNode,Double> setOfMapDist_curr = pq.poll();
 				
-				if() {}
+				//if() {}
 			}
 			
 		}
