@@ -9,11 +9,13 @@ package roadgraph;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -273,9 +275,63 @@ public class MapGraph {
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 		
+		//HashMap<GeographicPoint,MapNode> listNodes;
+		
+		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+			MapNode startNode = listNodes.get(start);
+			MapNode goalNode = listNodes.get(goal);
+			
+			//initialize ADT
+			
+			PriorityQueue<MapNode> pq = new PriorityQueue<>();
+			
+			HashSet<MapNode> parentMap = new HashSet<>();
+			
+			LinkedList<MapNode> visited = new LinkedList<>();
+			
+			double distance = 0.0;
+			
+			//start algorithm
+			
+			
+			
+			//start loop
+			
+			while(!pq.isEmpty()) {
+				HashMap<MapNode,Double> setOfMapDist_curr = pq.poll();
+				
+				if() {}
+			}
+			
+		}
 		
 		return null;
 	}
+	/**
+	 * a helper method for using it as distance priority
+	 * @return comparator
+	 */
+	public Comparator<Double> createComparator() {
+		Comparator<Double> comparator = new Comparator<Double>() {
+            @Override
+            public int compare(Double x, Double y) {
+                // Assume neither string is null. Real code should
+                // probably be more robust
+                // You could also just return x.length() - y.length(),
+                // which would be more efficient.
+                if (x < y) {
+                    return -1;
+                    }
+                if (x > y) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+		return comparator;
+	}
+	
+	
 
 	/** Find the path from start to goal using A-Star search
 	 * 

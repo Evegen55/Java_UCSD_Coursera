@@ -8,13 +8,45 @@ public class MapEdge {
 	private String streetName;
 	private String streetType;
 	private double streetLength;
-
+	
+	/**
+	 * 
+	 */
 	public MapEdge() {
 		setStartNode(null);
 		setFinishNode(null);
 		setStreetName("");
 		setStreetType("");
 		setStreetLength(0.0);
+	}
+	/**
+	 * 
+	 * @param first
+	 * @param second
+	 * @param name
+	 * @param type
+	 * @param length
+	 */
+	public MapEdge(MapNode first, MapNode second, String name, String type, double length) {
+		this.startNode = first;
+		this.finishNode = second;
+		this.streetName = name;
+		this.streetType = type;
+		this.streetLength = length;
+	}
+	/**
+	 * 
+	 * @param first
+	 * @param second
+	 * @param name
+	 * @param length
+	 */
+	public MapEdge(MapNode first, MapNode second, String name, double length) {
+		this.startNode = first;
+		this.finishNode = second;
+		this.streetName = name;
+		this.streetType = "";
+		this.streetLength = length;
 	}
 
 	/**
