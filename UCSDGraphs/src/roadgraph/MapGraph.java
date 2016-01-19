@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -103,7 +104,7 @@ public class MapGraph {
 	{
 		// TODO: Implement this method in WEEK 2
 		//add a distance for week 3 - set a distance to infinity
-		MapNode addedMaNode = new MapNode(location, "", distance);
+		MapNode addedMaNode = new MapNode(location, "");
 		if (!listNodes.containsKey(location)) {
 			listNodes.put(location, addedMaNode);
 			return true;
@@ -245,6 +246,8 @@ public class MapGraph {
 	//===================================================================================================
 	//for week 3
 	//===================================================================================================
+	//part 1
+	//===================================================================================================
 
 	/** Find the path from start to goal using Dijkstra's algorithm
 	 * 
@@ -282,31 +285,44 @@ public class MapGraph {
 			
 			//initialize ADT
 			//we should use a comparator!!!
-			PriorityQueue<MapNode> pq = new PriorityQueue<>();
+			Comparator<MapNode> cmtr = createComparator();
+			
+			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
 			
 			HashSet<MapNode> parentMap = new HashSet<>();
 			
 			LinkedList<MapNode> visited = new LinkedList<>();
 			
-			double distStart = 0.0;
+			//set a distance to infinity
+			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
+				entry.getValue().setDistance(distance);
+			}
 			
+			//get a start and goal node
 			MapNode startNode = listNodes.get(start);
-			startNode.setDistance(distStart);
+			//set a distance start node as 0
+			startNode.setDistance(0.0);
 			
-			MapNode goalNode = listNodes.get(goal);
+			MapNode goalNode = listNodes.get(goal);                                      // maybe we cannot use this
+
+            //start an algorithm
 			
+			pq.add(startNode);
 			
-			
-			//start an algorithm
-			
-			
-			
-			//start a loop
+			//start a loop through PriorityQueue
 			
 			while(!pq.isEmpty()) {
-				//HashMap<MapNode,Double> setOfMapDist_curr = pq.poll();
 				
-				//if() {}
+				MapNode curr = pq.poll();
+				
+				if (goal.equals(curr.getNodeLocation())) {
+					return reconstructPath(parentMap);                                  //write a helper method
+				} else
+				
+				if(!visited.contains(curr)) {
+					visited.add(curr);
+				}
+				
 			}
 			
 		}
@@ -314,21 +330,31 @@ public class MapGraph {
 		return null;
 	}
 	/**
+	 * 
+	 * @param parentMap
+	 * @return
+	 */
+	private List<GeographicPoint> reconstructPath(HashSet<MapNode> parentMap) {
+		// TODO Auto-generated method stub                                        !!!!!!!!!!!!!!!!!!!!!!!!!!!
+		List<GeographicPoint> lfs = new ArrayList<>();
+		
+		return lfs;
+	}
+
+	/**
 	 * a helper method for using it as distance priority
 	 * @return comparator
 	 */
-	public Comparator<Double> createComparator() {
-		Comparator<Double> comparator = new Comparator<Double>() {
+	public Comparator<MapNode> createComparator() {
+		Comparator<MapNode> comparator = new Comparator<MapNode>() {
             @Override
-            public int compare(Double x, Double y) {
-                // Assume neither string is null. Real code should
-                // probably be more robust
-                // You could also just return x.length() - y.length(),
+            public int compare(MapNode x, MapNode y) {
+                // You could also just return x.getDistance() - y.getDistance(),
                 // which would be more efficient.
-                if (x < y) {
+                if (x.getDistance() < y.getDistance()) {
                     return -1;
                     }
-                if (x > y) {
+                if (x.getDistance() > y.getDistance()) {
                     return 1;
                 }
                 return 0;
@@ -337,7 +363,8 @@ public class MapGraph {
 		return comparator;
 	}
 	
-	
+	//part 2
+	//===================================================================================================	
 
 	/** Find the path from start to goal using A-Star search
 	 * 
