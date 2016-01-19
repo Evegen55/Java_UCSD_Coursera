@@ -1,0 +1,76 @@
+startNode Lat: 0.0, Lon: 0.0
+finishNode Lat: 1.0, Lon: 1.0
+street length 157.2987453847275
+
+startNode Lat: 0.0, Lon: 0.0
+finishNode Lat: -1.0, Lon: 0.0
+street length 111.22983322959863
+
+startNode Lat: 1.0, Lon: 1.0
+finishNode Lat: 2.0, Lon: 2.0
+street length 157.27478863265398
+
+startNode Lat: 2.0, Lon: 2.0
+finishNode Lat: 3.0, Lon: 3.0
+street length 157.22689337854422
+
+startNode Lat: 3.0, Lon: 3.0
+finishNode Lat: 4.0, Lon: 4.0
+street length 157.15509612857798
+
+startNode Lat: 4.0, Lon: 4.0
+finishNode Lat: 5.0, Lon: 5.0
+street length 157.0594516572839
+
+startNode Lat: -1.0, Lon: 0.0
+finishNode Lat: -2.0, Lon: 0.0
+street length 111.22983322959863
+
+startNode Lat: -2.0, Lon: 0.0
+finishNode Lat: -3.0, Lon: 0.0
+street length 111.22983322959863
+
+startNode Lat: 5.0, Lon: 5.0
+finishNode Lat: 6.0, Lon: 6.0
+street length 156.9400330258367
+
+startNode has been added
+
+start loop
+visited.add(curr);Lat: 0.0, Lon: 0.0
+MapNode next : getNeighbours(curr)Lat: 1.0, Lon: 1.0
+currDist 0.0 neighboursDist Infinity edgeLength 157.2987453847275
+currDist ag 0.0 neighboursDist ag Infinity edgeLength ag 157.2987453847275
+smth
+pq.peekLat: 1.0, Lon: 1.0
+MapNode next : getNeighbours(curr)Lat: -1.0, Lon: 0.0
+currDist 0.0 neighboursDist Infinity edgeLength 111.22983322959863
+currDist ag 0.0 neighboursDist ag Infinity edgeLength ag 111.22983322959863
+smth
+pq.peekLat: 1.0, Lon: 1.0
+
+start loop
+visited.add(curr);Lat: 1.0, Lon: 1.0
+MapNode next : getNeighbours(curr)Lat: 2.0, Lon: 2.0
+currDist Infinity neighboursDist Infinity edgeLength 157.27478863265398
+smth
+pq.peekLat: -1.0, Lon: 0.0
+
+start loop
+visited.add(curr);Lat: -1.0, Lon: 0.0
+java.lang.NullPointerException
+	at roadgraph.MapGraph.dijkstra(MapGraph.java:350)
+	at roadgraph.MapGraph.dijkstra(MapGraph.java:263)
+	at roadgraph.DijkstraGrader.judge(DijkstraGrader.java:86)
+	at roadgraph.DijkstraGrader.runTest(DijkstraGrader.java:73)
+	at roadgraph.DijkstraGrader.run(DijkstraGrader.java:124)
+	at java.lang.Thread.run(Unknown Source)
+MapNode next : getNeighbours(curr)Lat: -2.0, Lon: 0.0
+currDist Infinity neighboursDist Infinity edgeLength 111.22983322959863
+smth
+Score: 0.0
+Feedback: 
+
+MAP: Straight line (-3 <- -2 <- -1 <- 0 -> 1 -> 2-> 3 ->...)
+** Test #1: Running Dijkstra's algorithm from (0.0, 0.0) to (6.0, 6.0)...
+Error during runtime: java.lang.NullPointerException
