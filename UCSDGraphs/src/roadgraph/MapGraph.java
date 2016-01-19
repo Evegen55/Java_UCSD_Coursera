@@ -38,7 +38,7 @@ public class MapGraph {
 	//GeographicPoint = MapNode.getNodeLocation!!!
 	public HashMap<GeographicPoint,MapNode> listNodes;
 	
-	public double distance = Double.POSITIVE_INFINITY;
+	
 	
 	
 	
@@ -131,11 +131,11 @@ public class MapGraph {
 			MapEdge addedMapEdge = new MapEdge();
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			addedMapEdge.setStartNode(startNode);
-			addedMapEdge.setFinishNode(finishNode);
+			addedMapEdge.setStartNode(startNode);                                                        System.out.println("startNode " + startNode.getNodeLocation());
+			addedMapEdge.setFinishNode(finishNode);                                                      System.out.println("finishNode " + finishNode.getNodeLocation());
 			addedMapEdge.setStreetName(roadName);
 			addedMapEdge.setStreetType(roadType);
-			addedMapEdge.setStreetLength(length);
+			addedMapEdge.setStreetLength(length);                                                        System.out.println("street length " + length + "\n");
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
@@ -286,14 +286,12 @@ public class MapGraph {
 			//initialize ADT
 			//we should use a comparator!!!
 			Comparator<MapNode> cmtr = createComparator();
-			
 			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
-			
-			HashSet<MapNode> parentMap = new HashSet<>();
-			
-			LinkedList<MapNode> visited = new LinkedList<>();
+			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
+			HashSet<MapNode> visited = new HashSet<>();
 			
 			//set a distance to infinity
+			double distance = Double.POSITIVE_INFINITY;
 			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
 				entry.getValue().setDistance(distance);
 			}
@@ -303,40 +301,76 @@ public class MapGraph {
 			//set a distance start node as 0
 			startNode.setDistance(0.0);
 			
-			MapNode goalNode = listNodes.get(goal);                                      // maybe we cannot use this
-
-            //start an algorithm
-			
-			pq.add(startNode);
-			
+			//start working with a PriorityQueue
+			pq.add(startNode);                                                                                         System.out.println("startNode has been added");
 			//start a loop through PriorityQueue
-			
-			while(!pq.isEmpty()) {
-				
+			while(!pq.isEmpty()) {                                                                                     System.out.println("\n" + "start loop");
 				MapNode curr = pq.poll();
-				
-				if (goal.equals(curr.getNodeLocation())) {
-					return reconstructPath(parentMap);                                  //write a helper method
-				} else
-				
-				if(!visited.contains(curr)) {
+				if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) {                             System.out.println("end loop");
+					
+				//TODO create a right path with HashMap!
+				    parentMap.put(curr, null);
+					return reconstructPath(parentMap);
+				}
+				if(!visited.contains(curr)) {                                                                           System.out.println("visited.add(curr);" + curr.getNodeLocation().toString());
 					visited.add(curr);
 				}
-				
-			}
-			
+				//for each of curr's neighbors, "next", ->
+				for(MapNode next : getNeighbours(curr)) {                                                               System.out.println("MapNode next : getNeighbours(curr)" + next.getNodeLocation().toString());
+					//not in visited set ->
+					if(!visited.contains(next)) {
+						//if path through curr to n is shorter
+						double edgeLength = getLengthEdgeBeetwen(curr, next);
+						if(curr.getDistance() < next.getDistance()) {
+							//update next's distance
+							next.setDistance(curr.getDistance()+edgeLength);
+							//update curr as n's parent map
+							
+							
+							if(!parentMap.containsKey(curr)) {
+								parentMap.put(curr, next); 
+							}
+							//enqueue into the pq
+							pq.add(next);
+						}                                                                                                                        
+					}
+				}
+			}                                                                                                        
 		}
 		
 		return null;
 	}
+	
 	/**
+	 * A helper method to get length between two nodes
 	 * 
-	 * @param parentMap
+	 * @param start
+	 * @param end
 	 * @return
 	 */
-	private List<GeographicPoint> reconstructPath(HashSet<MapNode> parentMap) {
+	private double getLengthEdgeBeetwen(MapNode start, MapNode end) {
+		// TODO Auto-generated method stub
+		double length = 0.0;
+		List<MapEdge> listForSearch = start.getListEdges();
+		for (MapEdge sch : listForSearch) {
+			if (sch.getStartNode().getNodeLocation().toString().equals(start.getNodeLocation().toString()) &&
+					sch.getFinishNode().getNodeLocation().toString().equals(end.getNodeLocation().toString())	) {
+				return length = sch.getStreetLength();
+			}
+		}
+		return length;
+	}
+
+	/**
+	 * A helper method to rebuild HashMap to List
+	 * @param map
+	 * @return
+	 */
+	private List<GeographicPoint> reconstructPath(HashMap<MapNode,MapNode> map) {
 		// TODO Auto-generated method stub                                        !!!!!!!!!!!!!!!!!!!!!!!!!!!
 		List<GeographicPoint> lfs = new ArrayList<>();
+		//TODO create a right path with HashMap!
+			                                                                                           //System.out.println("NodeLocation" + mpn.getNodeLocation().toString());
 		
 		return lfs;
 	}
@@ -353,10 +387,12 @@ public class MapGraph {
                 // which would be more efficient.
                 if (x.getDistance() < y.getDistance()) {
                     return -1;
-                    }
+                	//return 1;
+                    } 
                 if (x.getDistance() > y.getDistance()) {
                     return 1;
-                }
+                	//return -1;
+                } 
                 return 0;
             }
         };
