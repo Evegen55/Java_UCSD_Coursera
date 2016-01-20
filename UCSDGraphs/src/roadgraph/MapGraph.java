@@ -37,12 +37,7 @@ public class MapGraph {
 	private int numVertices;
 	
 	//DO IT LIKE PRIVATE !
-	//GeographicPoint = MapNode.getNodeLocation!!!
 	public HashMap<GeographicPoint,MapNode> listNodes;
-	
-	
-	
-	
 	
 	/** 
 	 * Create a new empty MapGraph 
@@ -52,8 +47,6 @@ public class MapGraph {
 		// TODO: Implement in this constructor in WEEK 2
 		listNodes = new HashMap<>();
 		numVertices = 0;
-		
-		
 	}
 	
 	/**
@@ -93,8 +86,6 @@ public class MapGraph {
 		return numEdges;
 	}
 
-	
-	
 	/** Add a node corresponding to an intersection at a Geographic Point
 	 * If the location is already in the graph or null, this method does 
 	 * not change the graph.
@@ -130,14 +121,9 @@ public class MapGraph {
 			String roadType, double length) throws IllegalArgumentException {
 		//TODO: Implement this method in WEEK 2
 		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
-			MapEdge addedMapEdge = new MapEdge();
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			addedMapEdge.setStartNode(startNode);                                                        //System.out.println("startNode " + startNode.getNodeLocation());
-			addedMapEdge.setFinishNode(finishNode);                                                      //System.out.println("finishNode " + finishNode.getNodeLocation());
-			addedMapEdge.setStreetName(roadName);
-			addedMapEdge.setStreetType(roadType);
-			addedMapEdge.setStreetLength(length);                                                        //System.out.println("street length " + length + "\n");
+			MapEdge addedMapEdge = new MapEdge(startNode, finishNode, roadName, roadType, length);
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
@@ -277,11 +263,6 @@ public class MapGraph {
 										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 3
-
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
-		//HashMap<GeographicPoint,MapNode> listNodes;
 		
 		List<GeographicPoint> lfs = new LinkedList<>();
 		
@@ -293,9 +274,8 @@ public class MapGraph {
 			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
 			Set<MapNode> visited = new HashSet<>();
 			//set a distance to infinity
-			double distance = Double.POSITIVE_INFINITY;
 			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
-				entry.getValue().setDistance(distance);
+				entry.getValue().setDistance(Double.POSITIVE_INFINITY);
 			}
 			//get a start and goal node
 			MapNode startNode = listNodes.get(start);
@@ -307,8 +287,10 @@ public class MapGraph {
 			//start a loop through PriorityQueue
 			while(!pq.isEmpty()) {
 				MapNode curr = pq.poll();
+				//--------------------------------------------
 				// hook for visualization
 				nodeSearched.accept(curr.getNodeLocation());
+				//--------------------------------------------
 				if(!visited.contains(curr)) {                                                                           
 					visited.add(curr);
 					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
@@ -385,17 +367,16 @@ public class MapGraph {
 		Comparator<MapNode> comparator = new Comparator<MapNode>() {
             @Override
             public int compare(MapNode x, MapNode y) {
-                // You could also just return x.getDistance() - y.getDistance(),
-                // which would be more efficient.
-                if (x.getDistance() < y.getDistance()) {
-                    return -1;
-                	//return 1;
-                    } 
-                if (x.getDistance() > y.getDistance()) {
-                    return 1;
-                	//return -1;
-                } 
-                return 0;
+                // You could return x.getDistance() - y.getDistance(), which would be more efficient.
+            	return (int) (x.getDistance()-y.getDistance());
+            	//but for more better understanding you should use smth like this:
+            	//     if (x.getDistance() < y.getDistance()) {
+            	//         return -1;
+            	//          }
+            	//      if (x.getDistance() > y.getDistance()) {
+            	//          return 1;
+            	//      }
+            	//       return 0;
             }
         };
 		return comparator;
