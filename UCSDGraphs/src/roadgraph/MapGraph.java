@@ -309,39 +309,16 @@ public class MapGraph {
 			
 				MapNode curr = pq.poll();
 				
+				// hook for visualization
+				nodeSearched.accept(curr.getNodeLocation());
+				
 				//parentMap.put(curr,  null);
 				
-				if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) {                             System.out.println("end loop");
-					
-				//TODO create a right path with HashMap!
-				    
-				    
-				                                                                                                        for (Map.Entry<MapNode, MapNode> entry : parentMap.entrySet()) {
-				                                                                                                        	System.out.println("map key " + entry.getKey().getNodeLocation().toString());
-				                                                                                                        	if (entry.getValue() != null) {
-				                                                                                                        		System.out.println("map value " + entry.getValue().getNodeLocation().toString());
-				                                                                                                        		} else {
-				                                                                                                        			System.out.println("map value is null");
-				                                                                                                        			}
-				                                                                                                        }
-				                                                                                                        System.out.println("reconstructPath------------------------------");
-				    List<GeographicPoint> lst = reconstructPath(parentMap, start, goal);
-				                                                                                                        for(GeographicPoint gp : lst) {
-				                                                                                                        	System.out.println(gp.toString());
-				                                                                                                        }
-				    Collections.reverse(lst);                                                                                                    
-				                                                                                                       System.out.println("reconstructPath reverse------------------------------");
-				                                                                                                       for(GeographicPoint gp : lst) {
-                    	                                                                                                   System.out.println(gp.toString());
-                                                                                                                       }
-				    
-				    
-					//return reconstructPath(parentMap, start, goal);
-				    return lst;
+				if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) {                             break;
 				}
 				if(!visited.contains(curr)) {                                                                           System.out.println("visited.add(curr);" + curr.getNodeLocation().toString());
 					visited.add(curr);
-				}
+				
 				//for each of curr's neighbors, "next", ->
 				for(MapNode next : getNeighbours(curr)) {                                                               System.out.println("MapNode next : getNeighbours(curr)" + next.getNodeLocation().toString());
 					//not in visited set ->
@@ -379,6 +356,7 @@ public class MapGraph {
 					}
 				}
 			}                                                                                                        
+		}
 		}
 		
 		return null;
