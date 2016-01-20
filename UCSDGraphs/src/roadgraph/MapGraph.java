@@ -1,5 +1,6 @@
 /**
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team
+ * @author Evegen55
  * 
  * A class which reprsents a graph of geographic locations
  * Nodes in the graph are intersections between 
@@ -132,11 +133,11 @@ public class MapGraph {
 			MapEdge addedMapEdge = new MapEdge();
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			addedMapEdge.setStartNode(startNode);                                                        System.out.println("startNode " + startNode.getNodeLocation());
-			addedMapEdge.setFinishNode(finishNode);                                                      System.out.println("finishNode " + finishNode.getNodeLocation());
+			addedMapEdge.setStartNode(startNode);                                                        //System.out.println("startNode " + startNode.getNodeLocation());
+			addedMapEdge.setFinishNode(finishNode);                                                      //System.out.println("finishNode " + finishNode.getNodeLocation());
 			addedMapEdge.setStreetName(roadName);
 			addedMapEdge.setStreetType(roadType);
-			addedMapEdge.setStreetLength(length);                                                        System.out.println("street length " + length + "\n");
+			addedMapEdge.setStreetLength(length);                                                        //System.out.println("street length " + length + "\n");
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
@@ -285,36 +286,29 @@ public class MapGraph {
 		List<GeographicPoint> lfs = new LinkedList<>();
 		
 		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
-			
 			//initialize ADT
 			//we should use a comparator!!!
 			Comparator<MapNode> cmtr = createComparator();
 			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
 			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
 			Set<MapNode> visited = new HashSet<>();
-			
 			//set a distance to infinity
 			double distance = Double.POSITIVE_INFINITY;
 			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
 				entry.getValue().setDistance(distance);
 			}
-			
 			//get a start and goal node
 			MapNode startNode = listNodes.get(start);
-			MapNode goalNode = listNodes.get(start);
+			MapNode goalNode = listNodes.get(goal);
 			//set a distance start node as 0
 			startNode.setDistance(0.0);
-			
 			//start working with a PriorityQueue
 			pq.add(startNode);                                                                                         
 			//start a loop through PriorityQueue
-			while(!pq.isEmpty()) {                                                                                     
-			
+			while(!pq.isEmpty()) {
 				MapNode curr = pq.poll();
-				
 				// hook for visualization
 				nodeSearched.accept(curr.getNodeLocation());
-				
 				if(!visited.contains(curr)) {                                                                           
 					visited.add(curr);
 					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
@@ -328,7 +322,9 @@ public class MapGraph {
 								//update next's distance
 								double edgeLength = getLengthEdgeBeetwen(curr, next);
 								next.setDistance(curr.getDistance()+edgeLength);
-								//update curr as nexts's parent in parent map
+								//update curr as nexts's parent in parent map                               
+								                                                          //System.out.println("next" + next.getNodeLocation().toString());
+								                                                          //System.out.println("curr" + curr.getNodeLocation().toString());
 								parentMap.put(next, curr);
 							} 
 							//enqueue into the pq
@@ -338,45 +334,29 @@ public class MapGraph {
 				}
 			} 
 			lfs = reconstructPath(parentMap, startNode, goalNode);
-			
 		}
-		
 		return lfs;
 	}
-	
-	private double getOldLength(HashMap<MapNode, MapNode> mapForSearch, MapNode node) {
-		// TODO Auto-generated method stub
-		double dist = 0.0;
-		for (Map.Entry<MapNode, MapNode> entry : mapForSearch.entrySet()) {
-			double entryNodeLat = entry.getKey().getNodeLocation().x;
-			double entryNodeLon = entry.getKey().getNodeLocation().y;
-			
-			double goalNodeLat = node.getNodeLocation().x;
-			double goalNodeLon = node.getNodeLocation().y;
-			
-			if (entryNodeLat == goalNodeLat  && entryNodeLon == goalNodeLon) {
-				dist = entry.getValue().getDistance();
-			}
-	
-		}
-		return dist;
-	}
-
+	/**
+	 * 
+	 * @param parentMap
+	 * @param start
+	 * @param goal
+	 * @return
+	 * @author UCSD MOOC development team
+	 * 
+	 */
 	private List<GeographicPoint> reconstructPath(HashMap<MapNode,MapNode> parentMap, MapNode start, MapNode goal){
 		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
 		MapNode current = goal;
-		while (!current.equals(start)) {                         //!!!!!!!!!!!!
+		while (!current.equals(start)) {
 			path.addFirst(current.getNodeLocation());
 			current = parentMap.get(current);
 		}
-
-		// add start
-		path.addFirst(start.getNodeLocation());                 //!!!!!!!!!!!!!!!!!
+        path.addFirst(start.getNodeLocation());
 		return path;
 	}
 	
-	
-
 	/**
 	 * A helper method to get length between two nodes
 	 * 
@@ -396,8 +376,6 @@ public class MapGraph {
 		}
 		return length;
 	}
-
-
 
 	/**
 	 * a helper method for using it as distance priority
