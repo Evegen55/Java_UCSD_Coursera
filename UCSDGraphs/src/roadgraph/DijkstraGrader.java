@@ -68,8 +68,9 @@ public class DijkstraGrader implements Runnable {
         feedback += "\n\n" + desc;
 
         GraphLoader.loadRoadMap("data/graders/mod3/" + file, graph);
+        
         CorrectAnswer corr = new CorrectAnswer("data/graders/mod3/" + file + ".answer", false);
-
+        
         judge(i, graph, corr, start, end);
     }
 
