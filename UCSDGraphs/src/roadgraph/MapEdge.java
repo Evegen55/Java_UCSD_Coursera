@@ -118,5 +118,13 @@ public class MapEdge {
 	public void setStreetType(String streetType) {
 		this.streetType = streetType;
 	}
+	/**
+	 * @override
+	*/
+	public String toString() {
+		String to = "startNode " + startNode.getNodeLocation().toString() + "\t" + "goalNode " + finishNode.getNodeLocation().toString()
+				 + "\t" + "street name: " + streetName+ "\t" + "street type: " + streetType+ "\t" + "street length: " + streetLength;
+		return to;
+	}
 
 }

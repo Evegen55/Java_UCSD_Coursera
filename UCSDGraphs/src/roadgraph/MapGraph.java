@@ -97,8 +97,10 @@ public class MapGraph {
 	{
 		// TODO: Implement this method in WEEK 2
 		//add a distance for week 3 - set a distance to infinity
-		MapNode addedMaNode = new MapNode(location, "");
+		                                                                                                                     //System.out.println("adding" + "\t" + location.toString());
+		                                                                       
 		if (!listNodes.containsKey(location)) {
+			MapNode addedMaNode = new MapNode(location, "");                                                                 //System.out.println("added" + "\t" + location.toString());
 			listNodes.put(location, addedMaNode);
 			return true;
 		}
@@ -123,7 +125,7 @@ public class MapGraph {
 		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			MapEdge addedMapEdge = new MapEdge(startNode, finishNode, roadName, roadType, length);
+			MapEdge addedMapEdge = new MapEdge(startNode, finishNode, roadName, roadType, length);                             //System.out.println(addedMapEdge.toString());
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
@@ -226,7 +228,9 @@ public class MapGraph {
 		List<MapEdge> listForSearch = forSearch.getListEdges();
 		for (MapEdge sch : listForSearch) {
 			MapNode mdn = sch.getFinishNode();
-			att.add(mdn);
+			att.add(mdn);                                                                                           //System.out.println("//========================================");
+			                                                                                                        //System.out.println("neigbor" + mdn.getNodeLocation().toString());
+			                                                                                                        //System.out.println("//========================================");
 		}
 		return att;
 	}
@@ -259,13 +263,9 @@ public class MapGraph {
 	 * @return The list of intersections that form the shortest path from 
 	 *   start to goal (including both start and goal).
 	 */
-	public List<GeographicPoint> dijkstra(GeographicPoint start, 
-										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
-	{
+	public List<GeographicPoint> dijkstra(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
 		// TODO: Implement this method in WEEK 3
-		
 		List<GeographicPoint> lfs = new LinkedList<>();
-		
 		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
 			//initialize ADT
 			//we should use a comparator!!!
@@ -295,7 +295,7 @@ public class MapGraph {
 					visited.add(curr);
 					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
 					//for each of curr's neighbors, "next", ->
-					List<MapNode> neighbors = getNeighbours(curr);
+					List<MapNode> neighbors = getNeighbours(curr);                                                 //System.out.println("curr before " + curr.getNodeLocation().toString());
 					for(MapNode next : neighbors) {
 						//not in visited set ->
 						if(!visited.contains(next)) {
@@ -305,16 +305,37 @@ public class MapGraph {
 								double edgeLength = getLengthEdgeBeetwen(curr, next);
 								next.setDistance(curr.getDistance()+edgeLength);
 								//update curr as nexts's parent in parent map                               
-								                                                          //System.out.println("next" + next.getNodeLocation().toString());
-								                                                          //System.out.println("curr" + curr.getNodeLocation().toString());
+								                                                                                  //System.out.println("curr" + curr.getNodeLocation().toString());
+                                                                                                                  //System.out.println("curr dist" + curr.getDistance());
+                                                                                                                  //System.out.println("//......................................");
+								                                                                                  //System.out.println("next" + next.getNodeLocation().toString());
+								                                                                                  //System.out.println("next dist" + next.getDistance());
+								                                                          
+								                                                                                  //System.out.println("//---------------------------------------");
+								                                                                                  //printMap( parentMap);
+								                                                                                  //System.out.println("//---------------------------------------");
+								
+						//		if(!(parentMap..containsKey(next) || parentMap.containsValue(curr))) {                                                          
 								parentMap.put(next, curr);
+						//		} else {
+						//		parentMap.put(curr, next);	
+						//		}
+								
 							} 
 							//enqueue into the pq
 							pq.add(next);
 						}                                                                                                                        
 					}
 				}
-			} 
+			}
+			
+			
+			                                                                                                     //printMap( parentMap);
+			                                                                                                     //System.out.println("//****************************************");
+			                                                                                                     //System.out.println(getNumEdges());
+			
+			
+			
 			lfs = reconstructPath(parentMap, startNode, goalNode);
 		}
 		return lfs;
@@ -337,6 +358,17 @@ public class MapGraph {
 		}
         path.addFirst(start.getNodeLocation());
 		return path;
+	}
+	
+	/**
+	 * 
+	 * @param parentMap
+	 */
+	private void printMap(HashMap<MapNode,MapNode> parentMap){
+		for (Map.Entry<MapNode, MapNode> entry : parentMap.entrySet()) {
+			System.out.print( "key" + "\t" + entry.getKey().getNodeLocation().toString() + "\t");
+			System.out.println( "value" + "\t" + entry.getValue().getNodeLocation().toString());
+		}
 	}
 	
 	/**
@@ -410,12 +442,66 @@ public class MapGraph {
 											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
 		// TODO: Implement this method in WEEK 3
-		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
-		return null;
+		List<GeographicPoint> lfs = new LinkedList<>();
+		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+			//initialize ADT
+			//we should use a IMPROOVE comparator!!!
+			Comparator<MapNode> cmtr = createComparator();
+			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
+			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
+			Set<MapNode> visited = new HashSet<>();
+			//set a distance to infinity
+			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
+				entry.getValue().setDistance(Double.POSITIVE_INFINITY);
+			}
+			//get a start and goal node
+			MapNode startNode = listNodes.get(start);
+			MapNode goalNode = listNodes.get(goal);
+			//set a distance start node as 0
+			startNode.setDistance(0.0);
+			//start working with a PriorityQueue
+			pq.add(startNode);                                                                                         
+			//start a loop through PriorityQueue
+			while(!pq.isEmpty()) {
+				MapNode curr = pq.poll();
+				//--------------------------------------------
+				// hook for visualization
+				nodeSearched.accept(curr.getNodeLocation());
+				//--------------------------------------------
+				if(!visited.contains(curr)) {                                                                           
+					visited.add(curr);
+					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
+					//for each of curr's neighbors, "next", ->
+					List<MapNode> neighbors = getNeighbours(curr);
+					for(MapNode next : neighbors) {
+						//not in visited set ->
+						if(!visited.contains(next)) {
+							//if path through curr to n is shorter ->            this function g(v)
+							//add in this place h(v)
+							if(curr.getDistance() < next.getDistance()) {
+								//update next's distance
+								double edgeLength = getLengthEdgeBeetwen(curr, next);
+								next.setDistance(curr.getDistance()+edgeLength);
+								//update curr as nexts's parent in parent map                               
+								                                                                                                //System.out.println("next" + next.getNodeLocation().toString());
+								                                                                                                //System.out.println("next dist" + next.getDistance());
+								                                                                                                //System.out.println("curr" + curr.getNodeLocation().toString());
+								                                                                                                //System.out.println("curr dist" + curr.getDistance());
+								                                                                                                //System.out.println("//-------------");
+								                                                          
+								parentMap.put(next, curr);
+							} 
+							//enqueue into the pq
+							pq.add(next);
+						}                                                                                                                        
+					}
+				}
+			} 
+			lfs = reconstructPath(parentMap, startNode, goalNode);
+		}
+		return lfs;
 	}
+	
 
 	
 	
