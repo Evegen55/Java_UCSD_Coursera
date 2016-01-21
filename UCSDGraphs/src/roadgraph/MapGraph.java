@@ -477,7 +477,7 @@ public class MapGraph {
 						//not in visited set ->
 						if(!visited.contains(next)) {
 							//if path through curr to n is shorter ->            this function g(v)
-							//add in this place h(v)
+							                                                                                                     //add in this place h(v) !!!!!!!!!!!!!!!!!!
 							if(curr.getDistance() < next.getDistance()) {
 								//update next's distance
 								double edgeLength = getLengthEdgeBeetwen(curr, next);
@@ -507,24 +507,25 @@ public class MapGraph {
 	
 	public static void main(String[] args)
 	{
-		System.out.print("Making a new map...");
-		MapGraph theMap = new MapGraph();
-		System.out.print("DONE. \nLoading the map...");
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
-		System.out.println("DONE.");
+		//System.out.print("Making a new map...");
+		//MapGraph theMap = new MapGraph();
+		//System.out.print("DONE. \nLoading the map...");
+		//GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
+		//System.out.println("DONE.");
 		
 
-		System.out.println("Num nodes: " + theMap.getNumVertices());
-		System.out.println("Num edges: " + theMap.getNumEdges());
-		List<GeographicPoint> route = theMap.dijkstra(new GeographicPoint(1.0,1.0), new GeographicPoint(8.0,-1.0));
+		//System.out.println("Num nodes: " + theMap.getNumVertices());
+		//System.out.println("Num edges: " + theMap.getNumEdges());
+		//List<GeographicPoint> route = theMap.dijkstra(new GeographicPoint(1.0,1.0), new GeographicPoint(8.0,-1.0));
 		
-		for (GeographicPoint gp: route) {
-			System.out.println(gp.toString());
-		}
+		//for (GeographicPoint gp: route) {
+		//	System.out.println(gp.toString());
+		//}
 		
 		// You can use this method for testing.  
 		
-		/* Use this code in Week 3 End of Week Quiz
+		//Use this code in Week 3 End of Week Quiz
+		
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/maps/utc.map", theMap);
@@ -537,7 +538,8 @@ public class MapGraph {
 		List<GeographicPoint> route = theMap.dijkstra(start,end);
 		List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
 
-		*/
+		System.out.println(route.size() + "\t" + route2.size());
+		
 		
 	}
 	
