@@ -10,6 +10,7 @@ public class MapNode {
 	private String nodeName;
 	private List<MapEdge> listEdges;
 	private double distance;
+	private int numNodesBefore;
 	
 	/**
 	 * 
@@ -131,6 +132,12 @@ public class MapNode {
 	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
+	}
+	public int getNumNodesBefore() {
+		return numNodesBefore;
+	}
+	public void setNumNodesBefore(int numNodesBefore) {
+		this.numNodesBefore = numNodesBefore;
 	}
 	
 }
