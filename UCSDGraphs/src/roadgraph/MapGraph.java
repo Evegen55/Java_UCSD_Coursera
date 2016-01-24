@@ -156,6 +156,9 @@ public class MapGraph {
 	{
 		// TODO: Implement this method in WEEK 2
 		
+		//                     !!!!!!!!!!!!!!!!!!!!!!             rewrite it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 		
@@ -222,16 +225,17 @@ public class MapGraph {
 		} 
 		return null;
 	}
-	
+	/**
+	 * 
+	 * @param forSearch
+	 * @return
+	 */
 	public List<MapNode> getNeighbours(MapNode forSearch) {
 		List<MapNode> att = new ArrayList<>();
 		List<MapEdge> listForSearch = forSearch.getListEdges();
 		for (MapEdge sch : listForSearch) {
 			MapNode mdn = sch.getFinishNode();
-			att.add(mdn);                                                                                           //System.out.println("//========================================");
-			                                                                                                        //System.out.println("neigbor" + mdn.getNodeLocation().toString());
-			                                                                                                        //System.out.println("//========================================");
-		}
+			att.add(mdn);                                                                                           }
 		return att;
 	}
 
@@ -295,35 +299,27 @@ public class MapGraph {
 					visited.add(curr);
 					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
 					//for each of curr's neighbors, "next", ->
-					List<MapNode> neighbors = getNeighbours(curr);                                                
+					List<MapNode> neighbors = getNeighbours(curr);                                                 
 					for(MapNode next : neighbors) {
 						//not in visited set ->
 						if(!visited.contains(next)) {
 							//if path through curr to n is shorter ->
-							if(curr.getDistance() < next.getDistance()) {
-								//update next's distance
-								double edgeLength = getLengthEdgeBeetwen(curr, next);
-								next.setDistance(curr.getDistance()+edgeLength);
-					//			if(!(parentMap.containsKey(next))) {                                                          
-								parentMap.put(next, curr);
+							if(!(parentMap.containsKey(next))) {
+								if(curr.getDistance() < next.getDistance()) {
+									//update next's distance
+									double edgeLength = getLengthEdgeBeetwen(curr, next);
+									next.setDistance(curr.getDistance()+edgeLength);
+									parentMap.put(next, curr);
+					            }
 								//enqueue into the pq
-					//			pq.add(next);
-					//			} else  {
-					//            MapNode nextInMap = getMapNodeFromMap(parentMap, next);
-					//			            double presDist = getDistInMap(parentMap, next);
-					//                      System.out.println("next.getDistance()" + "\t" + next.getDistance()+"\t"+"nextInMap.getDistance()" + "\t" + nextInMap.getDistance());
-					//                      System.out.println("presDist" + "\t" + presDist);
-					//			            if (next.getDistance() < nextInMap.getDistance()) {                 //(what happening when <=
-					//			             
-					//			             parentMap.put(next, curr);
-								             //enqueue into the pq
-					//							pq.add(next);
-					//		                 }
-					//			}
-								
-							} 
-							//enqueue into the pq
-							pq.add(next);
+								pq.add(next);
+							} else {
+								double edgeLengthAgain = getLengthEdgeBeetwen(curr, next);
+								if(curr.getDistance()+edgeLengthAgain < next.getDistance()) {
+									next.setDistance(curr.getDistance()+edgeLengthAgain);
+									parentMap.put(next, curr);
+								}
+							}
 						}                                                                                                                        
 					}
 				}
@@ -332,39 +328,6 @@ public class MapGraph {
 		}
 		return lfs;
 	}
-	/**
-	 * 
-	 * @param map
-	 * @param n
-	 * @return
-	 */
-	private double getDistInMap(HashMap<MapNode, MapNode> map, MapNode n) {
-		// TODO Auto-generated method stub
-		for (Map.Entry<MapNode, MapNode> entry : map.entrySet()) {
-			if (entry.getKey().equals(n)) {
-				return getLengthEdgeBeetwen(n, entry.getKey());
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @param parentMap
-	 * @param next
-	 * @return
-	 */
-	private MapNode getMapNodeFromMap(HashMap<MapNode, MapNode> map, MapNode n) {
-		// TODO Auto-generated method stub
-		MapNode ret = new MapNode();
-		for (Map.Entry<MapNode, MapNode> entry : map.entrySet()) {
-			if (entry.getKey().getNodeLocation().equals(n.getNodeLocation())) {
-				return entry.getKey();
-			}
-		}
-		return ret;
-	}
-
 	/**
 	 * 
 	 * @param parentMap
