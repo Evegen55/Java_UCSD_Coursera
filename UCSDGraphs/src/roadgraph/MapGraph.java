@@ -459,6 +459,13 @@ public class MapGraph {
 				return lfs;
 	}
 	
+	/**
+	 * a helper method for getting a reduced cost
+	 * @see https://en.wikipedia.org/wiki/A*_search_algorithm
+	 * @param start
+	 * @param goal
+	 * @return
+	 */
 	private double getReducedCost(GeographicPoint start, GeographicPoint goal) {
 		double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2)));
 		return red_cost;
