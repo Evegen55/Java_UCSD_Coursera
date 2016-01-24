@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -129,6 +130,19 @@ public class MapGraph {
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
+	/**
+	 * 
+	 * @param forSearch
+	 * @return
+	 */
+	public List<MapNode> getNeighbours(MapNode forSearch) {
+		List<MapNode> att = new ArrayList<>();
+		List<MapEdge> listForSearch = forSearch.getListEdges();
+		for (MapEdge sch : listForSearch) {
+			MapNode mdn = sch.getFinishNode();
+			att.add(mdn);                                                                                           }
+		return att;
+	}
 
 	/** Find the path from start to goal using breadth first search
 	 * 
@@ -151,94 +165,55 @@ public class MapGraph {
 	 * @return The list of intersections that form the shortest (unweighted)
 	 *   path from start to goal (including both start and goal).
 	 */
-	public List<GeographicPoint> bfs(GeographicPoint start, 
-			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
-	{
+	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched){
 		// TODO: Implement this method in WEEK 2
+		if (start == null || goal == null) {
+			throw new NullPointerException("Cannot find route from or to null node");
+			}
+		MapNode startNode = listNodes.get(start);
+		MapNode endNode = listNodes.get(goal);
+		if (startNode == null) {
+			System.err.println("Start node " + start + " does not exist");
+			return null;
+		}
+		if (endNode == null) {
+			System.err.println("End node " + goal + " does not exist");
+			return null;
+		}
+		// setup to begin BFS
+		HashMap<MapNode,MapNode> parentMap = new HashMap<MapNode,MapNode>();
+		Queue<MapNode> toExplore = new LinkedList<MapNode>();
+		HashSet<MapNode> visited = new HashSet<MapNode>();
 		
-		//                     !!!!!!!!!!!!!!!!!!!!!!             rewrite it!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		toExplore.add(startNode);
+		MapNode next = null;
 		
-		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
-		
-		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
-			MapNode startNode = listNodes.get(start);
-			MapNode finishNode = listNodes.get(goal);
-			
-			LinkedList<MapNode> myQueue = new LinkedList<>();
-			
-			LinkedList<MapNode> visited = new LinkedList<>();
-			
-			List<GeographicPoint> itogo = new ArrayList<GeographicPoint>();
-			
-			LinkedList<GeographicPoint> itogoParsedEven = new LinkedList<>();
-			
-			LinkedList<GeographicPoint> itogoParsedOdd = new LinkedList<>();
-			
-			myQueue.addFirst(startNode);
-			visited.add(startNode);
-			itogo.add(start);
-			
-			while (!myQueue.isEmpty()) {
-				MapNode curr = myQueue.removeFirst();
-				
-				String currCoord = curr.getNodeLocation().toString();
-				String finishNodeCoord = finishNode.getNodeLocation().toString();
-				
-				if(currCoord.equalsIgnoreCase(finishNodeCoord)) {
-					
-	//--------------------------------------------------------------------------
-					//Parsing itogo for case with two neighbors (because we use stack)
-					if(getNeighbours(startNode).size() == 2) {
-						itogoParsedEven.add(start);
-						itogoParsedOdd.add(start);
-						for (GeographicPoint pars : itogo) {
-							int idx = itogo.indexOf(pars);
-							if(idx % 2 == 0) {
-								itogoParsedEven.add(pars);
-							} else {
-								itogoParsedOdd.add(pars);
-							}
-						}
-						if (itogoParsedEven.getLast().toString().equalsIgnoreCase(finishNodeCoord)) {
-							return itogoParsedEven;
-						} else {
-							return itogoParsedOdd;
-						}
-						
-					} else 
-						
-	//--------------------------------------------------------------------------					
-					return itogo;
-				} else  {
-					for (MapNode ngh : getNeighbours(curr)) {
-						if (!visited.contains(ngh)){
-						myQueue.addLast(ngh);
-						visited.add(ngh);
-						nodeSearched.accept(ngh.getNodeLocation());
-						itogo.add(ngh.getNodeLocation());
-						}
-					}
+		while (!toExplore.isEmpty()) {
+			next = toExplore.remove();
+			//----------------------------
+			// hook for visualization
+			nodeSearched.accept(next.getNodeLocation());
+			//----------------------
+			if (next.equals(endNode)) break;
+			List<MapNode> neighbors = getNeighbours(next);
+			for (MapNode neighbor : neighbors) {
+				if (!visited.contains(neighbor)) {
+					visited.add(neighbor);
+					parentMap.put(neighbor, next);
+					toExplore.add(neighbor);
 				}
 			}
-		} 
-		return null;
+		}
+		if (!next.equals(endNode)) {
+			System.out.println("No path found from " +start+ " to " + goal);
+			return null;
+		}
+		// Reconstruct the parent path
+		List<GeographicPoint> path = reconstructPath(parentMap, startNode, endNode);
+        return path;
 	}
-	/**
-	 * 
-	 * @param forSearch
-	 * @return
-	 */
-	public List<MapNode> getNeighbours(MapNode forSearch) {
-		List<MapNode> att = new ArrayList<>();
-		List<MapEdge> listForSearch = forSearch.getListEdges();
-		for (MapEdge sch : listForSearch) {
-			MapNode mdn = sch.getFinishNode();
-			att.add(mdn);                                                                                           }
-		return att;
-	}
-
+	
+	
 	//===================================================================================================
 	//for week 3
 	//===================================================================================================
@@ -304,28 +279,20 @@ public class MapGraph {
 						//not in visited set ->
 						if(!visited.contains(next)) {
 							//if path through curr to n is shorter ->
-							if(!(parentMap.containsKey(next))) {
-								if(curr.getDistance() < next.getDistance()) {
+							double edgeLength = getLengthEdgeBeetwen(curr, next);
+								if(curr.getDistance()+edgeLength < next.getDistance()) {
 									//update next's distance
-									double edgeLength = getLengthEdgeBeetwen(curr, next);
 									next.setDistance(curr.getDistance()+edgeLength);
 									parentMap.put(next, curr);
 					            }
 								//enqueue into the pq
 								pq.add(next);
-							} else {
-								double edgeLengthAgain = getLengthEdgeBeetwen(curr, next);
-								if(curr.getDistance()+edgeLengthAgain < next.getDistance()) {
-									next.setDistance(curr.getDistance()+edgeLengthAgain);
-									parentMap.put(next, curr);
-								}
-							}
 						}                                                                                                                        
 					}
 				}
 			}
 			lfs = reconstructPath(parentMap, startNode, goalNode);
-		}
+		} else {throw new NullPointerException("Cannot find route from or to null node");}
 		return lfs;
 	}
 	/**
@@ -429,64 +396,63 @@ public class MapGraph {
 	public List<GeographicPoint> aStarSearch(GeographicPoint start, 
 											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
-		List<GeographicPoint> lfs = new LinkedList<>();
-		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
-			//initialize ADT
-			//we should use a comparator!!!
-			Comparator<MapNode> cmtr = createComparator();
-			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
-			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
-			Set<MapNode> visited = new HashSet<>();
-			//set a distance to infinity
-			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
-				entry.getValue().setDistance(Double.POSITIVE_INFINITY);
-			}
-			//get a start and goal node
-			MapNode startNode = listNodes.get(start);
-			MapNode goalNode = listNodes.get(goal);
-			//set a distance start node as 0
-			startNode.setDistance(0.0);
-			//start working with a PriorityQueue
-			pq.add(startNode);                                                                                         
-			//start a loop through PriorityQueue
-			while(!pq.isEmpty()) {
-				MapNode curr = pq.poll();
-				//--------------------------------------------
-				// hook for visualization
-				nodeSearched.accept(curr.getNodeLocation());
-				//--------------------------------------------
-				if(!visited.contains(curr)) {                                                                           
-					visited.add(curr);
-					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
-					//for each of curr's neighbors, "next", ->
-					List<MapNode> neighbors = getNeighbours(curr);                                                 
-					for(MapNode next : neighbors) {
-						//not in visited set ->
-						if(!visited.contains(next)) {
-							//if path through curr to n is shorter ->
-							if(!(parentMap.containsKey(next))) {
-								if(curr.getDistance() < next.getDistance()) {
-									//update next's distance
-									double edgeLength = getLengthEdgeBeetwen(curr, next);
-									next.setDistance(curr.getDistance()+edgeLength);
-									parentMap.put(next, curr);
-					            }
-								//enqueue into the pq
-								pq.add(next);
-							} else {
-								double edgeLengthAgain = getLengthEdgeBeetwen(curr, next);
-								if(curr.getDistance()+edgeLengthAgain < next.getDistance()) {
-									next.setDistance(curr.getDistance()+edgeLengthAgain);
-									parentMap.put(next, curr);
-								}
-							}
-						}                                                                                                                        
+		// TODO: Implement this method in WEEK 3
+				List<GeographicPoint> lfs = new LinkedList<>();
+				if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+					//initialize ADT
+					//we should use a comparator!!!
+					Comparator<MapNode> cmtr = createComparator();
+					PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
+					HashMap<MapNode, MapNode> parentMap = new HashMap<>();
+					Set<MapNode> visited = new HashSet<>();
+					//set a distance to infinity
+					for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
+						entry.getValue().setDistance(Double.POSITIVE_INFINITY);
 					}
-				}
-			}
-			lfs = reconstructPath(parentMap, startNode, goalNode);
-		}
-		return lfs;
+					
+					
+					//getting a  reduced cost d=sqrt((x2−x1)^2+(y2−y1)^2)
+					double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2))); System.out.println(red_cost);
+					
+
+					//get a start and goal node
+					MapNode startNode = listNodes.get(start);
+					MapNode goalNode = listNodes.get(goal);
+					//set a distance start node as 0
+					startNode.setDistance(0.0);
+					//start working with a PriorityQueue
+					pq.add(startNode);                                                                                         
+					//start a loop through PriorityQueue
+					while(!pq.isEmpty()) {
+						MapNode curr = pq.poll();
+						//--------------------------------------------
+						// hook for visualization
+						nodeSearched.accept(curr.getNodeLocation());
+						//--------------------------------------------
+						if(!visited.contains(curr)) {                                                                           
+							visited.add(curr);
+							if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
+							//for each of curr's neighbors, "next", ->
+							List<MapNode> neighbors = getNeighbours(curr);                                                 
+							for(MapNode next : neighbors) {
+								//not in visited set ->
+								if(!visited.contains(next)) {
+									//if path through curr to n is shorter ->
+									double edgeLength = getLengthEdgeBeetwen(curr, next);
+										if(curr.getDistance()+edgeLength < next.getDistance()) {
+											//update next's distance
+											next.setDistance(curr.getDistance()+edgeLength);
+											parentMap.put(next, curr);
+							            }
+										//enqueue into the pq
+										pq.add(next);
+								}                                                                                                                        
+							}
+						}
+					}
+					lfs = reconstructPath(parentMap, startNode, goalNode);
+				} else {throw new NullPointerException("Cannot find route from or to null node");}
+				return lfs;
 	}
 	
 	public static void main(String[] args)
