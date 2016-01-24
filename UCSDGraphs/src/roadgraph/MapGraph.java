@@ -125,7 +125,7 @@ public class MapGraph {
 		if(listNodes.containsKey(from) && listNodes.containsKey(to)) {
 			MapNode startNode = listNodes.get(from);
 			MapNode finishNode = listNodes.get(to);
-			MapEdge addedMapEdge = new MapEdge(startNode, finishNode, roadName, roadType, length);                             System.out.println(addedMapEdge.toString());
+			MapEdge addedMapEdge = new MapEdge(startNode, finishNode, roadName, roadType, length);                             //System.out.println(addedMapEdge.toString());
 			listNodes.get(from).getListEdges().add(addedMapEdge); //add OUTCOMING edge from -> to
 			}
 	}
@@ -496,79 +496,35 @@ public class MapGraph {
 					visited.add(curr);
 					if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
 					//for each of curr's neighbors, "next", ->
-					List<MapNode> neighbors = getNeighbours(curr);                                                 //System.out.println("curr before " + curr.getNodeLocation().toString());
+					List<MapNode> neighbors = getNeighbours(curr);                                                 
 					for(MapNode next : neighbors) {
 						//not in visited set ->
 						if(!visited.contains(next)) {
 							//if path through curr to n is shorter ->
-							
-							if(!(parentMap.containsKey(next))) {  
-								
-							if(curr.getDistance() < next.getDistance()) {
-								//update next's distance
-								double edgeLength = getLengthEdgeBeetwen(curr, next);
-								next.setDistance(curr.getDistance()+edgeLength);
-								
-								                                                                                  //next.setNumNodesBefore(next.getNumNodesBefore()+1);
-								                                                                                  //System.out.println("next.getNumNodesBefore()" + "\t" + next.getNumNodesBefore());
-								//update curr as nexts's parent in parent map                               
-								                                                                                  System.out.println("a new neigbor");
-								                                                                                  System.out.println("curr" + curr.getNodeLocation().toString());
-                                                                                                                  System.out.println("curr dist" + curr.getDistance());
-                                                                                                                  System.out.println("//......................................");
-								                                                                                  System.out.println("next" + next.getNodeLocation().toString());
-								                                                                                  System.out.println("next dist" + next.getDistance());
-								                                                          
-								                                                                                  System.out.println("//---------------------------------------");
-								                                                                                  printMap( parentMap);
-								                                                                                  System.out.println("//---------------------------------------");
-								parentMap.put(next, curr);
-					//			} else  {
-					//			                                                                              System.out.println("ELSE");   printMap( parentMap);
-					//			            MapNode nextInMap = getMapNodeFromMap(parentMap, next);
-					//			            double presDist = getDistInMap(parentMap, next);
-					//			                                                                              System.out.println("next.getDistance()" + "\t" + next.getDistance()+"\t"+"nextInMap.getDistance()" + "\t" + nextInMap.getDistance());
-					//			                                                                              System.out.println("presDist" + "\t" + presDist);
-					//			            if (next.getDistance() < nextInMap.getDistance()) {                 //(what happening when <=
-					//			             
-					//			             parentMap.put(next, curr);
-								             //enqueue into the pq
-					//							pq.add(next);
-					//		                 }
-					//			}
-								
-							} 
-							//enqueue into the pq
-							pq.add(next);
+							if(!(parentMap.containsKey(next))) {
+								if(curr.getDistance() < next.getDistance()) {
+									//update next's distance
+									double edgeLength = getLengthEdgeBeetwen(curr, next);
+									next.setDistance(curr.getDistance()+edgeLength);
+									parentMap.put(next, curr);
+					            }
+								//enqueue into the pq
+								pq.add(next);
 							} else {
-											                                                                              System.out.println("ELSE");   printMap( parentMap);
-											                                       MapNode nextInMap = getMapNodeFromMap(parentMap, next);
-											                                       if (next.getDistance() <= nextInMap.getDistance()) { 
-											                                    	   parentMap.put(next, curr);
-											                                       }
-											                                                                              System.out.println("next" + next.getNodeLocation().toString());
-										                                                                                  System.out.println("next.getDistance()" + "\t" + next.getDistance()+"\t"+"nextInMap.getDistance()" + "\t" + nextInMap.getDistance());
-										                                                                                  System.out.println("next.getNumNodesBefore()" + "\t" + next.getNumNodesBefore()+"\t"+"nextInMap.getNumNodesBefore()" + "\t" + nextInMap.getNumNodesBefore());
+								double edgeLengthAgain = getLengthEdgeBeetwen(curr, next);
+								if(curr.getDistance()+edgeLengthAgain < next.getDistance()) {
+									next.setDistance(curr.getDistance()+edgeLengthAgain);
+									parentMap.put(next, curr);
+								}
 							}
 						}                                                                                                                        
 					}
 				}
 			}
-			
-			
-			                                                                                                    // printMap( parentMap);
-			                                                                                                     //System.out.println("//****************************************");
-			                                                                                                    // System.out.println(getNumEdges());
-			
-			
-			
 			lfs = reconstructPath(parentMap, startNode, goalNode);
 		}
 		return lfs;
 	}
-	
-
-	
 	
 	public static void main(String[] args)
 	{
