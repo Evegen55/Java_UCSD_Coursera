@@ -411,10 +411,9 @@ public class MapGraph {
 					}
 					
 					
-					//getting a  reduced cost d=sqrt((x2−x1)^2+(y2−y1)^2)
-					double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2))); System.out.println(red_cost);
+					//getting a  reduced cost
+					double redCost = getReducedCost(start,goal);                                    //System.out.println(redCost);
 					
-
 					//get a start and goal node
 					MapNode startNode = listNodes.get(start);
 					MapNode goalNode = listNodes.get(goal);
@@ -439,7 +438,12 @@ public class MapGraph {
 								if(!visited.contains(next)) {
 									//if path through curr to n is shorter ->
 									double edgeLength = getLengthEdgeBeetwen(curr, next);
-										if(curr.getDistance()+edgeLength < next.getDistance()) {
+										if((curr.getDistance()+edgeLength < next.getDistance())
+												&& getReducedCost(curr.getNodeLocation(),goal)<=redCost
+												) {
+											
+											       //                                                      System.out.println(getReducedCost(curr.getNodeLocation(),goal));
+											
 											//update next's distance
 											next.setDistance(curr.getDistance()+edgeLength);
 											parentMap.put(next, curr);
@@ -455,6 +459,11 @@ public class MapGraph {
 				return lfs;
 	}
 	
+	private double getReducedCost(GeographicPoint start, GeographicPoint goal) {
+		double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2)));
+		return red_cost;
+	}
+
 	public static void main(String[] args)
 	{
 		//System.out.print("Making a new map...");
