@@ -11,18 +11,18 @@ public class MapNode {
 	private List<MapEdge> listEdges;
 	private double distance;
 	private int numNodesBefore;
-	
+
 	/**
-	 * 
+	 *
 	 */
 	public MapNode() {
-		setNodeLocation(new GeographicPoint(0, 0)); 
+		setNodeLocation(new GeographicPoint(0, 0));
 		setNodeName(null);
 		setListEdges(new ArrayList<>());
 		setDistance(0);
 	}
 	/**
-	 * 
+	 *
 	 * @param nodeLocation
 	 * @param nodeName
 	 */
@@ -33,7 +33,7 @@ public class MapNode {
 		setDistance(0);
 	}
 	/**
-	 * 
+	 *
 	 * @param nodeLocation
 	 * @param nodeName
 	 * @param listEdges
@@ -45,7 +45,7 @@ public class MapNode {
 		setDistance(0);
 	}
 	/**
-	 * 
+	 *
 	 * @param nodeLocation
 	 * @param nodeName
 	 * @param dist
@@ -57,7 +57,7 @@ public class MapNode {
 		setDistance(dist);
 	}
 	/**
-	 * 
+	 *
 	 * @param nodeLocation
 	 * @param nodeName
 	 * @param listEdges
@@ -69,7 +69,6 @@ public class MapNode {
 		setListEdges(listEdges);
 		setDistance(dist);
 	}
-
 
 	/**
 	 * @return the nodeLocation
@@ -117,27 +116,37 @@ public class MapNode {
 	public void setListEdges(List<MapEdge> listEdges) {
 		this.listEdges = listEdges;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public double getDistance() {
 		return distance;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param distance
 	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
+
+	/**
+	 *
+	 * @return
+	 */
 	public int getNumNodesBefore() {
 		return numNodesBefore;
 	}
+
+	/**
+	 *
+	 * @param numNodesBefore
+	 */
 	public void setNumNodesBefore(int numNodesBefore) {
 		this.numNodesBefore = numNodesBefore;
 	}
-	
+
 }
