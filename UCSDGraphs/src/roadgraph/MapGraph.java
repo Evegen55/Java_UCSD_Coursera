@@ -135,15 +135,15 @@ public class MapGraph {
 
 			/*
 			set a speed limit on the road that depending od a type of a street
-			motorway_link  with no limitatios (we could use 500 km/h)
+			motorway_link  with no limitations (we could use 500 km/h)
 			             (A) road, specially designed and built for motor traffic,
 			             which does not serve properties bordering on it, and which:
 			             is provided, except at special points or temporarily,
-			             with separate carriageways for the two directions of traffic,
+			             with separate carriage ways for the two directions of traffic,
 			             separated from each other, either by a dividing strip not intended for traffic,
 			             or exceptionally by other means;
 			             does not cross at level with any road, railway or tramway track, or footpath;
-			             is specially signposted as a motorway and is reserved for specific categories of road motor vehicles.
+			             is specially sign posted as a motorway and is reserved for specific categories of road motor vehicles.
 			             'Entry and exit lanes of motorways are included irrespectively
 			             of the location of the signposts. Urban motorways are also included.'
 			             @see https://www.wikiwand.com/en/Controlled-access_highway
@@ -181,7 +181,7 @@ public class MapGraph {
 			             highway=unclassified should be used for roads used for local traffic and used to connect other towns, villages or hamlets.
 			             Unclassified roads are considered usable by motor cars.
 			             @see http://wiki.openstreetmap.org/wiki/Tag:highway%3Dunclassified
-			
+
 			@see https://www.wikiwand.com/en/Hierarchy_of_roads
 			@see https://www.wikiwand.com/en/Street_hierarchy
 			*/
@@ -197,17 +197,17 @@ public class MapGraph {
 				addedMapEdge.setSpeedLimit(120);
 			} else if ((roadType.compareTo("tertiary") == 0) || (roadType.compareTo("tertiary_link") == 0)) {
 				addedMapEdge.setSpeedLimit(80);
-			}else if ((roadType.compareTo("primary") == 0) || (roadType.compareTo("primary_link") == 0)) {
+			} else if ((roadType.compareTo("primary") == 0) || (roadType.compareTo("primary_link") == 0)) {
 				addedMapEdge.setSpeedLimit(80);
-			}else if ((roadType.compareTo("trunk") == 0) || (roadType.compareTo(" trunk_link") == 0)) {
+			} else if ((roadType.compareTo("trunk") == 0) || (roadType.compareTo(" trunk_link") == 0)) {
 				addedMapEdge.setSpeedLimit(90);
 			}
 
-			//test it
-            System.out.println(addedMapEdge.toString());
-
             //add OUTCOMING edge from -> to
 			listNodes.get(from).getListEdges().add(addedMapEdge);
+
+			//test it
+            //System.out.println(addedMapEdge.toString());
 
 			}
 	}
@@ -584,8 +584,8 @@ public class MapGraph {
 										if((curr.getDistance()+edgeLength < next.getDistance())
 												&& getReducedCost(curr.getNodeLocation(),goal)<=redCost
 												) {
-											//test it
-                                            //System.out.println(getReducedCost(curr.getNodeLocation(),goal));
+											                                                                //test it
+                                                                                                            //System.out.println(getReducedCost(curr.getNodeLocation(),goal));
 
 											//update next's distance
 											next.setDistance(curr.getDistance()+edgeLength);
@@ -603,7 +603,7 @@ public class MapGraph {
 	}
 
 	//==============================================================================================================
-	//MY ECSTENSION
+	//MY VARIANT
 	//==============================================================================================================
 
 	/** Find the path from start to goal using Dijkstra's algorithm
@@ -686,7 +686,7 @@ public class MapGraph {
 		} else {throw new NullPointerException("Cannot find route from or to null node");}
 		return lfs;
 	}
-	
+
 
 	/** Find the path from start to goal using A-Star search
 	 *
@@ -752,13 +752,8 @@ public class MapGraph {
 									double timeToNextNode = getTimeBetweenNodes(curr, next);
 									                                                                 //test it
 									                                                                 //System.out.println("timeToNextNode" + "\t" +timeToNextNode);
-									if((curr.getTime()+timeToNextNode < next.getTime())
-												&& getReducedCost(curr.getNodeLocation(),goal)<=redCost
-												) {
-											//test it
-                                           //System.out.println(getReducedCost(curr.getNodeLocation(),goal));
-
-											//update next's distance
+									if((curr.getTime()+timeToNextNode < next.getTime())	&& getReducedCost(curr.getNodeLocation(),goal)<=redCost) {
+										//update next's distance
 										    next.setTime(curr.getTime()+timeToNextNode);
 											parentMap.put(next, curr);
 							            }
@@ -793,8 +788,8 @@ public class MapGraph {
 		//	System.out.println(gp.toString());
 		//}
 
-		
-		
+
+
 		//-----------------------------------------------------
 		//basic map
 		//Use this code in Week 3 End of Week Quiz
@@ -822,27 +817,27 @@ public class MapGraph {
 				+
 				"Using A-star algorithm to find FASTER path" + "\t" + route_5.size()
 				);
-		
+
 		*/
-		
+
 		//-----------------------------------------------------
 		//another map
-		
+
 		System.out.print("Making a new map...");
 		MapGraph mapOfMyDistrict = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/maps/myDistrict_big.map", mapOfMyDistrict);
 		System.out.println("DONE.");
-		
+
 		GeographicPoint startMy = new GeographicPoint(59.9305655, 30.4824903);
 		GeographicPoint endMy = new GeographicPoint(59.8980511, 30.4444886);
-		
+
 		List<GeographicPoint> My_route_1 = mapOfMyDistrict.bfs(startMy,endMy);
 		List<GeographicPoint> My_route_2 = mapOfMyDistrict.dijkstra(startMy,endMy);
 		List<GeographicPoint> My_route_3 = mapOfMyDistrict.aStarSearch(startMy,endMy);
 		List<GeographicPoint> My_route_4 = mapOfMyDistrict.dijkstraBySpeed(startMy,endMy);
 		List<GeographicPoint> My_route_5 = mapOfMyDistrict.aStarSearchByTime(startMy,endMy);
-		
+
 		System.out.println(
 				"Using BFS algorithm to find SHORTEST path" + "\t" + My_route_1.size() + "\n"
 		        +
@@ -854,8 +849,8 @@ public class MapGraph {
 				+
 				"Using A-star algorithm to find FASTER path" + "\t" + My_route_5.size()
 				);
-				
-		
+
+
 
 
 	}
