@@ -336,11 +336,19 @@ public class MapApp extends Application
 
 	  RadioButton rbB = new RadioButton("BFS");
 	  rbB.setUserData("BFS");
+	  
+	  //add new buttons with searching methods by the time
+	  RadioButton rbBD = new RadioButton("Dijkstra by the time");
+	  rbBD.setUserData("Dijkstra_by_the_time");
+	  
 
 	  rbB.setToggleGroup(group);
 	  rbD.setToggleGroup(group);
 	  rbA.setToggleGroup(group);
-	  return new LinkedList<RadioButton>(Arrays.asList(rbB, rbD, rbA));
+	  //my code
+	  rbBD.setToggleGroup(group);
+	  
+	  return new LinkedList<RadioButton>(Arrays.asList(rbB, rbD, rbA, rbBD));
 	}
 
 
