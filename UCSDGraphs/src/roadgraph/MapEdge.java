@@ -149,7 +149,7 @@ public class MapEdge {
 	*/
 	public String toString() {
 		String to = "startNode " + startNode.getNodeLocation().toString() + "\t" + "goalNode " + finishNode.getNodeLocation().toString()
-				 + "\t" + "street name: " + streetName+ "\t" + "street type: " + streetType+ "\t" + "street length: " + streetLength;
+				 + "\t" + "street name: " + streetName+ "\t" + "street type: " + streetType + "\t" + "street length: " + streetLength + "\t" + "speed limit: " + speedLimit;
 		return to;
 	}
 
