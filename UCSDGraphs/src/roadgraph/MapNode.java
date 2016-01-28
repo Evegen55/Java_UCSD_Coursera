@@ -7,10 +7,18 @@ import geography.GeographicPoint;
 
 public class MapNode {
 	private GeographicPoint nodeLocation;
+	
+	//we could use it for .....
 	private String nodeName;
+	
+	//a list of outcoming edges
 	private List<MapEdge> listEdges;
+	
+    //for using search by distance
 	private double distance;
-	private int numNodesBefore;
+
+	//for using search by speed limitations
+	private double time;
 
 	/**
 	 *
@@ -19,7 +27,8 @@ public class MapNode {
 		setNodeLocation(new GeographicPoint(0, 0));
 		setNodeName(null);
 		setListEdges(new ArrayList<>());
-		setDistance(0);
+		setDistance(0.0);
+		setTime(0.0);
 	}
 	/**
 	 *
@@ -30,7 +39,8 @@ public class MapNode {
 		setNodeLocation(nodeLocation);
 		setNodeName(nodeName);
 		setListEdges(new ArrayList<>());
-		setDistance(0);
+		setDistance(0.0);
+		setTime(0.0);
 	}
 	/**
 	 *
@@ -42,7 +52,8 @@ public class MapNode {
 		setNodeLocation(nodeLocation);
 		setNodeName(nodeName);
 		setListEdges(listEdges);
-		setDistance(0);
+		setDistance(0.0);
+		setTime(0.0);
 	}
 	/**
 	 *
@@ -55,6 +66,7 @@ public class MapNode {
 		setNodeName(nodeName);
 		setListEdges(new ArrayList<>());
 		setDistance(dist);
+		setTime(0.0);
 	}
 	/**
 	 *
@@ -68,6 +80,7 @@ public class MapNode {
 		setNodeName(nodeName);
 		setListEdges(listEdges);
 		setDistance(dist);
+		setTime(0.0);
 	}
 
 	/**
@@ -76,47 +89,36 @@ public class MapNode {
 	public GeographicPoint getNodeLocation() {
 		return nodeLocation;
 	}
-
-
-	/**
+    /**
 	 * @param nodeLocation the nodeLocation to set
 	 */
 	public void setNodeLocation(GeographicPoint nodeLocation) {
 		this.nodeLocation = nodeLocation;
 	}
-
-
 	/**
 	 * @return the nodeName
 	 */
 	public String getNodeName() {
 		return nodeName;
 	}
-
-
 	/**
 	 * @param nodeName the nodeName to set
 	 */
 	public void setNodeName(String nodeName) {
 		this.nodeName = nodeName;
 	}
-
-
 	/**
 	 * @return the listEdges
 	 */
 	public List<MapEdge> getListEdges() {
 		return listEdges;
 	}
-
-
 	/**
 	 * @param listEdges the listEdges to set
 	 */
 	public void setListEdges(List<MapEdge> listEdges) {
 		this.listEdges = listEdges;
 	}
-
 	/**
 	 *
 	 * @return
@@ -124,7 +126,6 @@ public class MapNode {
 	public double getDistance() {
 		return distance;
 	}
-
 	/**
 	 *
 	 * @param distance
@@ -132,21 +133,17 @@ public class MapNode {
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
-
 	/**
-	 *
-	 * @return
+	 * @return the time
 	 */
-	public int getNumNodesBefore() {
-		return numNodesBefore;
+	public double getTime() {
+		return time;
 	}
-
 	/**
-	 *
-	 * @param numNodesBefore
+	 * @param time the time to set
 	 */
-	public void setNumNodesBefore(int numNodesBefore) {
-		this.numNodesBefore = numNodesBefore;
+	public void setTime(double time) {
+		this.time = time;
 	}
 
 }

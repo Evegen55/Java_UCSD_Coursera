@@ -50,6 +50,11 @@ public class MapGraph {
 		numVertices = 0;
 	}
 
+
+
+    //*************************************************************************************************
+	//list of helper methods
+
 	/**
 	 * Get the number of vertices (road intersections) in the graph
 	 * @return The number of vertices in the graph.
@@ -176,10 +181,11 @@ public class MapGraph {
 			             highway=unclassified should be used for roads used for local traffic and used to connect other towns, villages or hamlets.
 			             Unclassified roads are considered usable by motor cars.
 			             @see http://wiki.openstreetmap.org/wiki/Tag:highway%3Dunclassified
+			
 			@see https://www.wikiwand.com/en/Hierarchy_of_roads
 			@see https://www.wikiwand.com/en/Street_hierarchy
 			*/
-			if (roadType.compareTo("motorway_link") == 0) {
+			if ((roadType.compareTo("motorway") == 0) || (roadType.compareTo("motorway_link") == 0)) {
 				addedMapEdge.setSpeedLimit(500);
 			} else if (roadType.compareTo("living_street") == 0) {
 				addedMapEdge.setSpeedLimit(20);
@@ -187,14 +193,19 @@ public class MapGraph {
 				addedMapEdge.setSpeedLimit(60);
 			} else if (roadType.compareTo("unclassified") == 0) {
 				addedMapEdge.setSpeedLimit(80);
-			} else if (roadType.compareTo("secondary") == 0) {
+			} else if ((roadType.compareTo("secondary") == 0) || (roadType.compareTo("secondary_link") == 0)) {
 				addedMapEdge.setSpeedLimit(120);
-			} else if (roadType.compareTo("tertiary") == 0) {
+			} else if ((roadType.compareTo("tertiary") == 0) || (roadType.compareTo("tertiary_link") == 0)) {
 				addedMapEdge.setSpeedLimit(80);
+			}else if ((roadType.compareTo("primary") == 0) || (roadType.compareTo("primary_link") == 0)) {
+				addedMapEdge.setSpeedLimit(80);
+			}else if ((roadType.compareTo("trunk") == 0) || (roadType.compareTo(" trunk_link") == 0)) {
+				addedMapEdge.setSpeedLimit(90);
 			}
 
 			//test it
             System.out.println(addedMapEdge.toString());
+
             //add OUTCOMING edge from -> to
 			listNodes.get(from).getListEdges().add(addedMapEdge);
 
@@ -210,9 +221,146 @@ public class MapGraph {
 		List<MapEdge> listForSearch = forSearch.getListEdges();
 		for (MapEdge sch : listForSearch) {
 			MapNode mdn = sch.getFinishNode();
-			att.add(mdn);                                                                                           }
+			att.add(mdn);
+			}
 		return att;
 	}
+	/**
+	 *
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private double getSpeedLimit(MapNode start, MapNode end) {
+		double lim = 0;
+		List<MapEdge> listForSearch = start.getListEdges();
+		for (MapEdge sch : listForSearch) {
+			if ((sch.getStartNode().getNodeLocation().toString().compareTo(start.getNodeLocation().toString()) == 0) &&
+					(sch.getFinishNode().getNodeLocation().toString().compareTo(end.getNodeLocation().toString()) == 0)	) {
+				return lim = sch.getSpeedLimit();
+			}
+		}
+		return lim;
+	}
+	/**
+	 *
+	 * @param parentMap
+	 * @param start
+	 * @param goal
+	 * @return
+	 * @author UCSD MOOC development team
+	 *
+	 */
+	private List<GeographicPoint> reconstructPath(HashMap<MapNode,MapNode> parentMap, MapNode start, MapNode goal){
+		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
+		MapNode current = goal;
+		while (!current.equals(start)) {
+			path.addFirst(current.getNodeLocation());
+			current = parentMap.get(current);
+		}
+       path.addFirst(start.getNodeLocation());
+		return path;
+	}
+
+	/**
+	 *
+	 * @param parentMap
+	 */
+	private void printNodesMap(HashMap<MapNode,MapNode> parentMap){
+		for (Map.Entry<MapNode, MapNode> entry : parentMap.entrySet()) {
+			System.out.print( "key" + "\t" + entry.getKey().getNodeLocation().toString() + "\t" + "distance " + entry.getKey().getDistance() + "\t" + "time " + entry.getKey().getTime() + "\t");
+			System.out.println( "value" + "\t" + entry.getValue().getNodeLocation().toString() + "\t" + "distance " + entry.getValue().getDistance() + "\t" + "time " + entry.getValue().getTime());
+		}
+	}
+
+	/**
+	 * A helper method to get length between two nodes
+	 *
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private double getLengthEdgeBeetwen(MapNode start, MapNode end) {
+		// TODO Auto-generated method stub
+		double length = 0.0;
+		List<MapEdge> listForSearch = start.getListEdges();
+		for (MapEdge sch : listForSearch) {
+			if ((sch.getStartNode().getNodeLocation().toString().compareTo(start.getNodeLocation().toString()) == 0) &&
+					(sch.getFinishNode().getNodeLocation().toString().compareTo(end.getNodeLocation().toString()) == 0)	) {
+				return length = sch.getStreetLength();
+			}
+		}
+		return length;
+	}
+
+	/**
+	 * a helper method for using it as distance priority
+	 * @return comparator
+	 */
+	public Comparator<MapNode> createComparator() {
+		Comparator<MapNode> comparator = new Comparator<MapNode>() {
+            @Override
+            public int compare(MapNode x, MapNode y) {
+                // You could return x.getDistance() - y.getDistance(), which would be more efficient.
+            	return (int) (x.getDistance()-y.getDistance());
+            	//but for more better understanding you should use smth like this:
+            	//     if (x.getDistance() < y.getDistance()) {
+            	//         return -1;
+            	//          }
+            	//      if (x.getDistance() > y.getDistance()) {
+            	//          return 1;
+            	//      }
+            	//       return 0;
+            }
+        };
+		return comparator;
+	}
+	/**
+	 * a helper method for using it as distance priority
+	 * @return comparator
+	 */
+	public Comparator<MapNode> createComparatorByTime() {
+		Comparator<MapNode> comparator = new Comparator<MapNode>() {
+            @Override
+            public int compare(MapNode x, MapNode y) {
+                // You could return x.getDistance() - y.getDistance(), which would be more efficient.
+            	return (int) (x.getTime()-y.getTime());
+            	}
+            };
+		return comparator;
+	}
+
+	/**
+	 * a helper method for getting a reduced cost
+	 * @see https://en.wikipedia.org/wiki/A*_search_algorithm
+	 * @param start
+	 * @param goal
+	 * @return
+	 */
+	private double getReducedCost(GeographicPoint start, GeographicPoint goal) {
+		double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2)));
+		return red_cost;
+	}
+	/**
+	 *
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	private double getTimeBetweenNodes(MapNode start, MapNode end) {
+		// TODO Auto-generated method stub
+		double limit = getSpeedLimit(start, end);
+		double dist = getLengthEdgeBeetwen(start, end);
+		return dist/limit;
+	}
+
+
+
+
+
+    //*************************************************************************************************
+	//list of searching methods
+
 
 	/** Find the path from start to goal using breadth first search
 	 *
@@ -350,7 +498,7 @@ public class MapGraph {
 						if(!visited.contains(next)) {
 							//if path through curr to n is shorter ->
 							double edgeLength = getLengthEdgeBeetwen(curr, next);
-								if(curr.getDistance()+edgeLength < next.getDistance()) {
+							if(curr.getDistance()+edgeLength < next.getDistance()) {
 									//update next's distance
 									next.setDistance(curr.getDistance()+edgeLength);
 									parentMap.put(next, curr);
@@ -365,79 +513,7 @@ public class MapGraph {
 		} else {throw new NullPointerException("Cannot find route from or to null node");}
 		return lfs;
 	}
-	/**
-	 *
-	 * @param parentMap
-	 * @param start
-	 * @param goal
-	 * @return
-	 * @author UCSD MOOC development team
-	 *
-	 */
-	private List<GeographicPoint> reconstructPath(HashMap<MapNode,MapNode> parentMap, MapNode start, MapNode goal){
-		LinkedList<GeographicPoint> path = new LinkedList<GeographicPoint>();
-		MapNode current = goal;
-		while (!current.equals(start)) {
-			path.addFirst(current.getNodeLocation());
-			current = parentMap.get(current);
-		}
-        path.addFirst(start.getNodeLocation());
-		return path;
-	}
 
-	/**
-	 *
-	 * @param parentMap
-	 */
-	private void printMap(HashMap<MapNode,MapNode> parentMap){
-		for (Map.Entry<MapNode, MapNode> entry : parentMap.entrySet()) {
-			System.out.print( "key" + "\t" + entry.getKey().getNodeLocation().toString() + "\t" + "distance" + entry.getKey().getDistance() + "\t");
-			System.out.println( "value" + "\t" + entry.getValue().getNodeLocation().toString() + "\t" + "distance" + entry.getKey().getDistance());
-		}
-	}
-
-	/**
-	 * A helper method to get length between two nodes
-	 *
-	 * @param start
-	 * @param end
-	 * @return
-	 */
-	private double getLengthEdgeBeetwen(MapNode start, MapNode end) {
-		// TODO Auto-generated method stub
-		double length = 0.0;
-		List<MapEdge> listForSearch = start.getListEdges();
-		for (MapEdge sch : listForSearch) {
-			if ((sch.getStartNode().getNodeLocation().toString().compareTo(start.getNodeLocation().toString()) == 0) &&
-					(sch.getFinishNode().getNodeLocation().toString().compareTo(end.getNodeLocation().toString()) == 0)	) {
-				return length = sch.getStreetLength();
-			}
-		}
-		return length;
-	}
-
-	/**
-	 * a helper method for using it as distance priority
-	 * @return comparator
-	 */
-	public Comparator<MapNode> createComparator() {
-		Comparator<MapNode> comparator = new Comparator<MapNode>() {
-            @Override
-            public int compare(MapNode x, MapNode y) {
-                // You could return x.getDistance() - y.getDistance(), which would be more efficient.
-            	return (int) (x.getDistance()-y.getDistance());
-            	//but for more better understanding you should use smth like this:
-            	//     if (x.getDistance() < y.getDistance()) {
-            	//         return -1;
-            	//          }
-            	//      if (x.getDistance() > y.getDistance()) {
-            	//          return 1;
-            	//      }
-            	//       return 0;
-            }
-        };
-		return comparator;
-	}
 
 	//part 2
 	//===================================================================================================
@@ -479,12 +555,9 @@ public class MapGraph {
 					for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
 						entry.getValue().setDistance(Double.POSITIVE_INFINITY);
 					}
-
-
-					//getting a  reduced cost
-					double redCost = getReducedCost(start,goal);                                    //System.out.println(redCost);
-
-					//get a start and goal node
+                    //getting a  reduced cost
+					double redCost = getReducedCost(start,goal);                                             //System.out.println(redCost);
+                    //get a start and goal node
 					MapNode startNode = listNodes.get(start);
 					MapNode goalNode = listNodes.get(goal);
 					//set a distance start node as 0
@@ -511,8 +584,8 @@ public class MapGraph {
 										if((curr.getDistance()+edgeLength < next.getDistance())
 												&& getReducedCost(curr.getNodeLocation(),goal)<=redCost
 												) {
-
-											       //                                                      System.out.println(getReducedCost(curr.getNodeLocation(),goal));
+											//test it
+                                            //System.out.println(getReducedCost(curr.getNodeLocation(),goal));
 
 											//update next's distance
 											next.setDistance(curr.getDistance()+edgeLength);
@@ -529,26 +602,188 @@ public class MapGraph {
 				return lfs;
 	}
 
-	/**
-	 * a helper method for getting a reduced cost
-	 * @see https://en.wikipedia.org/wiki/A*_search_algorithm
-	 * @param start
-	 * @param goal
-	 * @return
+	//==============================================================================================================
+	//MY ECSTENSION
+	//==============================================================================================================
+
+	/** Find the path from start to goal using Dijkstra's algorithm
+	 *
+	 * @param start The starting location
+	 * @param goal The goal location
+	 * @return The list of intersections that form the faster path from
+	 *   start to goal (including both start and goal).
 	 */
-	private double getReducedCost(GeographicPoint start, GeographicPoint goal) {
-		double red_cost =(Math.sqrt(Math.pow((start.x-goal.x), 2) +  Math.pow((start.y-goal.y), 2)));
-		return red_cost;
+	public List<GeographicPoint> dijkstraBySpeed(GeographicPoint start, GeographicPoint goal) {
+		// Dummy variable for calling the search algorithms
+		// You do not need to change this method.
+        Consumer<GeographicPoint> temp = (x) -> {};
+        return dijkstraBySpeed(start, goal, temp);
 	}
+
+	/** Find the path from start to goal using Dijkstra's algorithm
+	 *
+	 * @param start The starting location
+	 * @param goal The goal location
+	 * @param nodeSearched A hook for visualization.  See assignment instructions for how to use it.
+	 * @return The list of intersections that form the faster path from
+	 *   start to goal (including both start and goal).
+	 */
+	public List<GeographicPoint> dijkstraBySpeed(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
+		// TODO: Implement this method in WEEK 3
+		List<GeographicPoint> lfs = new LinkedList<>();
+		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+			//initialize ADT
+			//we should use a comparator created depends on time!!!
+			Comparator<MapNode> cmtr = createComparatorByTime();
+			PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
+			HashMap<MapNode, MapNode> parentMap = new HashMap<>();
+			Set<MapNode> visited = new HashSet<>();
+			//set a time to goal to infinity
+			for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
+				entry.getValue().setTime(Double.POSITIVE_INFINITY);
+			}
+			//get a start and goal node
+			MapNode startNode = listNodes.get(start);
+			MapNode goalNode = listNodes.get(goal);
+			//set a time start node as 0
+			startNode.setTime(0.0);
+			//start working with a PriorityQueue
+			pq.add(startNode);
+			//start a loop through PriorityQueue
+			while(!pq.isEmpty()) {
+				MapNode curr = pq.poll();
+				//--------------------------------------------
+				// hook for visualization
+				nodeSearched.accept(curr.getNodeLocation());
+				//--------------------------------------------
+				if(!visited.contains(curr)) {
+					visited.add(curr);
+					if ((goal.toString().compareTo(curr.getNodeLocation().toString())) == 0) break;
+					//for each of curr's neighbors, "next", ->
+					List<MapNode> neighbors = getNeighbours(curr);
+					for(MapNode next : neighbors) {
+						//not in visited set ->
+						if(!visited.contains(next)) {
+							//if path through curr to n is faster ->
+							double timeToNextNode = getTimeBetweenNodes(curr, next);
+							                                                                 //test it
+							                                                                 //System.out.println("timeToNextNode" + "\t" +timeToNextNode);
+							if(curr.getTime()+timeToNextNode < next.getTime()) {
+									//update next's speed Limit
+									next.setTime(curr.getTime()+timeToNextNode);
+									parentMap.put(next, curr);
+					            }
+								//enqueue into the pq
+								pq.add(next);
+						}
+					}
+				}
+			}
+                                                                                            //test it
+                                                                                            //System.out.println("--------------------------------------");
+			                                                                                //printNodesMap(parentMap);
+			lfs = reconstructPath(parentMap, startNode, goalNode);
+		} else {throw new NullPointerException("Cannot find route from or to null node");}
+		return lfs;
+	}
+	
+
+	/** Find the path from start to goal using A-Star search
+	 *
+	 * @param start The starting location
+	 * @param goal The goal location
+	 * @return The list of intersections that form the shortest path from
+	 *   start to goal (including both start and goal).
+	 */
+	public List<GeographicPoint> aStarSearchByTime(GeographicPoint start, GeographicPoint goal) {
+		// Dummy variable for calling the search algorithms
+        Consumer<GeographicPoint> temp = (x) -> {};
+        return aStarSearchByTime(start, goal, temp);
+	}
+	/** Find the path from start to goal using A-Star search
+	 *
+	 * @param start The starting location
+	 * @param goal The goal location
+	 * @param nodeSearched A hook for visualization.  See assignment instructions for how to use it.
+	 * @return The list of intersections that form the shortest path from
+	 *   start to goal (including both start and goal).
+	 */
+	public List<GeographicPoint> aStarSearchByTime(GeographicPoint start,
+											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+	{
+		// TODO: Implement this method in WEEK 3
+				List<GeographicPoint> lfs = new LinkedList<>();
+				if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
+					//initialize ADT
+					//we should use a comparator created depends on time!!!
+					Comparator<MapNode> cmtr = createComparatorByTime();
+					PriorityQueue<MapNode> pq = new PriorityQueue<>(5, cmtr);
+					HashMap<MapNode, MapNode> parentMap = new HashMap<>();
+					Set<MapNode> visited = new HashSet<>();
+					//set a time to goal to infinity
+					for(Map.Entry<GeographicPoint,MapNode> entry : listNodes.entrySet()) {
+						entry.getValue().setTime(Double.POSITIVE_INFINITY);
+					}
+                   //getting a  reduced cost
+					double redCost = getReducedCost(start,goal);                                             //System.out.println(redCost);
+                   //get a start and goal node
+					MapNode startNode = listNodes.get(start);
+					MapNode goalNode = listNodes.get(goal);
+					//set a distance start node as 0
+					startNode.setTime(0.0);
+					//start working with a PriorityQueue
+					pq.add(startNode);
+					//start a loop through PriorityQueue
+					while(!pq.isEmpty()) {
+						MapNode curr = pq.poll();
+						//--------------------------------------------
+						// hook for visualization
+						nodeSearched.accept(curr.getNodeLocation());
+						//--------------------------------------------
+						if(!visited.contains(curr)) {
+							visited.add(curr);
+							if (goal.toString().equalsIgnoreCase(curr.getNodeLocation().toString())) break;
+							//for each of curr's neighbors, "next", ->
+							List<MapNode> neighbors = getNeighbours(curr);
+							for(MapNode next : neighbors) {
+								//not in visited set ->
+								if(!visited.contains(next)) {
+									//if path through curr to n is faster ->
+									double timeToNextNode = getTimeBetweenNodes(curr, next);
+									                                                                 //test it
+									                                                                 //System.out.println("timeToNextNode" + "\t" +timeToNextNode);
+									if((curr.getTime()+timeToNextNode < next.getTime())
+												&& getReducedCost(curr.getNodeLocation(),goal)<=redCost
+												) {
+											//test it
+                                           //System.out.println(getReducedCost(curr.getNodeLocation(),goal));
+
+											//update next's distance
+										    next.setTime(curr.getTime()+timeToNextNode);
+											parentMap.put(next, curr);
+							            }
+										//enqueue into the pq
+										pq.add(next);
+								}
+							}
+						}
+					}
+					lfs = reconstructPath(parentMap, startNode, goalNode);
+				} else {throw new NullPointerException("Cannot find route from or to null node");}
+				return lfs;
+	}
+
+
 
 	public static void main(String[] args)
 	{
-		//System.out.print("Making a new map...");
-		//MapGraph theMap = new MapGraph();
-		//System.out.print("DONE. \nLoading the map...");
-		//GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
-		//System.out.println("DONE.");
-
+		/*
+		System.out.print("Making a new map...");
+		MapGraph theMap = new MapGraph();
+		System.out.print("DONE. \nLoading the map...");
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
+		System.out.println("DONE.");
+        */
 
 		//System.out.println("Num nodes: " + theMap.getNumVertices());
 		//System.out.println("Num edges: " + theMap.getNumEdges());
@@ -558,9 +793,12 @@ public class MapGraph {
 		//	System.out.println(gp.toString());
 		//}
 
-		// You can use this method for testing.
-
+		
+		
+		//-----------------------------------------------------
+		//basic map
 		//Use this code in Week 3 End of Week Quiz
+		/*
 
 		MapGraph theMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
@@ -570,17 +808,54 @@ public class MapGraph {
 		GeographicPoint start = new GeographicPoint(32.8648772, -117.2254046);
 		GeographicPoint end = new GeographicPoint(32.8660691, -117.217393);
 
-		List<GeographicPoint> route3 = theMap.bfs(start,end);
-		List<GeographicPoint> route = theMap.dijkstra(start,end);
-		List<GeographicPoint> route2 = theMap.aStarSearch(start,end);
+		List<GeographicPoint> route_1 = theMap.bfs(start,end);
+		List<GeographicPoint> route_2 = theMap.dijkstra(start,end);
+		List<GeographicPoint> route_3 = theMap.aStarSearch(start,end);
+		List<GeographicPoint> route_4 = theMap.dijkstraBySpeed(start,end);
+		List<GeographicPoint> route_5 = theMap.aStarSearchByTime(start,end);
 
 		System.out.println(
-		//		route.size()
-		//		+
-		//		"\t" + route2.size()
-		//		+
-				"\t" + route3.size()
+				"Using BFS algorithm to find SHORTEST path" + "\t" + route_1.size() + "\n" +
+				"Using Dijkstra algorithm to find SHORTEST path" + "\t" + route_2.size() + "\n" +
+				"Using A-star algorithm to find SHORTEST path" + "\t" + route_3.size() + "\n" +
+				"Using Dijkstra algorithm to find FASTER path" + "\t" + route_4.size() + "\n"
+				+
+				"Using A-star algorithm to find FASTER path" + "\t" + route_5.size()
 				);
+		
+		*/
+		
+		//-----------------------------------------------------
+		//another map
+		
+		System.out.print("Making a new map...");
+		MapGraph mapOfMyDistrict = new MapGraph();
+		System.out.print("DONE. \nLoading the map...");
+		GraphLoader.loadRoadMap("data/maps/myDistrict_big.map", mapOfMyDistrict);
+		System.out.println("DONE.");
+		
+		GeographicPoint startMy = new GeographicPoint(59.9305655, 30.4824903);
+		GeographicPoint endMy = new GeographicPoint(59.8980511, 30.4444886);
+		
+		List<GeographicPoint> My_route_1 = mapOfMyDistrict.bfs(startMy,endMy);
+		List<GeographicPoint> My_route_2 = mapOfMyDistrict.dijkstra(startMy,endMy);
+		List<GeographicPoint> My_route_3 = mapOfMyDistrict.aStarSearch(startMy,endMy);
+		List<GeographicPoint> My_route_4 = mapOfMyDistrict.dijkstraBySpeed(startMy,endMy);
+		List<GeographicPoint> My_route_5 = mapOfMyDistrict.aStarSearchByTime(startMy,endMy);
+		
+		System.out.println(
+				"Using BFS algorithm to find SHORTEST path" + "\t" + My_route_1.size() + "\n"
+		        +
+				"Using Dijkstra algorithm to find SHORTEST path" + "\t" + My_route_2.size() + "\n"
+		        +
+				"Using A-star algorithm to find SHORTEST path" + "\t" + My_route_3.size() + "\n"
+		        +
+				"Using Dijkstra algorithm to find FASTER path" + "\t" + My_route_4.size() + "\n"
+				+
+				"Using A-star algorithm to find FASTER path" + "\t" + My_route_5.size()
+				);
+				
+		
 
 
 	}

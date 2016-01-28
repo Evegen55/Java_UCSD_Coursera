@@ -11,7 +11,7 @@ public class MapEdge {
 	//the length of the street in meters
 	private double streetLength;
 	//The speed limitations with kilometers per hour
-	private int speedLimit;
+	private double speedLimit;
 
 	/**
 	 *
@@ -22,7 +22,7 @@ public class MapEdge {
 		setStreetName("");
 		setStreetType("");
 		setStreetLength(0.0);
-		setSpeedLimit(0);
+		setSpeedLimit(0.0);
 	}
 	/**
 	 *
@@ -37,7 +37,7 @@ public class MapEdge {
 		setStreetName(name);
 		setStreetType("");
 		setStreetLength(length);
-		setSpeedLimit(0);
+		setSpeedLimit(0.0);
 	}
 	/**
 	 *
@@ -53,7 +53,7 @@ public class MapEdge {
 		setStreetName(name);
 		setStreetType(type);
 		setStreetLength(length);
-		setSpeedLimit(0);
+		setSpeedLimit(0.0);
 	}
 	/**
 	 *
@@ -64,7 +64,7 @@ public class MapEdge {
 	 * @param length
 	 * @param limOfSpeed
 	 */
-	public MapEdge(MapNode first, MapNode second, String name, String type, double length, int limOfSpeed) {
+	public MapEdge(MapNode first, MapNode second, String name, String type, double length, double limOfSpeed) {
 		setStartNode(first);
 		setFinishNode(second);
 		setStreetName(name);
@@ -135,13 +135,13 @@ public class MapEdge {
 	/**
 	 * @return the speedLimit
 	 */
-	public int getSpeedLimit() {
+	public double getSpeedLimit() {
 		return speedLimit;
 	}
 	/**
 	 * @param speedLimit the speedLimit to set
 	 */
-	public void setSpeedLimit(int speedLimit) {
+	public void setSpeedLimit(double speedLimit) {
 		this.speedLimit = speedLimit;
 	}
 	/**
