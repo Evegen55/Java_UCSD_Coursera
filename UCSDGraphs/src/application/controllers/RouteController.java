@@ -35,6 +35,8 @@ public class RouteController {
 	public static final int DISABLE = 0;
 	public static final int START = 1;
 	public static final int DESTINATION = 2;
+	//my version
+	public static final int D_time = 4;
 
     private int selectedToggle = DIJ;
 
@@ -140,6 +142,9 @@ public class RouteController {
             }
             else if(group.getSelectedToggle().getUserData().equals("BFS")) {
             	selectedToggle = BFS;
+            	//my version
+            } else if(group.getSelectedToggle().getUserData().equals("D_time")) {
+            	selectedToggle = D_time;
             }
             else {
             	System.err.println("Invalid radio button selection");

@@ -117,6 +117,11 @@ public class RouteService {
             	else if (toggle == RouteController.A_STAR) {
             		path = markerManager.getDataSet().getGraph().aStarSearch(start, end, nodeAccepter);
             	}
+            	
+            	//my version
+            	else if (toggle == RouteController.D_time) {
+            		path = markerManager.getDataSet().getGraph().dijkstraByTime(start, end, nodeAccepter);
+            	}
 
             	if(path == null) {
                     // System.out.println("In displayRoute : PATH NOT FOUND");

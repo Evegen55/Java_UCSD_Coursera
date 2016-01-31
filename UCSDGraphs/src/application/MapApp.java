@@ -339,7 +339,7 @@ public class MapApp extends Application
 	  
 	  //add new buttons with searching methods by the time
 	  RadioButton rbBD = new RadioButton("Dijkstra by the time");
-	  rbBD.setUserData("Dijkstra_by_the_time");
+	  rbBD.setUserData("D_time");
 	  
 
 	  rbB.setToggleGroup(group);

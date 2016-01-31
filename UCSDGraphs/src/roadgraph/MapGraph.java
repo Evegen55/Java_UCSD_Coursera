@@ -613,11 +613,11 @@ public class MapGraph {
 	 * @return The list of intersections that form the faster path from
 	 *   start to goal (including both start and goal).
 	 */
-	public List<GeographicPoint> dijkstraBySpeed(GeographicPoint start, GeographicPoint goal) {
+	public List<GeographicPoint> dijkstraByTime(GeographicPoint start, GeographicPoint goal) {
 		// Dummy variable for calling the search algorithms
 		// You do not need to change this method.
         Consumer<GeographicPoint> temp = (x) -> {};
-        return dijkstraBySpeed(start, goal, temp);
+        return dijkstraByTime(start, goal, temp);
 	}
 
 	/** Find the path from start to goal using Dijkstra's algorithm
@@ -628,7 +628,7 @@ public class MapGraph {
 	 * @return The list of intersections that form the faster path from
 	 *   start to goal (including both start and goal).
 	 */
-	public List<GeographicPoint> dijkstraBySpeed(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
+	public List<GeographicPoint> dijkstraByTime(GeographicPoint start, GeographicPoint goal, Consumer<GeographicPoint> nodeSearched) {
 		// TODO: Implement this method in WEEK 3
 		List<GeographicPoint> lfs = new LinkedList<>();
 		if (listNodes.containsKey(start) && listNodes.containsKey(goal)) {
@@ -835,7 +835,7 @@ public class MapGraph {
 		List<GeographicPoint> My_route_1 = mapOfMyDistrict.bfs(startMy,endMy);
 		List<GeographicPoint> My_route_2 = mapOfMyDistrict.dijkstra(startMy,endMy);
 		List<GeographicPoint> My_route_3 = mapOfMyDistrict.aStarSearch(startMy,endMy);
-		List<GeographicPoint> My_route_4 = mapOfMyDistrict.dijkstraBySpeed(startMy,endMy);
+		List<GeographicPoint> My_route_4 = mapOfMyDistrict.dijkstraByTime(startMy,endMy);
 		List<GeographicPoint> My_route_5 = mapOfMyDistrict.aStarSearchByTime(startMy,endMy);
 
 		System.out.println(
